@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 09, 2021 at 03:12 AM
+-- Generation Time: Mar 09, 2021 at 03:29 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS `customer` (
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`UserID`, `OverallCustomerRating`, `CustomerRating`) VALUES
+(10003, 10, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +55,14 @@ CREATE TABLE IF NOT EXISTS `follows` (
   PRIMARY KEY (`FollowerID`),
   KEY `FolloweeID` (`FolloweeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `follows`
+--
+
+INSERT INTO `follows` (`FollowerID`, `FolloweeID`) VALUES
+(10001, 10002),
+(10003, 10002);
 
 -- --------------------------------------------------------
 
@@ -72,7 +87,9 @@ CREATE TABLE IF NOT EXISTS `profile` (
 --
 
 INSERT INTO `profile` (`UserID`, `email`, `UserName`, `Phone#`, `Location`, `FirstName`, `LastName`) VALUES
-(98765, 'user1@gmail.com', 'misteruser1', '6041231234', '8888 University Drive', 'User', 'Test');
+(10001, 'mikerr@gmail.com', 'mikey123', '778908273', '515 W Hastings', 'Mike', 'Hawk'),
+(10002, 'joek@gmail.com', 'joemama', '6045869382', '13450 103 Ave', 'Joseph', 'Mama'),
+(10003, 'user1@gmail.com', 'misteruser1', '6041231234', '8888 University Drive', 'User', 'Test');
 
 -- --------------------------------------------------------
 
@@ -86,6 +103,13 @@ CREATE TABLE IF NOT EXISTS `seller` (
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `seller`
+--
+
+INSERT INTO `seller` (`UserID`) VALUES
+(10002);
+
 -- --------------------------------------------------------
 
 --
@@ -98,6 +122,13 @@ CREATE TABLE IF NOT EXISTS `userallergies` (
   `Allergies` varchar(100) NOT NULL,
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `userallergies`
+--
+
+INSERT INTO `userallergies` (`UserID`, `Allergies`) VALUES
+(10001, 'Peanuts, Crayfish');
 
 --
 -- Constraints for dumped tables
