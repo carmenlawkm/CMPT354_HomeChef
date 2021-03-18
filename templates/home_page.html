@@ -1,8 +1,65 @@
+<style type="text/css">
+        .parallax{
+
+        }
+
+        .picDesc{
+            position: center;
+            max-height: 500px;
+
+        }
+
+        .test {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        .buttonBorder{
+            border-style:solid;
+            border-color:white;
+            width: fit-content;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.3);
+
+        }
+        #bootstrap-overrides h1{
+            color: white;
+        }
+
+        #bootstrap-overrides p{
+            font-size: 24px;
+            color: white;
+        }
+
+</style>
+
 {% extends "base.html" %}
+
 {% block title %}
-    home page
+    HomeChef
 {% endblock %}
 
 {% block body_header %}
-    First header!
+
+{% endblock %}
+
+{% block body_block %}
+    <body id="bootstrap-overrides">
+    <div class = "picDesc">
+    <img src="https://images.pexels.com/photos/3850838/pexels-photo-3850838.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="Title Image">
+        <div class = "test">
+            <h1 class = "display-1 text-center">Home<span style="font-weight: bold">Chef</span></h1>
+            <p class = "text-center" >The place to find real home-made food cooked by home chefs.</p>
+            <a href="#"><p class = "buttonBorder">Learn More</p></a>
+        </div>
+
+    </div>
+
+
+
+
+</body>
 {% endblock %}
