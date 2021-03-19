@@ -1,8 +1,133 @@
+<style type="text/css">
+
+        .textDesc{
+            position: relative;
+            height: 40%;
+            width: 100%;
+            background-color: #e3e3e3;
+            padding: 5% 0;
+            text-align: center;
+            font-size: x-large;
+        }
+
+        .RecipesDisplay{
+            position: relative;
+            height: 200%;
+            width: 100%;
+            background-color: #e3e3e3;
+            padding: 50px;
+            font-size: x-large;
+        }
+
+        .picDesc1{
+            background-image: url("https://images.pexels.com/photos/3850838/pexels-photo-3850838.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            font-size: x-large;
+        }
+
+        .picDesc2{
+            background-image: url("https://images.pexels.com/photos/3893682/pexels-photo-3893682.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 500px;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            font-size: x-large;
+        }
+
+        .caption {
+             padding: 15% 0;
+              text-align: center;
+        }
+
+
+        .buttonBorder{
+            color: white;
+            border-style:solid;
+            border-color:white;
+            width: fit-content;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+
+</style>
+
 {% extends "base.html" %}
+
 {% block title %}
-    home page
+    HomeChef
 {% endblock %}
 
 {% block body_header %}
-    First header!
+
+{% endblock %}
+
+{% block body_block %}
+    <body id="bootstrap-overrides">
+    <div class = "picDesc1">
+        <div class = "caption">
+            <h1 class = "display-1 text-center">Home<span style="font-weight: bold">Chef</span></h1>
+            <p class = "text-center" >The place to find real home-made food cooked by home chefs.</p>
+            <a href="#"><p class = "buttonBorder">Learn More</p></a>
+        </div>
+    </div>
+
+
+    <div class = "textDesc">
+        <h1 class = "display-4 text-center">What's HomeChef?</h1>
+         <p class = "text-center" >Home Chef is targeted towards a wide range of customers. From the people looking for cheap homemade food,<br> meal preps to food enthusiasts looking to purchase that specific dessert from their favourite home cook they found on instagram.
+</p>
+    </div>
+
+    <div class = "picDesc2">
+        <div class = "caption">
+        <h1 class = "display-4 text-center">Eat fresh, eat healthy.</h1>
+        </div>
+    </div>
+
+
+     <div class = "RecipesDisplay">
+        <h1 class = "display-4 text-center">Delicious food made with love</h1>
+         <p class = "text-center" >Want to find that flavour you missed from your families cooking? <br> Check out our most popular recipes!</p>
+
+        <div class="row no-gutters bg-light position-relative">
+          <div class="col-md-6 mb-md-0 p-md-4">
+            <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="w-100" alt="...">
+          </div>
+          <div class="col-md-6 position-static p-4 pl-md-0">
+            <h5 class="mt-0">Fluffy Caramel Pancake</h5>
+            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+            <a href="#" class="stretched-link">Go somewhere</a>
+          </div>
+        </div>
+
+         <div class="row no-gutters bg-light position-relative">
+          <div class="col-md-6 mb-md-0 p-md-4">
+            <img src="https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="w-100" alt="...">
+          </div>
+
+          <div class="col-md-6 position-static p-4 pl-md-0">
+            <h5 class="mt-0">Home Made Pumpkin Soup</h5>
+            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+            <a href="#" class="stretched-link">Go somewhere</a>
+          </div>
+        </div>
+
+
+
+     </div>
+
+
+
+
+</body>
 {% endblock %}
