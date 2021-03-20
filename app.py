@@ -14,6 +14,7 @@ def login_load():
     if request.method == "POST":
         user_email = request.form["email"]
         session["user"] = user_email
+        return
     return render_template("login.html")
 
 
