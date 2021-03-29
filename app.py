@@ -33,18 +33,21 @@ def logout_load():
 
 
 @app.route('/register', methods = ['GET','POST'])
-
 def register_load():
     if request.method == 'POST':
-        userName = request.form['name']
+        userName = request.form['username']
+        firstName = request.form['firstname']
+        lastName = request.form['lastname']
         email = request.form['email']
         password = request.form['password']
+        phone = request.form['phone']
+        address = request.form['address']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO profile (email, UserName, password) VALUES (%s, %s, %s)", (email, userName, password))
+        cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location) VALUES (%s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address))
         mysql.connection.commit()
         cur.close()
-        return "success"
+        return "registration successful"
 
     return render_template("register.html")
 
