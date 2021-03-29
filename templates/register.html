@@ -1,7 +1,39 @@
+<style type="text/css">
+    .picDesc1{
+            background-image: url("https://images.pexels.com/photos/3893682/pexels-photo-3893682.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+        }
+    .page{
+        background-color: #dde8ed;
+    }
+    .textDesc{
+        position: relative;
+        height: 40%;
+        width: 50%;
+
+        padding: 5% 0;
+        text-align: center;
+        font-size: x-large;
+    }
+    .btnCreateAccount{
+        background-color: #e8f3f9;
+    }
+</style>
+
 {% extends "base.html" %}
 {% block body_block %}
-    <h1 class="text-center">Register new account</h1><br>
-    <div class="mx-auto w-75">
+<body class="picDesc1">
+
+
+<!--    <h1 class="text-center">Sign up</h1><br>-->
+<div class="d-flex justify-content-around">
+    <div class="w-25 m-3">
+        <h1 class="text-center">Sign up</h1><br>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroup-sizing-default1">User Name</span>
@@ -50,6 +82,15 @@
           </div>
           <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         </div>
+
+        <button class="btn btnCreateAccount btn-info" type="submit">Create Account</button>
     </div>
 
+    <div class = "textDesc">
+            <h1 class = "display-4">Sign up now</h1>
+             <p class = "text-center">and enter a world of homemade culinary delights! From pizzas to chocolate cakes, support the home chefs of your community around you and enjoy a wide array of certified home made foods.
+        </p>
+    </div>
+    </div>
+</body>
 {% endblock %}
