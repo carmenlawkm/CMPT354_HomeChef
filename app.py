@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+
+from flask import Flask, render_template, request, url_for, flash, redirect, session
 from flask_mysqldb import MySQL
 
 
 app = Flask(__name__)
-
+#the key for the session
+app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
 app.config['MYSQL_USER'] = "root"
@@ -16,11 +18,22 @@ mysql = MySQL(app)
 def home_load():
     return render_template("home_page.html")
 
-@app.route('/login')
+
+@app.route('/login', methods=["POST", "GET"])
 def login_load():
+    if request.method == "POST":
+        user_email = request.form["email"]
+        session["user"] = user_email
+        return
     return render_template("login.html")
 
+@app.route('/logout')
+def logout_load():
+    return home_load()
+
+
 @app.route('/register', methods = ['GET','POST'])
+
 def register_load():
     if request.method == 'POST':
         userName = request.form['name']
@@ -34,6 +47,11 @@ def register_load():
         return "success"
 
     return render_template("register.html")
+
+
+@app.route('/profile')
+def profile_load():
+    return render_template("profile.html")
 
 
 if __name__ == '__main__':
