@@ -60,9 +60,6 @@ def settings_load():
     return render_template("settings.html")
 
 
-@app.route('/profile')
-def profile_load():
-    return render_template("profile.html")
 
 
 if __name__ == '__main__':
