@@ -16,7 +16,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/about">
           <img src="static/img/homechef.png" class="img-fluid" width="200" height="50" alt="Logo">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,11 +25,9 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
-          </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="profile.html" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               My Profile
@@ -44,8 +42,8 @@
         </ul>
 
       </div>
-        <button class="btn btn-outline-success" type="submit">Register</button>
-        <button class="btn btn-outline-success" type="submit" style = "margin-left: 10px">Login</button>
+        <button class="btn btn-outline-success" type="submit"><a href="/register" id="bootstrap-overrides">Register</a></button>
+        <button class="btn btn-outline-success" type="submit" style = "margin-left: 10px"><a href="/login" id="bootstrap-overrides">Login</a></button>
     </nav>
 
     <h1>{% block body_header %}    {% endblock %}</h1>
