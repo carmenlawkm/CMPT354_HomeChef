@@ -14,9 +14,14 @@ app.config['MYSQL_DB'] = "homechef"
 
 mysql = MySQL(app)
 
+
 @app.route('/')
 def home_load():
-    return render_template("home_page.html")
+    return render_template("home.html")
+
+@app.route('/about')
+def about_load():
+    return render_template("about.html")
 
 
 @app.route('/login', methods=["POST", "GET"])
