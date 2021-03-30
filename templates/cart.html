@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block body_block %}
+
+
+
+<div class="w-75 mx-auto">
+    <h1 class="m-3">Your cart</h1>
+    <table class="table table-striped m-3">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Food</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Pizza</td>
+          <td>2</td>
+          <td>27.89</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Caramel Cake</td>
+          <td>1</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>Pasta</td>
+          <td>1</td>
+          <td>13.99</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+
+
+{% endblock %}

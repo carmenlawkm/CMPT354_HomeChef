@@ -32,6 +32,10 @@ def register_load():
 def profile_load():
     return render_template("profile.html")
 
+@app.route('/cart')
+def cart_load():
+    return render_template("cart.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
