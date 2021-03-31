@@ -6,42 +6,73 @@
 
 {% block body_header %}
 
-    <div class="alert alert-secondary m-3" role="alert">
+    <div class="alert alert-secondary m-3 " role="alert">
       Settings
     </div>
 
-    <div class="input-group m-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">First Name</span>
+
+    <div class="d-flex justify-content-around align-items-center">
+            <div class=" m-3">
+                <form method = "POST" action = "">
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default4">First Name</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "firstname" value="Jessica">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default5">Last Name</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "lastname" value="Li">
+                    </div>
+
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default2">Email</span>
+                        </div>
+                        <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "email" value="email@gmail.com">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default3">New Password</span>
+                        </div>
+                        <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "password" value="password">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default6">Address</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "address" value="123 Apple St">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default7">Phone Number</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "phone" value="6046046044">
+                    </div>
+
+                    <button class="btn btnCreateAccount btn-info" type="submit" >Save</button>
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+    <form>
+      <div class="form-group ">
+        <label for="exampleFormControlFile1">Change Profile Picture</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
       </div>
-      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-    </div>
-
-    <div class="input-group m-3">
-      <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-      <div class="input-group-append">
-        <span class="input-group-text" id="basic-addon2">@example.com</span>
-      </div>
-    </div>
+    </form>
 
 
-
-    <div class="input-group m-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text">$</span>
-      </div>
-      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-      <div class="input-group-append">
-        <span class="input-group-text">.00</span>
-      </div>
-    </div>
-
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text">With textarea</span>
-      </div>
-      <textarea class="form-control" aria-label="With textarea"></textarea>
-    </div>
-
-    <button type="button" class="btn btn-primary align-self-end ml-5">Save Changes</button>
 {% endblock %}
