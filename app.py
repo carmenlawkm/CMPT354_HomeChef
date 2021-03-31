@@ -32,9 +32,18 @@ def register_load():
 def profile_load():
     return render_template("profile.html")
 
+# This is code for filling the cart table
+headings = ("#", "Food", "Quantity", "Price")
+data = (
+    (1, "Pizza", 2, 27.89),
+    (2, "Caramel Cake", 1, 12),
+    (3, "Pasta", 1, 13.99),
+    ("Total","","", 27.89 + 12 + 13.99)
+)
+
 @app.route('/cart')
 def cart_load():
-    return render_template("cart.html")
+    return render_template("cart.html", headings=headings, data=data)
 
 
 if __name__ == '__main__':
