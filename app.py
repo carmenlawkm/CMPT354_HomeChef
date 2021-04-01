@@ -41,6 +41,10 @@ data = (
     ("Total","","", 27.89 + 12 + 13.99)
 )
 
+L1 = list(data)
+L1.append((8, "joe", 1919, 12))
+date = tuple(L1)
+
 @app.route('/cart')
 def cart_load():
     return render_template("cart.html", headings=headings, data=data)
