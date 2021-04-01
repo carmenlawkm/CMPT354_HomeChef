@@ -63,20 +63,17 @@ def profile_load():
 
 # This is code for filling the cart table
 headings = ("#", "Food", "Quantity", "Price")
-data = (
-    (1, "Pizza", 2, 27.89),
-    (2, "Caramel Cake", 1, 12),
-    (3, "Pasta", 1, 13.99),
-    ("Total","","", 27.89 + 12 + 13.99)
-)
 
-L1 = list(data)
-L1.append((8, "joe", 1919, 12))
-date = tuple(L1)
+datalist = [(1, "Pizza", 2, 27.89),
+    (2, "Caramel Cake", 1, 12),
+    (3, "Pasta", 1, 13.99)
+            ]
+
+datalist.append( ("Total","","", 27.89 + 12 + 13.99) )
 
 @app.route('/cart')
 def cart_load():
-    return render_template("cart.html", headings=headings, data=data)
+    return render_template("cart.html", headings=headings, data=datalist)
 
 
 if __name__ == '__main__':
