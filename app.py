@@ -17,7 +17,17 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home_load():
-    return render_template("home.html")
+    cur1 = mysql.connection.cursor()
+    cur2 = mysql.connection.cursor()
+    cur1.execute("SELECT * FROM food, profile WHERE food.PUserID = profile.UserID")
+    cur2.execute("SELECT * FROM foodingredients")
+    fetch = cur1.fetchall()
+    fetch2 = cur2.fetchall()
+    mysql.connection.commit()
+    cur1.close()
+    cur2.close()
+
+    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
 @app.route('/about')
 def about_load():
@@ -52,8 +62,7 @@ def register_load():
         cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location) VALUES (%s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address))
         mysql.connection.commit()
         cur.close()
-        return "registration successful"
-
+        return "successful"
     return render_template("register.html")
 
 
