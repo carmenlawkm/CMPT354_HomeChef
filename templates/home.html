@@ -14,6 +14,12 @@
 
 </style>
 
+<script>
+    function loadButton(){
+        console.log("button")
+    }
+</script>
+
 {% extends "base.html" %}
 
 {% block title %}
@@ -83,7 +89,7 @@
 
               <div align="center">
                   {% if food[4] == 1%}
-                    <button type="button" class="btn btn-warning">Add to cart</button>
+                    <button type="button" class="btn btn-warning" onload="loadButton()">Add to cart</button>
                   {% endif %}
                   <button type="button" class="btn btn-info">View Recipe</button>
               </div>
