@@ -29,69 +29,33 @@
     <h1 class="fw-bold" style="text-align: center">Feed</h1>
 
     <div class = "posts">
-     <div class="row no-gutters bg-light position-relative">
-          <div class="col-md-6 mb-md-0 p-md-4">
-              <img src="https://www.stepstherapy.com.au/wp-content/uploads/2018/10/Yazmin-profile-picture-square.jpg" class="rounded-circle" alt="..." width="70" height="70" style = "margin-right: 15px">
-              <h2 class="mt-0" style = "display: inline">Fluffy Caramel Pancake</h2>
-              <figcaption class="blockquote-footer" style = "display: inline; font-size: large" >Recipe by <cite title="Source Title">Jacqueline Smith</cite></figcaption>
-              <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" style = "margin-top: 15px" class="w-100 rounded" alt="..." >
-          </div>
-          <div class="col-md-6 position-static p-4 pl-md-0">
-              <h5 class="mt-0">Description</h5>
-              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-              <h5 class="mt-0">Ingredients</h5>
-              <p>Flour, eggs, milk, sugar, butter, baking powder, whipped cream, powdered sugar, strawberry, banana, blueberry.</p>
-              <h5 class="mt-0">Tags</h5>
-              <div style="margin-top: 25px; margin-bottom: 25px">
-                  <div class="alert alert-primary" role="alert" style="width: 20%; text-align: center; display: inline">Gluten Free</div>
-                  <div class="alert alert-success" role="alert" style="width: 20%; text-align: center; display: inline">Vegetarian</div>
-                  <div class="alert alert-warning" role="alert" style="width: 20%; text-align: center; display: inline">Available</div>
-              </div>
-              <h5 class="mt-0">Available Dates</h5>
-              <table class="table calendar">
-                  <thead>
-                    <tr>
-                        <th scope="col" >Sun</th>
-                        <th scope="col">Mon</th>
-                        <th scope="col">Tues</th>
-                        <th scope="col">Wed</th>
-                        <th scope="col">Thurs</th>
-                        <th scope="col">Fri</th>
-                        <th scope="col">Sat</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                        <td>✓</td>
-                        <td></td>
-                        <td>✓</td>
-                        <td>✓</td>
-                        <td></td>
-                        <td>✓</td>
-                  </tbody>
-                </table>
-              <div align="center">
-                  <button type="button" class="btn btn-warning">Add to cart</button>
-                  <button type="button" class="btn btn-info">View Recipe</button>
-              </div>
-          </div>
-     </div> <br>
 
-     <div class="row no-gutters bg-light position-relative">
+    {%  for food in foodInfo %}
+    <div class="row no-gutters bg-light position-relative">
           <div class="col-md-6 mb-md-0 p-md-4">
-              <img src="http://www.kevmill.com/wp-content/uploads/2019/09/cropped-Kevin-profile-pic-2019-square-small-300x300.jpg" class="rounded-circle" alt="..." width="70" height="70" style = "margin-right: 15px">
-              <h2 class="mt-0" style = "display: inline">Homemade Pumpkin Soup</h2>
-              <figcaption class="blockquote-footer" style = "display: inline; font-size: large" >Recipe by <cite title="Source Title">Diego García</cite></figcaption>
-              <img src="https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" style = "margin-top: 15px" class="w-100 rounded" alt="..." >
+              <img src="{{ food[16]}}" class="rounded-circle" alt="..." width="70" height="70" style = "margin-right: 15px">
+              <h2 class="mt-0" style = "display: inline">{{food[2]}}</h2>
+              <figcaption class="blockquote-footer" style = "display: inline; font-size: large" >Recipe by <cite title="Source Title">{{food[14]+" "+food[15]}}</cite></figcaption>
+              <img src="{{ food[7] }}" style = "margin-top: 15px" class="w-100 rounded" alt="..." >
           </div>
           <div class="col-md-6 position-static p-4 pl-md-0">
               <h5 class="mt-0">Description</h5>
-              <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+              <p>{{ food[5]}}</p>
               <h5 class="mt-0">Ingredients</h5>
-              <p>Pumpkin, olive oil, onion, garlic, salt, nutmeg, coconut milk, vegetable broth, black pepper</p>
-              <h5 class="mt-0">Tags</h5>
+                {% for ingredient in foodIngredients %}
+                    {% if food[0] == ingredient[0] %}
+                    <span>{{ ingredient[1]+", "}}</span>
+                    {% endif %}
+                {% endfor %}
+                    <p></p>
+              <br><h5 class="mt-0">Tags</h5>
               <div style="margin-top: 25px; margin-bottom: 25px">
-                  <div class="alert alert-success" role="alert" style="width: 20%; text-align: center; display: inline">Vegetarian</div>
-                  <div class="alert alert-danger" role="alert" style="width: 20%; text-align: center; display: inline">Not Available</div>
+                    {% if food[4] == 0%}
+                        <div class="alert alert-danger" role="alert" style="width: 20%; text-align: center; display: inline">Not Available</div>
+                    {% endif %}
+                    {% if food[4] == 1%}
+                        <div class="alert alert-warning" role="alert" style="width: 20%; text-align: center; display: inline">Available</div>
+                    {% endif %}
               </div>
               <h5 class="mt-0">Available Dates</h5>
               <table class="table calendar">
@@ -116,11 +80,16 @@
                         <td>N/A</td>
                   </tbody>
                 </table>
+
               <div align="center">
+                  {% if food[4] == 1%}
+                    <button type="button" class="btn btn-warning">Add to cart</button>
+                  {% endif %}
                   <button type="button" class="btn btn-info">View Recipe</button>
               </div>
           </div>
      </div> <br>
+    {% endfor %}
 
     </div>
     </body>

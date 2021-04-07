@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Mar 29, 2021 at 06:50 AM
--- Server version: 5.7.31
--- PHP Version: 7.3.21
+-- Host: 127.0.0.1
+-- Generation Time: Apr 06, 2021 at 09:21 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,12 +27,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `customer`
 --
 
-DROP TABLE IF EXISTS `customer`;
-CREATE TABLE IF NOT EXISTS `customer` (
+CREATE TABLE `customer` (
   `UserID` int(11) NOT NULL,
   `OverallCustomerRating` int(11) DEFAULT NULL,
-  `numberOfRatings` int(11) DEFAULT NULL,
-  PRIMARY KEY (`UserID`)
+  `numberOfRatings` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -53,12 +51,9 @@ INSERT INTO `customer` (`UserID`, `OverallCustomerRating`, `numberOfRatings`) VA
 -- Table structure for table `follows`
 --
 
-DROP TABLE IF EXISTS `follows`;
-CREATE TABLE IF NOT EXISTS `follows` (
+CREATE TABLE `follows` (
   `FollowerID` int(10) NOT NULL,
-  `FolloweeID` int(10) NOT NULL,
-  PRIMARY KEY (`FollowerID`,`FolloweeID`) USING BTREE,
-  KEY `FolloweeID` (`FolloweeID`)
+  `FolloweeID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -68,9 +63,9 @@ CREATE TABLE IF NOT EXISTS `follows` (
 INSERT INTO `follows` (`FollowerID`, `FolloweeID`) VALUES
 (1, 2),
 (3, 2),
-(15, 2),
 (6, 14),
-(6, 15);
+(6, 15),
+(15, 2);
 
 -- --------------------------------------------------------
 
@@ -78,29 +73,27 @@ INSERT INTO `follows` (`FollowerID`, `FolloweeID`) VALUES
 -- Table structure for table `food`
 --
 
-DROP TABLE IF EXISTS `food`;
-CREATE TABLE IF NOT EXISTS `food` (
-  `FoodID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `food` (
+  `FoodID` int(11) NOT NULL,
   `PUserID` int(11) NOT NULL,
-  `Name` varchar(20) NOT NULL,
+  `Name` varchar(50) NOT NULL,
   `pricePerUnit` int(11) DEFAULT NULL,
   `Availability` tinyint(1) DEFAULT NULL,
-  `Description` text,
-  `Instructions` text,
-  PRIMARY KEY (`FoodID`) USING BTREE,
-  KEY `PUserID` (`PUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10005 DEFAULT CHARSET=utf8mb4;
+  `Description` text DEFAULT NULL,
+  `Instructions` text DEFAULT NULL,
+  `Img_url` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `food`
 --
 
-INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`, `Description`, `Instructions`) VALUES
-(10000, 1, 'caramel cake', NULL, 1, 'caramel cake very good yes', 'eat it'),
-(10001, 1, 'pork floss rice', NULL, 1, 'rice with pork floss', 'eat'),
-(10002, 2, 'pork chops', NULL, 1, 'oopooo', 'yhyhry'),
-(10003, 5, 'Pizza', 7, 1, 'italian pizza', 'eat'),
-(10004, 5, 'chocolate', 12, 1, 'tasty', 'eat it');
+INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`, `Description`, `Instructions`, `Img_url`) VALUES
+(10000, 1, 'Fluffy Caramel Pancake', 10, 1, 'Try out this simple yet delicious pancake recipe! It\'s quick and perfect for a breakfast.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
+(10001, 1, 'Homemade Pumpkin Soup', NULL, 0, 'Creamy and hearty homemade pumpkin soup that brings back all the good memories. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
+(10002, 2, 'Roasted Garlic Porkchop', NULL, 0, 'Garlic and porkchop is the combination that many people overlook. It\'s so addicting that I can guarantee you will make this at least once a week!', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/361184/asparagus-steak-veal-steak-veal-361184.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
+(10003, 5, 'Simple Pizza', 7, 1, 'Who doesn\'t crave for pizzas on a Friday movie night? If you want a cheap and simple pizza recipe, this is the one.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4193872/pexels-photo-4193872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
+(10004, 5, 'Chocolate Mousse Cake', 12, 1, 'This sweet, melts in your mouth chocolate mousse cake recipe is not only easy to make, but it also looks and tastes great. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/960540/pexels-photo-960540.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
 
 -- --------------------------------------------------------
 
@@ -108,11 +101,9 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`,
 -- Table structure for table `foodingredients`
 --
 
-DROP TABLE IF EXISTS `foodingredients`;
-CREATE TABLE IF NOT EXISTS `foodingredients` (
+CREATE TABLE `foodingredients` (
   `FoodID` int(11) NOT NULL,
-  `Ingredients` text NOT NULL,
-  PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE
+  `Ingredients` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -120,12 +111,42 @@ CREATE TABLE IF NOT EXISTS `foodingredients` (
 --
 
 INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
-(10000, 'caramel'),
-(10000, 'flour'),
+(10000, 'Baking power'),
+(10000, 'Blueberry'),
+(10000, 'Caramel'),
+(10000, 'Flour'),
+(10000, 'Milk'),
+(10000, 'Strawberry'),
+(10001, 'Black Pepper'),
+(10001, 'Coconut Milk'),
+(10001, 'Garlic'),
+(10001, 'Nutmeg'),
+(10001, 'Onion'),
+(10001, 'Pumpkin'),
+(10001, 'Salt'),
+(10001, 'Vegetable Broth'),
+(10002, 'Butter'),
 (10002, 'Garlic'),
 (10002, 'Ginger'),
 (10002, 'Onions'),
-(10002, 'Pork');
+(10002, 'Pork'),
+(10002, 'Salt'),
+(10002, 'Thyme'),
+(10003, 'Baby Arugula'),
+(10003, 'Bread flour'),
+(10003, 'Mozzarella Cheese'),
+(10003, 'Mushroom'),
+(10003, 'Olive Oil'),
+(10003, 'Pepperoni '),
+(10003, 'Salt'),
+(10003, 'Sugar'),
+(10003, 'Tomato'),
+(10003, 'Tomato Sauce'),
+(10003, 'Yeast'),
+(10004, 'Chocolate'),
+(10004, 'Gelatin'),
+(10004, 'Sugar'),
+(10004, 'Whipped Cream');
 
 -- --------------------------------------------------------
 
@@ -133,13 +154,10 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 -- Table structure for table `orderfoods`
 --
 
-DROP TABLE IF EXISTS `orderfoods`;
-CREATE TABLE IF NOT EXISTS `orderfoods` (
+CREATE TABLE `orderfoods` (
   `OrderID` int(11) NOT NULL,
   `FoodID` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`FoodID`,`OrderID`) USING BTREE,
-  KEY `OrderID` (`OrderID`)
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -159,9 +177,8 @@ INSERT INTO `orderfoods` (`OrderID`, `FoodID`, `quantity`) VALUES
 -- Table structure for table `orderinfo`
 --
 
-DROP TABLE IF EXISTS `orderinfo`;
-CREATE TABLE IF NOT EXISTS `orderinfo` (
-  `OrderID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orderinfo` (
+  `OrderID` int(11) NOT NULL,
   `totalPrice` float NOT NULL,
   `paymentMethod` text NOT NULL,
   `pickUpTime` datetime NOT NULL,
@@ -169,11 +186,8 @@ CREATE TABLE IF NOT EXISTS `orderinfo` (
   `pickUpAddress` text NOT NULL,
   `orderTime` datetime NOT NULL,
   `customerID` int(11) NOT NULL,
-  `sellerID` int(11) NOT NULL,
-  PRIMARY KEY (`OrderID`) USING BTREE,
-  KEY `customerID` (`customerID`),
-  KEY `sellerID` (`sellerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=100006 DEFAULT CHARSET=utf8mb4;
+  `sellerID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orderinfo`
@@ -192,14 +206,10 @@ INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`,
 -- Table structure for table `orderplacement`
 --
 
-DROP TABLE IF EXISTS `orderplacement`;
-CREATE TABLE IF NOT EXISTS `orderplacement` (
+CREATE TABLE `orderplacement` (
   `OrderID` int(11) NOT NULL,
   `CustomerID` int(11) NOT NULL,
-  `SellerID` int(11) NOT NULL,
-  PRIMARY KEY (`OrderID`,`CustomerID`,`SellerID`),
-  KEY `CustomerID` (`CustomerID`),
-  KEY `SellerID` (`SellerID`)
+  `SellerID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -209,9 +219,9 @@ CREATE TABLE IF NOT EXISTS `orderplacement` (
 INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100001, 1, 2),
 (100002, 1, 2),
+(100003, 14, 5),
 (100004, 3, 5),
-(100005, 7, 8),
-(100003, 14, 5);
+(100005, 7, 8);
 
 -- --------------------------------------------------------
 
@@ -219,9 +229,8 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 -- Table structure for table `profile`
 --
 
-DROP TABLE IF EXISTS `profile`;
-CREATE TABLE IF NOT EXISTS `profile` (
-  `UserID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `profile` (
+  `UserID` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `Password` text NOT NULL,
   `UserName` varchar(50) NOT NULL,
@@ -229,25 +238,26 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `Location` varchar(200) NOT NULL,
   `FirstName` varchar(20) NOT NULL,
   `LastName` varchar(20) NOT NULL,
-  PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+  `Img_url` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `profile`
 --
 
-INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Location`, `FirstName`, `LastName`) VALUES
-(1, 'mikerr@gmail.com', 'platinumstar', 'mikey123', '778908273', '515 W Hastings', 'Mike', 'Hawk'),
-(2, 'joek@gmail.com', 'ligma789', 'joemama', '6045869382', '13450 103 Ave', 'Joseph', 'Mama'),
-(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'User', 'Test'),
-(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'paul', 'krug'),
-(5, 'carmenl@gmail.com', 'caramelc', 'lcarmen', '7781824827', '9008 spruce ave', 'Carmen', 'Law'),
-(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 maple drive', 'Ali', 'Tohidi'),
-(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 blue mountain', 'Sean', 'Tam'),
-(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Jessica', 'Li'),
-(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 chernobog street', 'John', 'Smith'),
-(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 papaya avenue', 'Alligator', 'T'),
-(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 green dolphin street', 'Crocodile', 'Tohidi');
+INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Location`, `FirstName`, `LastName`, `Img_url`) VALUES
+(1, 'mikerr@gmail.com', 'platinumstar', 'mikey123', '778908273', '515 W Hastings', 'Mike', 'Hawk', 'http://www.kevmill.com/wp-content/uploads/2019/09/cropped-Kevin-profile-pic-2019-square-small-300x300.jpg'),
+(2, 'jacSmith20@gmail.com', '94ijdna9', 'jacquieSmith20', '6045869382', '13450 103 Ave', 'Jacqueline', 'Smith', 'https://www.stepstherapy.com.au/wp-content/uploads/2018/10/Yazmin-profile-picture-square.jpg'),
+(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'User', 'Test', ''),
+(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'Paul', 'Krug', ''),
+(5, 'carmenl@gmail.com', 'caramelc', 'lcarmen', '7781824827', '9008 spruce ave', 'Carmen', 'Law', 'https://i.imgur.com/AWKHeRe.jpg'),
+(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 maple drive', 'Ali', 'Tohidi', ''),
+(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 blue mountain', 'Sean', 'Tam', ''),
+(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Jessica', 'Li', ''),
+(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 chernobog street', 'John', 'Smith', ''),
+(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 papaya avenue', 'Alligator', 'T', ''),
+(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 green dolphin street', 'Crocodile', 'Tohidi', ''),
+(18, 'alaw0306@gmail.com', '3385729836', 'alaw0306', '6048376652', '2847 Diamond Ave, Burnaby', 'Ashley', 'Law', '');
 
 -- --------------------------------------------------------
 
@@ -255,17 +265,13 @@ INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Loca
 -- Table structure for table `review`
 --
 
-DROP TABLE IF EXISTS `review`;
-CREATE TABLE IF NOT EXISTS `review` (
-  `ReviewID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `review` (
+  `ReviewID` int(11) NOT NULL,
   `CustomerUserID` int(11) NOT NULL,
   `FoodID` int(11) NOT NULL,
   `Rating` int(11) NOT NULL,
-  `Comment` text,
-  PRIMARY KEY (`ReviewID`) USING BTREE,
-  KEY `FoodID` (`FoodID`),
-  KEY `CustomerUserID` (`CustomerUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20006 DEFAULT CHARSET=utf8mb4;
+  `Comment` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `review`
@@ -284,10 +290,8 @@ INSERT INTO `review` (`ReviewID`, `CustomerUserID`, `FoodID`, `Rating`, `Comment
 -- Table structure for table `seller`
 --
 
-DROP TABLE IF EXISTS `seller`;
-CREATE TABLE IF NOT EXISTS `seller` (
-  `UserID` int(10) NOT NULL,
-  PRIMARY KEY (`UserID`)
+CREATE TABLE `seller` (
+  `UserID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -307,11 +311,9 @@ INSERT INTO `seller` (`UserID`) VALUES
 -- Table structure for table `userallergies`
 --
 
-DROP TABLE IF EXISTS `userallergies`;
-CREATE TABLE IF NOT EXISTS `userallergies` (
+CREATE TABLE `userallergies` (
   `UserID` int(10) NOT NULL,
-  `Allergies` varchar(100) NOT NULL,
-  PRIMARY KEY (`UserID`,`Allergies`) USING BTREE
+  `Allergies` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -324,6 +326,113 @@ INSERT INTO `userallergies` (`UserID`, `Allergies`) VALUES
 (2, 'Milk'),
 (2, 'Pineapple'),
 (14, 'Mangos');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`UserID`);
+
+--
+-- Indexes for table `follows`
+--
+ALTER TABLE `follows`
+  ADD PRIMARY KEY (`FollowerID`,`FolloweeID`) USING BTREE,
+  ADD KEY `FolloweeID` (`FolloweeID`);
+
+--
+-- Indexes for table `food`
+--
+ALTER TABLE `food`
+  ADD PRIMARY KEY (`FoodID`) USING BTREE,
+  ADD KEY `PUserID` (`PUserID`);
+
+--
+-- Indexes for table `foodingredients`
+--
+ALTER TABLE `foodingredients`
+  ADD PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE;
+
+--
+-- Indexes for table `orderfoods`
+--
+ALTER TABLE `orderfoods`
+  ADD PRIMARY KEY (`FoodID`,`OrderID`) USING BTREE,
+  ADD KEY `OrderID` (`OrderID`);
+
+--
+-- Indexes for table `orderinfo`
+--
+ALTER TABLE `orderinfo`
+  ADD PRIMARY KEY (`OrderID`) USING BTREE,
+  ADD KEY `customerID` (`customerID`),
+  ADD KEY `sellerID` (`sellerID`);
+
+--
+-- Indexes for table `orderplacement`
+--
+ALTER TABLE `orderplacement`
+  ADD PRIMARY KEY (`OrderID`,`CustomerID`,`SellerID`),
+  ADD KEY `CustomerID` (`CustomerID`),
+  ADD KEY `SellerID` (`SellerID`);
+
+--
+-- Indexes for table `profile`
+--
+ALTER TABLE `profile`
+  ADD PRIMARY KEY (`UserID`);
+
+--
+-- Indexes for table `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`ReviewID`) USING BTREE,
+  ADD KEY `FoodID` (`FoodID`),
+  ADD KEY `CustomerUserID` (`CustomerUserID`);
+
+--
+-- Indexes for table `seller`
+--
+ALTER TABLE `seller`
+  ADD PRIMARY KEY (`UserID`);
+
+--
+-- Indexes for table `userallergies`
+--
+ALTER TABLE `userallergies`
+  ADD PRIMARY KEY (`UserID`,`Allergies`) USING BTREE;
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `food`
+--
+ALTER TABLE `food`
+  MODIFY `FoodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
+
+--
+-- AUTO_INCREMENT for table `orderinfo`
+--
+ALTER TABLE `orderinfo`
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100006;
+
+--
+-- AUTO_INCREMENT for table `profile`
+--
+ALTER TABLE `profile`
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `review`
+--
+ALTER TABLE `review`
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20006;
 
 --
 -- Constraints for dumped tables
