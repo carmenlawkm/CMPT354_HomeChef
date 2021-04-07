@@ -1,7 +1,7 @@
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session
 from flask_mysqldb import MySQL
-
+import sqlite3
 
 app = Flask(__name__)
 #the key for the session
@@ -62,19 +62,34 @@ def profile_load():
     return render_template("profile.html")
 
 # This is code for filling the cart table
-headings = ("#", "Food", "Quantity", "Price")
 
-datalist = [(1, "Pizza", 2, 27.89),
-    (2, "Caramel Cake", 1, 12),
-    (3, "Pasta", 1, 13.99)
-            ]
 
-datalist.append( ("Total","","", 27.89 + 12 + 13.99) )
+# datalist = [(1, "Pizza", 2, 27.89),
+#     (2, "Caramel Cake", 1, 12),
+#     (3, "Pasta", 1, 13.99)
+#             ]
+#
+# datalist.append( ("Total","","", 27.89 + 12 + 13.99) )
 
 @app.route('/cart')
 def cart_load():
-    return render_template("cart.html", headings=headings, data=datalist)
+    headings = ("#", "Food", "Quantity", "Price")
 
+    return render_template("cart.html", headings=headings, data=foodsArr)
+
+foodsArr = []
+
+@app.route('/foods')
+def foods_load():
+
+    headings = ("Food ID", "P user ID", "Name", "Price", "Availability", "Description", "Instructions")
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM food")
+    datalist = cur.fetchall()
+    global foodsArr
+    foodsArr = datalist
+    return render_template("foods.html",headings=headings, data=datalist)
 
 if __name__ == '__main__':
     app.run(debug=True)
