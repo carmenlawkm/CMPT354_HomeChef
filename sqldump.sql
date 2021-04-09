@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2021 at 09:21 AM
+-- Generation Time: Apr 09, 2021 at 07:00 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -151,6 +151,17 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `foodreviewaverage`
+-- (See below for the actual view)
+--
+CREATE TABLE `foodreviewaverage` (
+`foodID` int(11)
+,`avergeReview` decimal(12,1)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orderfoods`
 --
 
@@ -236,28 +247,48 @@ CREATE TABLE `profile` (
   `UserName` varchar(50) NOT NULL,
   `Phone` varchar(30) NOT NULL,
   `Location` varchar(200) NOT NULL,
+  `Region` varchar(30) NOT NULL,
   `FirstName` varchar(20) NOT NULL,
   `LastName` varchar(20) NOT NULL,
-  `Img_url` text NOT NULL
+  `Img_url` text NOT NULL DEFAULT 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `profile`
 --
 
-INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Location`, `FirstName`, `LastName`, `Img_url`) VALUES
-(1, 'mikerr@gmail.com', 'platinumstar', 'mikey123', '778908273', '515 W Hastings', 'Mike', 'Hawk', 'http://www.kevmill.com/wp-content/uploads/2019/09/cropped-Kevin-profile-pic-2019-square-small-300x300.jpg'),
-(2, 'jacSmith20@gmail.com', '94ijdna9', 'jacquieSmith20', '6045869382', '13450 103 Ave', 'Jacqueline', 'Smith', 'https://www.stepstherapy.com.au/wp-content/uploads/2018/10/Yazmin-profile-picture-square.jpg'),
-(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'User', 'Test', ''),
-(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'Paul', 'Krug', ''),
-(5, 'carmenl@gmail.com', 'caramelc', 'lcarmen', '7781824827', '9008 spruce ave', 'Carmen', 'Law', 'https://i.imgur.com/AWKHeRe.jpg'),
-(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 maple drive', 'Ali', 'Tohidi', ''),
-(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 blue mountain', 'Sean', 'Tam', ''),
-(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Jessica', 'Li', ''),
-(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 chernobog street', 'John', 'Smith', ''),
-(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 papaya avenue', 'Alligator', 'T', ''),
-(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 green dolphin street', 'Crocodile', 'Tohidi', ''),
-(18, 'alaw0306@gmail.com', '3385729836', 'alaw0306', '6048376652', '2847 Diamond Ave, Burnaby', 'Ashley', 'Law', '');
+INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Location`, `Region`, `FirstName`, `LastName`, `Img_url`) VALUES
+(1, 'mikerr@gmail.com', 'platinumstar', 'mikey123', '778908273', '515 W Hastings', 'Vancouver', 'Mike', 'Hawk', 'http://www.kevmill.com/wp-content/uploads/2019/09/cropped-Kevin-profile-pic-2019-square-small-300x300.jpg'),
+(2, 'jacSmith20@gmail.com', '94ijdna9', 'jacquieSmith20', '6045869382', '13450 103 Ave', 'Richmond', 'Jacqueline', 'Smith', 'https://www.stepstherapy.com.au/wp-content/uploads/2018/10/Yazmin-profile-picture-square.jpg'),
+(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'Burnaby', 'User', 'Test', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'Burnaby', 'Paul', 'Krug', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(5, 'carmenl@gmail.com', 'caramelc', 'lcarmen', '7781824827', '9008 Spruce Ave', 'Tri-city', 'Carmen', 'Law', 'https://i.imgur.com/AWKHeRe.jpg'),
+(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 Maple Dr', 'Surrey', 'Ali', 'Tohidi', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 Blue mountain', 'Tri-city', 'Sean', 'Tam', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Richmond', 'Jessica', 'Li', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 Chernobog St', 'North/ west Vancouver', 'John', 'Smith', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 Papaya Ave', 'Tri-city', 'Alligator', 'T', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 GreenDolphin St', 'Surrey', 'Crocodile', 'Tohidi', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(18, 'alaw0306@gmail.com', '3385729836', 'alaw0306', '6048376652', '2847 Diamond Ave', 'Tri-city', 'Ashley', 'Law', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(27, 'ericaluo09@gmail.com', '7yuhhdjshdbb', 'erical0913', '7789993856', '8876 Eagle Str', 'North/west vancouver', 'Erica', 'Luo', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(28, 'alicecyq@gmail.com', '8djjHHHagsd', 'aliceCh0107', '6048837269', '7620 Cotton St', 'Burnaby', 'Alice', 'Chen', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(29, 'chrissyj10@outlook.com', '87HKsldW', 'chrissyJepsen10', '6048773008', '2099 Fox Dr', 'Richmond', 'Christine', 'Jepsen', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(30, 'brandonf28@yahoo.com', 'ilovepizza102', 'brandonF_28', '7780092736', '283 Lavender Ave', 'Burnaby', 'Brandon', 'Falcon', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD');
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `publicprofileinfo`
+-- (See below for the actual view)
+--
+CREATE TABLE `publicprofileinfo` (
+`UserID` int(11)
+,`UserName` varchar(50)
+,`Region` varchar(30)
+,`FirstName` varchar(20)
+,`LastName` varchar(20)
+,`Img_url` text
+);
 
 -- --------------------------------------------------------
 
@@ -326,6 +357,24 @@ INSERT INTO `userallergies` (`UserID`, `Allergies`) VALUES
 (2, 'Milk'),
 (2, 'Pineapple'),
 (14, 'Mangos');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `foodreviewaverage`
+--
+DROP TABLE IF EXISTS `foodreviewaverage`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS SELECT `review`.`FoodID` AS `foodID`, round(avg(`review`.`Rating`),1) AS `avergeReview` FROM `review` GROUP BY `review`.`FoodID` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `publicprofileinfo`
+--
+DROP TABLE IF EXISTS `publicprofileinfo`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `publicprofileinfo`  AS SELECT `profile`.`UserID` AS `UserID`, `profile`.`UserName` AS `UserName`, `profile`.`Region` AS `Region`, `profile`.`FirstName` AS `FirstName`, `profile`.`LastName` AS `LastName`, `profile`.`Img_url` AS `Img_url` FROM `profile` ;
 
 --
 -- Indexes for dumped tables
@@ -426,13 +475,13 @@ ALTER TABLE `orderinfo`
 -- AUTO_INCREMENT for table `profile`
 --
 ALTER TABLE `profile`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20006;
+  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20007;
 
 --
 -- Constraints for dumped tables
