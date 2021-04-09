@@ -15,10 +15,11 @@ app.config['MYSQL_DB'] = "homechef"
 mysql = MySQL(app)
 
 
-@app.route('/')
+@app.route('/home')
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
+    #JOIN QUERY
     cur1.execute("SELECT * FROM food, profile WHERE food.PUserID = profile.UserID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
@@ -29,6 +30,7 @@ def home_load():
 
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
+@app.route('/')
 @app.route('/about')
 def about_load():
     return render_template("about.html")
