@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_USER'] = "pls"
 app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "homechef"
 
@@ -68,10 +68,15 @@ def register_load():
         return render_template('profile.html') #should bring them to their profile page.
     return render_template("register.html")
 
-
 @app.route('/profile')
 def profile_load():
     return render_template("profile.html")
+
+@app.route('/settings')
+def settings_load():
+    return render_template("settings.html")
+
+
 
 
 if __name__ == '__main__':
