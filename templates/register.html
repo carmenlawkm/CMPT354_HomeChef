@@ -10,7 +10,7 @@
         }
 
     .signUpNow{
-        padding-top: 10%;
+        padding-top: 8%;
         padding-left: 10%;
         padding-right: 10%;
         text-align: center;
@@ -35,56 +35,70 @@
         <div class="d-flex justify-content-around align-items-center">
             <div class="w-25 m-3">
                 <form method = "POST" action = "">
-
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default1">User Name</span>
+                            <span class="input-group-text" id="inputGroup-sizing-default1" >User Name</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "username">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "username" id=invalidCheck2" required>
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default4">First Name</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "firstname">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "firstname" id=invalidCheck2" required>
 
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default5">Last Name</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "lastname">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "lastname" id=invalidCheck2" required>
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default2">Email</span>
                         </div>
-                        <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "email">
+                        <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "email" id=invalidCheck2" required>
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default3">Password</span>
                         </div>
-                        <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "password">
+                        <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "password" id=invalidCheck2" required>
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default6">Address</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "address">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "address" id=invalidCheck2" required>
                     </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default" name = "region">Region</span>
+                            </div>
+                            <select id="regions" name="region">
+                                    <option value="Burnaby">Burnaby</option>
+                                    <option value="North/west vancouver">North/ West Vancouver</option>
+                                    <option value="Richmond">Richmond</option>
+                                    <option value="Surrey">Surrey</option>
+                                    <option value="Tri-city">Tri-city</option>
+                                    <option value="Vancouver">Vancouver</option>
+                            </select>
+                        <span>*Service is only available in the listed region. </span>
+                    </div>
+
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default7">Phone Number</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "phone">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "phone" id=invalidCheck2" required>
                     </div>
 
                         <button class="btn btnCreateAccount btn-info" type="submit" >Create Account</button>
-
 
                 </form>
 

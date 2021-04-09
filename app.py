@@ -59,12 +59,13 @@ def register_load():
         password = request.form['password']
         phone = request.form['phone']
         address = request.form['address']
+        region = request.form['region']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location) VALUES (%s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address))
+        cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address, region))
         mysql.connection.commit()
         cur.close()
-        return "successful"
+        return render_template('profile.html') #should bring them to their profile page.
     return render_template("register.html")
 
 
