@@ -1,37 +1,76 @@
+<!DOCTYPE html>
 {% extends "base.html" %}
 {% block title %}
-    home page
+    My Profile
 {% endblock %}
 
-{% block body_block %}
-    <table class="table table-dark">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-      </tbody>
-    </table>
+{% block body_header %}
+
+    <div class="media m-5">
+
+      <img src="https://t4.ftcdn.net/jpg/03/46/93/61/360_F_346936114_RaxE6OQogebgAWTalE1myseY1Hbb5qPM.jpg"
+                 width="125" class="img-thumbnail" class="rounded">
+      <div class="media-body ml-3">
+        <h1 class="mt-0">FName LastName</h1>
+    <!--    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+        <h2 style="font-size:25px;">userID   10 followers | 10 following</h2>
+        <h4><small>location</small></h4>
+      </div>
+      <button type="button" class="btn btn-primary align-self-end mr-5">Follow</button>
+    </div>
+
+
+
+
+<ul class="nav nav-tabs m-5">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Recipes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">For Sale</a>
+  </li>
+
+
+</ul>
+
+<!--recipe showing thing-->
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+               class="card-img-top" alt="...">
+            <div class="card-body">
+            <h2 class="card-title">Amazing Salad</h2>
+            <h5 class="card-title">(Available)</h5>
+            <a href="#" class="btn btn-primary">More</a>
+          </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+               class="card-img-top" alt="...">
+          <div class="card-body">
+            <h2 class="card-title">Amazing Salad</h2>
+            <h5 class="card-title">(Available)</h5>
+            <a href="#" class="btn btn-primary">More</a>
+          </div>
+        </div>
+    </div>
+<!--    <div class="w-50"></div>-->
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+               class="card-img-top" alt="...">
+          <div class="card-body">
+            <h2 class="card-title">Amazing Salad</h2>
+<!--            <h5 class="card-title">(Available)</h5>-->
+            <a href="#" class="btn btn-primary">More</a>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

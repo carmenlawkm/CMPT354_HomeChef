@@ -15,11 +15,11 @@ app.config['MYSQL_DB'] = "homechef"
 mysql = MySQL(app)
 
 foodList = []
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur1.execute("SELECT * FROM food, profile WHERE food.PUserID = profile.UserID")
+    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID AND foodreviewaverage.foodID = food.foodID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
@@ -37,11 +37,7 @@ def home_load():
         return render_template("cart.html", headings=headings, data=foodList)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
-# @app.route('/add', methods=["POST", "GET"])
-# def add():
-#     if request.method == 'POST':
-
-
+@app.route('/')
 @app.route('/about')
 def about_load():
     return render_template("about.html")
@@ -70,18 +66,25 @@ def register_load():
         password = request.form['password']
         phone = request.form['phone']
         address = request.form['address']
+        region = request.form['region']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location) VALUES (%s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address))
+        cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address, region))
         mysql.connection.commit()
         cur.close()
-        return "successful"
+        return render_template('profile.html') #should bring them to their profile page.
     return render_template("register.html")
 
 
 @app.route('/profile')
 def profile_load():
     return render_template("profile.html")
+
+@app.route('/settings')
+def settings_load():
+    return render_template("settings.html")
+
+
 
 # This is code for filling the cart table
 
