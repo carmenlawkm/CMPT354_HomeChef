@@ -47,13 +47,30 @@ def about_load():
 def login_load():
     if request.method == "POST":
         user_email = request.form["email"]
-        session["user"] = user_email
-        return
+        user_pass = request.form["password"]
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT UserID FROM profile WHERE email = %s AND Password = %s", (user_email, user_pass))
+        user_ID = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        if user_ID:
+            valid = 1
+            session["user"] = user_ID
+            print(user_ID)
+
+            #for uid in user_ID:
+               # print(uid)
+            return profile_load()
+        else:
+            valid = 0
+        return render_template("login.html", info = valid)
     return render_template("login.html")
 
 @app.route('/logout')
 def logout_load():
-    return home_load()
+    session.pop("user", None)
+    return about_load()
 
 
 @app.route('/register', methods = ['GET','POST'])
@@ -78,7 +95,16 @@ def register_load():
 
 @app.route('/profile')
 def profile_load():
-    return render_template("profile.html")
+    if "user" in session:
+        #cur1 = mysql.connection.cursor()
+        #cur1.execute("SELECT * FROM publicprofileinfo WHERE UserID = %s", session["user"])
+        #fetch = cur1.fetchall()
+        #print(fetch)
+        #mysql.connection.commit()
+        #cur1.close()
+        return render_template("profile.html", user_ID = session["user"] )
+    else:
+        return redirect("/login")
 
 @app.route('/settings')
 def settings_load():
