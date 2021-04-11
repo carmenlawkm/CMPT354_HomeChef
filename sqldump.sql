@@ -251,7 +251,7 @@ CREATE TABLE `profile` (
   `Region` varchar(30) NOT NULL,
   `FirstName` varchar(20) NOT NULL,
   `LastName` varchar(20) NOT NULL,
-  `Img_url` text NOT NULL DEFAULT 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'
+  `Img_url` varchar(1000) NOT NULL DEFAULT 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
