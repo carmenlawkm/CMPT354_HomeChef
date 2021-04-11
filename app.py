@@ -23,19 +23,31 @@ def home_load():
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
+    print(fetch)
     mysql.connection.commit()
     cur1.close()
     cur2.close()
     if request.method == 'POST':
-        headings = ("#", "Food", "Quantity", "Price")
+        headings = ("Food", "Quantity", "Price")
         data = request.form['data']
+        datanum = request.form['datanum']
         print(data)
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
         datalist = cur.fetchall()
+        datalist = cleanTuple(datalist, datanum)
         foodList.append(datalist)
         return render_template("cart.html", headings=headings, data=foodList)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+
+def cleanTuple(datalist, datanum):
+    cleaned = datalist[0]
+    food = cleaned[2]
+    quantity = datanum
+    price = cleaned[3]
+    foodTuple = (food, quantity, price)
+    return foodTuple
+
 
 @app.route('/')
 @app.route('/about')
