@@ -84,56 +84,11 @@ def profile_load():
 def settings_load():
     return render_template("settings.html")
 
-
-
-# This is code for filling the cart table
-
-
-# datalist = [(1, "Pizza", 2, 27.89),
-#     (2, "Caramel Cake", 1, 12),
-#     (3, "Pasta", 1, 13.99)
-#             ]
-#
-# datalist.append( ("Total","","", 27.89 + 12 + 13.99) )
-
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
     headings = ("#", "Food", "Quantity", "Price")
-    datalist = ("empty")
-    if request.method == 'POST':
-        # # data = request.data
-        # # print(data)
-        # data = request.form['data']
-        # # data = 10000
-        # cur = mysql.connection.cursor()
-        # cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
-        # datalist = cur.fetchall()
-        return render_template("cart.html", headings=headings, data=datalist)
 
     return render_template("cart.html", headings=headings, data=foodList)
-
-# foodsArr = []
-
-# @app.route('/foods')
-# def foods_load():
-#
-#     headings = ("Food ID", "P user ID", "Name", "Price", "Availability", "Description", "Instructions")
-#
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM food")
-#     datalist = cur.fetchall()
-#     global foodsArr
-#     foodsArr = datalist
-#     return render_template("foods.html",headings=headings, data=datalist)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def parse_request():
-#     data = request.data  # data is empty
-#     headings = ("#", "Food", "Quantity", "Pricepp")
-#     foodsArr = data;
-#     return render_template("cart.html", headings=headings, data=foodsArr)
-
-
 
 
 if __name__ == '__main__':
