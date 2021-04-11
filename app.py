@@ -101,16 +101,16 @@ def cart_load():
     headings = ("#", "Food", "Quantity", "Price")
     datalist = ("empty")
     if request.method == 'POST':
-        # data = request.data
-        # print(data)
-        data = request.form['data']
-        # data = 10000
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
-        datalist = cur.fetchall()
+        # # data = request.data
+        # # print(data)
+        # data = request.form['data']
+        # # data = 10000
+        # cur = mysql.connection.cursor()
+        # cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
+        # datalist = cur.fetchall()
         return render_template("cart.html", headings=headings, data=datalist)
-    print(datalist)
-    return render_template("cart.html", headings=headings, data=datalist)
+
+    return render_template("cart.html", headings=headings, data=foodList)
 
 # foodsArr = []
 
