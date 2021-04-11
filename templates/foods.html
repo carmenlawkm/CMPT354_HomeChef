@@ -16,13 +16,7 @@
 
 <script>
   function addButton() {
-    var inputElement = document.createElement('input');
-    inputElement.type = "button"
-    inputElement.addEventListener('click', function(){
-        gotoNode(result.name);
-    });
-    console.log("hi")
-    document.body.appendChild(inputElement);
+    console.log("button")
 }
 
 </script>
@@ -45,7 +39,7 @@
               <td>{{ cell }}</td>
             {% endfor %}
               <td id="buy" onload="addButton()">
-                <button onclick=""></button>
+                <button onclick="addButton()"></button>
               </td>
           </tr>
           {% endfor %}

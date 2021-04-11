@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, url_for, flash, redirect, session
+from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
 import sqlite3
 
@@ -14,8 +14,8 @@ app.config['MYSQL_DB'] = "homechef"
 
 mysql = MySQL(app)
 
-
-@app.route('/')
+foodList = []
+@app.route('/', methods=['GET', 'POST'])
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
@@ -26,8 +26,21 @@ def home_load():
     mysql.connection.commit()
     cur1.close()
     cur2.close()
-
+    if request.method == 'POST':
+        headings = ("#", "Food", "Quantity", "Price")
+        data = request.form['data']
+        print(data)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+        datalist = cur.fetchall()
+        foodList.append(datalist)
+        return render_template("cart.html", headings=headings, data=foodList)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+
+# @app.route('/add', methods=["POST", "GET"])
+# def add():
+#     if request.method == 'POST':
+
 
 @app.route('/about')
 def about_load():
@@ -80,25 +93,45 @@ def profile_load():
 #
 # datalist.append( ("Total","","", 27.89 + 12 + 13.99) )
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
     headings = ("#", "Food", "Quantity", "Price")
+    datalist = ("empty")
+    if request.method == 'POST':
+        # data = request.data
+        # print(data)
+        data = request.form['data']
+        # data = 10000
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
+        datalist = cur.fetchall()
+        return render_template("cart.html", headings=headings, data=datalist)
+    print(datalist)
+    return render_template("cart.html", headings=headings, data=datalist)
 
-    return render_template("cart.html", headings=headings, data=foodsArr)
+# foodsArr = []
 
-foodsArr = []
+# @app.route('/foods')
+# def foods_load():
+#
+#     headings = ("Food ID", "P user ID", "Name", "Price", "Availability", "Description", "Instructions")
+#
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT * FROM food")
+#     datalist = cur.fetchall()
+#     global foodsArr
+#     foodsArr = datalist
+#     return render_template("foods.html",headings=headings, data=datalist)
 
-@app.route('/foods')
-def foods_load():
+# @app.route('/', methods=['GET', 'POST'])
+# def parse_request():
+#     data = request.data  # data is empty
+#     headings = ("#", "Food", "Quantity", "Pricepp")
+#     foodsArr = data;
+#     return render_template("cart.html", headings=headings, data=foodsArr)
 
-    headings = ("Food ID", "P user ID", "Name", "Price", "Availability", "Description", "Instructions")
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM food")
-    datalist = cur.fetchall()
-    global foodsArr
-    foodsArr = datalist
-    return render_template("foods.html",headings=headings, data=datalist)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
