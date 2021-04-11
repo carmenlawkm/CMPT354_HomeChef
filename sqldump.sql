@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2021 at 02:27 PM
+-- Generation Time: Apr 11, 2021 at 04:57 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -442,9 +442,9 @@ ALTER TABLE `orderfoods`
 --
 ALTER TABLE `orderinfo`
   ADD PRIMARY KEY (`OrderID`) USING BTREE,
-  ADD UNIQUE KEY `Region` (`Region`),
   ADD KEY `customerID` (`customerID`),
-  ADD KEY `sellerID` (`sellerID`);
+  ADD KEY `sellerID` (`sellerID`),
+  ADD KEY `Region` (`Region`) USING BTREE;
 
 --
 -- Indexes for table `orderplacement`
