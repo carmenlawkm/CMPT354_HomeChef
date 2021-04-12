@@ -138,9 +138,10 @@ def settings_load():
                 phone = request.form['phone']
                 address = request.form['address']
                 region = request.form['region']
+                img_url = request.form['img_url']
                 cur2.execute(
-                    "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, Phone = %s, Location = %s, Region = %s WHERE UserID = %s",
-                    (firstName, lastName, email, userName, password, phone, address, region, session["user"]))
+                    "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, Phone = %s, Location = %s, Region = %s, Img_url = %s WHERE UserID = %s",
+                    (firstName, lastName, email, userName, password, phone, address, region, img_url, session["user"]))
                 mysql.connection.commit()
                 cur2.close()
             mysql.connection.commit()
