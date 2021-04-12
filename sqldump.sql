@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 11, 2021 at 04:20 AM
+-- Generation Time: Apr 12, 2021 at 09:01 PM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.21
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `food` (
   `Img_url` text NOT NULL,
   PRIMARY KEY (`FoodID`) USING BTREE,
   KEY `PUserID` (`PUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `food`
@@ -102,8 +102,10 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`,
 (10002, 2, 'Roasted Garlic Porkchop', NULL, 0, 'Garlic and porkchop is the combination that many people overlook. It\'s so addicting that I can guarantee you will make this at least once a week!', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/361184/asparagus-steak-veal-steak-veal-361184.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
 (10003, 5, 'Simple Pizza', 7, 1, 'Who doesn\'t crave for pizzas on a Friday movie night? If you want a cheap and simple pizza recipe, this is the one.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4193872/pexels-photo-4193872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
 (10004, 5, 'Chocolate Mousse Cake', 12, 1, 'This sweet, melts in your mouth chocolate mousse cake recipe is not only easy to make, but it also looks and tastes great. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/960540/pexels-photo-960540.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
-(10005, 28, 'Homemade Pretzels', 5, 1, 'Homemade, baked, soft pretzels perfect for a snack.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', ''),
-(10006, 13, 'Pork Dumplings', 1, 1, 'Pork dumplings from your local Chinese family. Sells per dumpling. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', '');
+(10005, 28, 'Homemade Pretzels', 5, 1, 'Homemade, baked, soft pretzels perfect for a snack.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4050068/pexels-photo-4050068.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
+(10006, 13, 'Pork Dumplings', 1, 1, 'Pork dumplings from your local Chinese family. Sells per dumpling. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4084935/pexels-photo-4084935.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'),
+(10007, 4, 'Spaghetti in Meat Sauce', 13, 1, 'Easy to make spaghetti sauce.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
+(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
 
 -- --------------------------------------------------------
 
@@ -333,7 +335,7 @@ INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Loca
 DROP VIEW IF EXISTS `publicprofileinfo`;
 CREATE TABLE IF NOT EXISTS `publicprofileinfo` (
 `FirstName` varchar(20)
-,`Img_url` text
+,`Img_url` varchar(1000)
 ,`LastName` varchar(20)
 ,`Region` varchar(30)
 ,`UserID` int
