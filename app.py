@@ -1,25 +1,27 @@
-
 from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
 import sqlite3
 
 app = Flask(__name__)
-#the key for the session
+# the key for the session
 app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_USER'] = "pls"
 app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "homechef"
 
 mysql = MySQL(app)
 
 foodList = []
+
+
 @app.route('/home', methods=['GET', 'POST'])
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID AND foodreviewaverage.foodID = food.foodID")
+    cur1.execute(
+        "SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID AND foodreviewaverage.foodID = food.foodID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
@@ -36,7 +38,8 @@ def home_load():
         datalist = cleanTuple(datalist, datanum)
         foodList.append(datalist)
         return render_template("cart.html", headings=headings, data=foodList)
-    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+    return render_template("home.html", foodInfo=fetch, foodIngredients=fetch2)
+
 
 def cleanTuple(datalist, datanum):
     cleaned = datalist[0]
@@ -73,8 +76,9 @@ def login_load():
                 return profile_load()
             else:
                 valid = 0
-            return render_template("login.html", info = valid)
+            return render_template("login.html", info=valid)
         return render_template("login.html")
+
 
 @app.route('/logout')
 def logout_load():
@@ -82,7 +86,7 @@ def logout_load():
     return about_load()
 
 
-@app.route('/register', methods = ['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register_load():
     if "user" in session:
         return redirect("/profile")
@@ -98,10 +102,12 @@ def register_load():
             region = request.form['region']
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address, region))
+            cur.execute(
+                "INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
-            return render_template('profile.html') #should bring them to their profile page.
+            return render_template('profile.html')  # should bring them to their profile page.
         return render_template("register.html")
 
 
@@ -113,11 +119,11 @@ def profile_load():
         cur3 = mysql.connection.cursor()
         cur4 = mysql.connection.cursor()
         cur.execute("SELECT * FROM publicprofileinfo WHERE UserID = %s", session["user"])
-        cur2.execute("SELECT COUNT(*) FROM follows WHERE FollowerID = %s", session["user"]) #following ID
+        cur2.execute("SELECT COUNT(*) FROM follows WHERE FollowerID = %s", session["user"])  # following ID
         cur3.execute("SELECT COUNT(*) FROM follows WHERE FolloweeID = %s", session["user"])  # followee ID
-        cur4.execute("SELECT * FROM food WHERE PUserID = %s", session["user"]) #food items this user posted
+        cur4.execute("SELECT * FROM food WHERE PUserID = %s", session["user"])  # food items this user posted
         userData = cur.fetchall()
-        userData = userData[0] #take the first tuple in the 2d array.
+        userData = userData[0]  # take the first tuple in the 2d array.
         following = cur2.fetchall()
         followee = cur3.fetchall()
         foodList = cur4.fetchall()
@@ -126,38 +132,41 @@ def profile_load():
         cur2.close()
         cur3.close()
         cur4.close()
-        return render_template("profile.html", user_ID = session["user"], userData = userData, following = following, followee = followee, foodList = foodList )
+        return render_template("profile.html", user_ID=session["user"], userData=userData, following=following,
+                               followee=followee, foodList=foodList)
     else:
         return redirect("/login")
 
-@app.route('/settings', methods = ['GET','POST'])
+
+@app.route('/settings', methods=['GET', 'POST'])
 def settings_load():
     if "user" in session:
-            cur = mysql.connection.cursor()
-            cur2 = mysql.connection.cursor()
-            cur.execute("SELECT * FROM profile WHERE UserID = %s", session["user"])
-            userData = cur.fetchall()
-            userData = userData[0]  # take the first tuple in the 2d array.
-            if request.method == 'POST':
-                userName = request.form['username']
-                firstName = request.form['firstname']
-                lastName = request.form['lastname']
-                email = request.form['email']
-                password = request.form['password']
-                phone = request.form['phone']
-                address = request.form['address']
-                region = request.form['region']
-                img_url = request.form['img_url']
-                cur2.execute(
-                    "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, Phone = %s, Location = %s, Region = %s, Img_url = %s WHERE UserID = %s",
-                    (firstName, lastName, email, userName, password, phone, address, region, img_url, session["user"]))
-                mysql.connection.commit()
-                cur2.close()
+        cur = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
+        cur.execute("SELECT * FROM profile WHERE UserID = %s", session["user"])
+        userData = cur.fetchall()
+        userData = userData[0]  # take the first tuple in the 2d array.
+        if request.method == 'POST':
+            userName = request.form['username']
+            firstName = request.form['firstname']
+            lastName = request.form['lastname']
+            email = request.form['email']
+            password = request.form['password']
+            phone = request.form['phone']
+            address = request.form['address']
+            region = request.form['region']
+            img_url = request.form['img_url']
+            cur2.execute(
+                "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, Phone = %s, Location = %s, Region = %s, Img_url = %s WHERE UserID = %s",
+                (firstName, lastName, email, userName, password, phone, address, region, img_url, session["user"]))
             mysql.connection.commit()
-            cur.close()
-            return render_template("settings.html", userData=userData)
+            cur2.close()
+        mysql.connection.commit()
+        cur.close()
+        return render_template("settings.html", userData=userData)
     else:
         return redirect("/login")
+
 
 @app.route('/post')
 def post_load():
@@ -165,6 +174,17 @@ def post_load():
         return render_template("post.html")
     else:
         return redirect("/login")
+
+
+@app.route('/purchasehistory', methods=['GET', 'POST'])
+def history_load():
+    if "user" in session:
+        headings = ("Order ID", "Food", "Seller", "Price", "Order Date")
+        datalist = ("empty")
+        return render_template("history.html", headings=headings, data=foodList)
+    else:
+        return redirect("/login")
+
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
