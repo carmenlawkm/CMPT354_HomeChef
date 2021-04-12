@@ -1,0 +1,91 @@
+<style type="text/css">
+    .pic1{
+            background-image: url("https://images.pexels.com/photos/4021972/pexels-photo-4021972.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+        }
+
+    .signUpNow{
+        padding-top: 8%;
+        padding-left: 10%;
+        padding-right: 10%;
+        text-align: center;
+        font-size: x-large;
+    }
+
+</style>
+
+{% extends "base.html" %}
+{% block title %}
+    Share Your Recipe
+{% endblock %}
+
+{% block body_block %}
+
+    <body class="pic1">
+        <div class = "signUpNow">
+            <h1 class = "display-4">Share a Recipe</h1>
+        </div>
+
+        <div class="d-flex justify-content-around align-items-center">
+            <div class="w-40 m-3">
+                <form method = "POST" action = "">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default1" >Food Name</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "username" id=invalidCheck2" required>
+                    </div>
+
+                    <p>*Please separate each ingredients with a semicolon ";" . </p>
+
+                    <div class="input-group">
+                          <span class="input-group-text">Ingredients Used</span>
+                          <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div><br>
+
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default4">Link to Picture</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "firstname" id=invalidCheck2" required>
+                    </div>
+
+                    <div class="input-group">
+                          <span class="input-group-text">Description</span>
+                          <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div><br>
+
+                    <div class="input-group">
+                          <span class="input-group-text">Instructions</span>
+                          <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div><br>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default" name = "region">Availability</span>
+                            </div>
+                            <select id="availability" name="availability">
+                                    <option value="1">Available</option>
+                                    <option value="0">Not Available</option>
+                            </select>
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default6">Price Per Unit</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "address" id=invalidCheck2" required>
+                    </div>
+
+                        <button class="btn btnCreateAccount btn-info" type="submit" >Post</button>
+
+                </form>
+
+            </div>
+        </div>
+    </body>
+{% endblock %}
