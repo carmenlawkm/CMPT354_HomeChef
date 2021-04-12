@@ -3,15 +3,20 @@
     Login
 {% endblock %}
 {% block body_block %}
-    <form class = "col-5 p-3 m-3 bg-light">
+    {% if info == 0 %}
+        <div class="alert alert-warning"  role="alert" id="wrong-pass">
+          Wrong Email or Password!
+        </div>
+    {% endif %}
+    <form class = "col-5 p-3 m-3 bg-light" method = "POST" action = "">
       <div class="form-group" >
         <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password">
+        <input type="password" class="form-control" name="password" placeholder="Password">
       </div>
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
