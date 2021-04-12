@@ -27,15 +27,26 @@ def home_load():
     cur1.close()
     cur2.close()
     if request.method == 'POST':
-        headings = ("#", "Food", "Quantity", "Price")
+        headings = ("Food", "Quantity", "Price")
         data = request.form['data']
+        datanum = request.form['datanum']
         print(data)
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
         datalist = cur.fetchall()
+        datalist = cleanTuple(datalist, datanum)
         foodList.append(datalist)
         return render_template("cart.html", headings=headings, data=foodList)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+
+def cleanTuple(datalist, datanum):
+    cleaned = datalist[0]
+    food = cleaned[2]
+    quantity = datanum
+    price = cleaned[3]
+    foodTuple = (food, quantity, price)
+    return foodTuple
+
 
 @app.route('/')
 @app.route('/about')
@@ -173,29 +184,6 @@ def cart_load():
         return render_template("cart.html", headings=headings, data=foodList)
     else:
         return redirect("/login")
-
-# foodsArr = []
-
-# @app.route('/foods')
-# def foods_load():
-#
-#     headings = ("Food ID", "P user ID", "Name", "Price", "Availability", "Description", "Instructions")
-#
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT * FROM food")
-#     datalist = cur.fetchall()
-#     global foodsArr
-#     foodsArr = datalist
-#     return render_template("foods.html",headings=headings, data=datalist)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def parse_request():
-#     data = request.data  # data is empty
-#     headings = ("#", "Food", "Quantity", "Pricepp")
-#     foodsArr = data;
-#     return render_template("cart.html", headings=headings, data=foodsArr)
-
-
 
 
 if __name__ == '__main__':
