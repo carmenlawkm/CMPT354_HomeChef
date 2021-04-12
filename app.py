@@ -128,7 +128,6 @@ def settings_load():
             cur.execute("SELECT * FROM profile WHERE UserID = %s", session["user"])
             userData = cur.fetchall()
             userData = userData[0]  # take the first tuple in the 2d array.
-            print(userData)
             if request.method == 'POST':
                 userName = request.form['username']
                 firstName = request.form['firstname']
