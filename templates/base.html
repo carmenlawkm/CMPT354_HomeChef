@@ -30,10 +30,11 @@
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="profile.html" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              My Profile
+              My Account
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="/profile">Profile Setting</a>
+                <a class="dropdown-item" href="/profile">My Profile</a>
+                <a class="dropdown-item" href="/settings">Profile Setting</a>
                 <a class="dropdown-item" href="#">Purchase History</a>
                 <a class="dropdown-item" href="/logout">Log out</a>
             </div>
@@ -41,12 +42,16 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/cart">My Cart<span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item active">
+                <button onclick = "location.href = '/post'" type="button" class="btn btn-outline-success" style = "margin-left: 10px">+ Post Recipe</button>
+            </li>
 
         </ul>
 
       </div>
         <button onclick = "location.href = '/register'" class="btn btn-outline-success" type="button">Register</button>
         <button onclick = "location.href = '/login'" class="btn btn-outline-success" type="button" style = "margin-left: 10px">Login</button>
+
     </nav>
 
     <h1>{% block body_header %}    {% endblock %}</h1>
