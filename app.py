@@ -30,7 +30,6 @@ def home_load():
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
         datanum = request.form['datanum']
-        print(data)
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
         datalist = cur.fetchall()
