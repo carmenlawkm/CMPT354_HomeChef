@@ -176,10 +176,20 @@ def post_load():
         return redirect("/login")
 
 
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout_load():
+    if "user" in session:
+        headings = ("Order ID", "Food", "Seller", "Price", "Order Date")
+        datalist = ("empty")
+        return render_template("checkout.html", headings=headings, data=foodList)
+    else:
+        return redirect("/login")
+
+
 @app.route('/purchasehistory', methods=['GET', 'POST'])
 def history_load():
     if "user" in session:
-        headings = ("Order ID", "Food", "Seller", "Price", "Order Date")
+        headings = ("#", "Food", "Quantity", "Price")
         datalist = ("empty")
         return render_template("history.html", headings=headings, data=foodList)
     else:
