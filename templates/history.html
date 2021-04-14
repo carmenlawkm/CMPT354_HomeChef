@@ -28,6 +28,10 @@
     <div class = "Title">
         <h1 class = "display-4">Purchase History</h1>
     </div>
+    <div class = "Title">
+        <h1 class = "display-4">{{orderID[0][0]}}</h1>
+    </div>
+
     <div class="w-75 mx-auto">
       <table class="table m-3">
         <thead class="thead-light">
@@ -37,16 +41,26 @@
             {% endfor %}
           </tr>
         </thead>
-<!--        <tbody>-->
 
-<!--          {% for row in data %}-->
-<!--          <tr>-->
-<!--            {% for cell in row %}-->
-<!--              <td>{{ cell }}</td>-->
-<!--            {% endfor %}-->
-<!--          </tr>-->
-<!--          {% endfor %}-->
-<!--        </tbody>-->
+        <tbody>
+    <tr>
+      <th scope="row">{{orderID[0][0]}}</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
       </table>
   </div>
 </body>

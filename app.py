@@ -191,13 +191,13 @@ def history_load():
     if "user" in session:
         headings = ("#", "Food", "Quantity", "Price")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT OrderID FROM orderplacement WHERE UserID = %s", session["user"])
+        cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])
         orderID = cur.fetchall()
 
         mysql.connection.commit()
 
         cur.close()
-        return render_template("history.html", headings=headings, data=foodList)
+        return render_template("history.html", headings=headings, orderID=orderID)
     else:
         return redirect("/login")
 
