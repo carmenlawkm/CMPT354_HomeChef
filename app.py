@@ -193,7 +193,7 @@ def history_load():
         cur = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])
-        cur2.execute("SELECT UserName FROM history WHERE UserID = %s", session["user"])
+        cur2.execute("SELECT * FROM history WHERE UserID = %s", session["user"])
 
         orderID = cur.fetchall()
         orderData = cur2.fetchall()

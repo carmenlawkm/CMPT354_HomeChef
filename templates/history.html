@@ -28,12 +28,9 @@
     <div class = "Title">
         <h1 class = "display-4">Purchase History</h1>
     </div>
-    <div class = "Title">
-        <h1 class = "display-4">{{orderID[0][0]}}</h1>
-    </div>
 
     <div class="w-75 mx-auto">
-      <table class="table m-3">
+      <table class="table table-hover bg-white m-3">
         <thead class="thead-light">
           <tr>
             {% for header in headings %}
@@ -44,22 +41,19 @@
 
         <tbody>
     <tr>
-      <th scope="row">{{orderID[0][0]}}</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th scope="row">{{orderData[0][1]}}</th>
+      <td>{{orderData[0][2]}}</td>
+      <td>{{orderData[0][3]}}</td>
+      <td>{{orderData[0][4]}}</td>
+      <td>{{orderData[0][5]}}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    {% for row in orderData %}
+          <tr>
+            {% for x in range(5) %}
+              <td>{{ row[x+1]}}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
   </tbody>
       </table>
   </div>
