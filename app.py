@@ -190,7 +190,13 @@ def checkout_load():
 def history_load():
     if "user" in session:
         headings = ("#", "Food", "Quantity", "Price")
-        datalist = ("empty")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT OrderID FROM orderplacement WHERE UserID = %s", session["user"])
+        orderID = cur.fetchall()
+
+        mysql.connection.commit()
+
+        cur.close()
         return render_template("history.html", headings=headings, data=foodList)
     else:
         return redirect("/login")
