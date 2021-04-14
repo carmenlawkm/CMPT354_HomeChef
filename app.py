@@ -101,7 +101,7 @@ def register_load():
             cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
-            return render_template('profile.html') #should bring them to their profile page.
+            return profile_load() #should bring them to their profile page.
         return render_template("register.html")
 
 
@@ -159,12 +159,26 @@ def settings_load():
     else:
         return redirect("/login")
 
+
 @app.route('/post')
 def post_load():
     if "user" in session:
-        return render_template("post.html")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT FirstName, LastName, Img_url "
+                    "FROM publicprofileinfo "
+                    "WHERE UserID = %s", session["user"])
+        user_data = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        print(user_data)
+        first_name = user_data[0][0]
+        last_name = user_data[0][1]
+        img_url = user_data[0][2]
+        return render_template("post.html", first_name=first_name, last_name=last_name, img_url=img_url)
+        # return render_template("post.html", first_name="first_name", last_name="last_name", img_url="img_url")
     else:
         return redirect("/login")
+
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
