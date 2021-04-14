@@ -189,15 +189,20 @@ def checkout_load():
 @app.route('/purchasehistory', methods=['GET', 'POST'])
 def history_load():
     if "user" in session:
-        headings = ("#", "Food", "Quantity", "Price")
+        headings = ("#", "Seller", "Price", "Order Date", "Pickup Time")
         cur = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
         cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])
+        cur2.execute("SELECT UserName FROM history WHERE UserID = %s", session["user"])
+
         orderID = cur.fetchall()
+        orderData = cur2.fetchall()
+
 
         mysql.connection.commit()
 
         cur.close()
-        return render_template("history.html", headings=headings, orderID=orderID)
+        return render_template("history.html", headings=headings, orderID=orderID, orderData=orderData)
     else:
         return redirect("/login")
 

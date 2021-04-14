@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 12, 2021 at 09:01 PM
+-- Generation Time: Apr 14, 2021 at 03:24 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.21
 
@@ -172,6 +172,22 @@ DROP VIEW IF EXISTS `foodreviewaverage`;
 CREATE TABLE IF NOT EXISTS `foodreviewaverage` (
 `avergeReview` decimal(12,1)
 ,`foodID` int
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `history`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `history`;
+CREATE TABLE IF NOT EXISTS `history` (
+`OrderID` int
+,`orderTime` datetime
+,`pickUpTime` datetime
+,`totalPrice` float
+,`UserID` int
+,`UserName` varchar(50)
 );
 
 -- --------------------------------------------------------
@@ -454,6 +470,16 @@ DROP TABLE IF EXISTS `foodreviewaverage`;
 
 DROP VIEW IF EXISTS `foodreviewaverage`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS  select `review`.`FoodID` AS `foodID`,round(avg(`review`.`Rating`),1) AS `avergeReview` from `review` group by `review`.`FoodID` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `history`
+--
+DROP TABLE IF EXISTS `history`;
+
+DROP VIEW IF EXISTS `history`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`pls`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS  select `c`.`UserID` AS `UserID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
 
 -- --------------------------------------------------------
 
