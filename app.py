@@ -27,6 +27,7 @@ def home_load():
     mysql.connection.commit()
     cur1.close()
     cur2.close()
+    print("home load")
     if request.method == 'POST':
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
@@ -42,7 +43,7 @@ def home_load():
             foodTuple = cleanTuple(datalist, datanum)
             foodList.append(foodTuple)
             total = calculatetotal(foodList)
-            return render_template("cart.html", headings=headings, data=foodList, total=total)
+            return redirect("/cart")
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
 def calculatetotal(foodl):
@@ -278,12 +279,13 @@ def history_load():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
     total = calculatetotal(foodList)
+    print("cart load")
     if "user" in session:
         headings = ("Food", "Quantity", "Price")
         datalist = ("empty")
         if request.method == 'POST':
             btnoutput = request.form["btn"]
-            # checkout = request.form["checkout"]
+
             if btnoutput == "Clear":
                 foodList.clear()
                 return redirect("/cart")
