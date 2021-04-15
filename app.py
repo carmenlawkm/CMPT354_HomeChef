@@ -192,23 +192,35 @@ def post_load():
         return redirect("/login")
 
     if request.method == "POST":
-        print("in post!")
         food_name = request.form["food-name"]
         food_img_url = request.form["food-img-url"]
-        print(request.form["availability"])
         availability = request.form["availability"]
 
         food_price = request.form["food-price"]
         description = request.form["description"]
-        ingredients = request.form["ingredients"]
+
         cur = mysql.connection.cursor()
+        cur1 = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description) "
             "VALUES (%s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description)
         )
+        cur1.execute("SELECT LAST_INSERT_ID()")
+        food_id = cur1.fetchall()
+
+        ingredients = [(food_id, x.strip()) for x in request.form["ingredients"].split(',')]
+
+        print(ingredients)
+        cur2.executemany(
+            "INSERT INTO foodingredients (FoodID, Ingredients) "
+            "VALUES (%s, %s)", ingredients
+        )
         mysql.connection.commit()
         cur.close()
+        cur1.close()
+        cur2.close()
         return redirect("/home")
     cur = mysql.connection.cursor()
     cur.execute("SELECT FirstName, LastName, Img_url "
