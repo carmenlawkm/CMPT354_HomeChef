@@ -171,10 +171,9 @@ def post_load():
         print("in post!")
         food_name = request.form["food-name"]
         food_img_url = request.form["food-img-url"]
-        if request.form["availability"]:
-            availability = 1
-        else:
-            availability = 0
+        print(request.form["availability"])
+        availability = request.form["availability"]
+
         food_price = request.form["food-price"]
         description = request.form["description"]
         ingredients = request.form["ingredients"]
