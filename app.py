@@ -38,15 +38,14 @@ def home_load():
             datalist = cur.fetchall()
             datalist = cleanTuple(datalist, datanum)
             foodList.append(datalist)
-            total = ("", "", calculatetotal(foodList));
+            total = calculatetotal(foodList)
             return render_template("cart.html", headings=headings, data=foodList, total=total)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
 def calculatetotal(foodl):
     total = 0;
     for f in foodl:
-        print(f[1])
-        print(f[2])
+        total = total + int(f[1]) * int(f[2])
     return total
 
 def cleanTuple(datalist, datanum):
@@ -215,8 +214,9 @@ def history_load():
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
+    total = calculatetotal(foodList)
     if "user" in session:
-        headings = ("#", "Food", "Quantity", "Price")
+        headings = ("Food", "Quantity", "Price")
         datalist = ("empty")
         if request.method == 'POST':
             # # data = request.data
@@ -226,8 +226,9 @@ def cart_load():
             # cur = mysql.connection.cursor()
             # cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
             # datalist = cur.fetchall()
-            return render_template("cart.html", headings=headings, data=datalist)
-        return render_template("cart.html", headings=headings, data=foodList)
+            return render_template("cart.html", headings=headings, data=foodList)
+
+        return render_template("cart.html", headings=headings, data=foodList, total=total)
     else:
         return redirect("/login")
 

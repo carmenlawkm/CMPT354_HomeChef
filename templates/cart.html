@@ -30,7 +30,6 @@
           </tr>
         </thead>
         <tbody>
-
           {% for row in data %}
           <tr>
             {% for cell in row %}
@@ -38,9 +37,11 @@
             {% endfor %}
           </tr>
           {% endfor %}
-        <tr>
-          {{ total }}
-        </tr>
+          <tr>
+            <td></td>
+            <td>TOTAL:</td>
+            <td>{{ total }}</td>
+          </tr>
         </tbody>
       </table>
   </div>
