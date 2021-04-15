@@ -19,7 +19,8 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID AND foodreviewaverage.foodID = food.foodID")
+    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID "
+                 "AND foodreviewaverage.foodID = food.foodID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
