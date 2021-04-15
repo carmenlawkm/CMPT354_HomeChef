@@ -19,7 +19,7 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID AND foodreviewaverage.foodID = food.foodID")
+    cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
@@ -179,7 +179,7 @@ def post_load():
         ingredients = request.form["ingredients"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO food (PUserID, name, Img_url, availability, pricePerUnit, description) "
+            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description) "
             "VALUES (%s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description)
         )
