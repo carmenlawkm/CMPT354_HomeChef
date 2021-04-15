@@ -240,10 +240,17 @@ def post_load():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout_load():
     headings = ("Food", "Quantity", "Price")
+
     if "user" in session:
         total = calculatetotal(foodList)
+        datalist = cleanfoodlist(foodList)
+        sellerid = getSeller(foodList)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT FirstName, LastName FROM profile WHERE UserID = %s", (sellerid,))
+        sellername = cur.fetchone()
+        print(sellername)
         if request.method == "POST":
-            cur = mysql.connection.cursor()
+            cur2 = mysql.connection.cursor()
             payMethod = request.form['pmethod']
             pick_up_time = request.form['date']
             contactInfo = request.form['contactinfo']
@@ -251,18 +258,24 @@ def checkout_load():
             orderTime = datetime.now()
             customerId = session["user"]
 
-            # cur.execute(
-            #     "INSERT INTO orderinfo (OrderID, totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            #     (null, total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerID))
+            cur2.execute(
+                "INSERT INTO orderinfo (totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerid))
 
             mysql.connection.commit()
-            cur.close()
+            cur2.close()
+            flash("Order placed successfully!")
+            return redirect("/home")
+        mysql.connection.commit()
+        cur.close()
 
-        return render_template("checkout.html", headings=headings, data=foodList, total=total)
+        return render_template("checkout.html", headings=headings, data=datalist, total=total, seller=sellername)
     else:
         return redirect("/login")
 
-
+def getSeller(foodl):
+    print(foodl[0][1])
+    return foodl[0][1]
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
@@ -295,11 +308,12 @@ def cart_load():
         datalist = cleanfoodlist(foodList)
         if request.method == 'POST':
             btnoutput = request.form["btn"]
-
             if btnoutput == "Clear":
                 foodList.clear()
                 return redirect("/cart")
-
+            if len(foodList) == 0:
+                flash("Cart is empty")
+                return redirect("/cart")
             return redirect("/checkout")
 
         return render_template("cart.html", headings=headings, data=datalist, total=total)
