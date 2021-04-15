@@ -1,4 +1,14 @@
 <style type="text/css">
+    .bg{
+            background-image: url("https://images.pexels.com/photos/4021973/pexels-photo-4021973.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+    }
+
     .posts{
         padding-left: 10%;
         padding-right: 10%;
@@ -13,7 +23,7 @@
 
 {% block body_block %}
 
-<body style="background-color: #e3e3e3">
+<body class = "bg">
     <h1 class="fw-bold" style="text-align: center">Create a New Recipe</h1>
     <form class = "posts" method = "POST" action = "">
         <div class="row no-gutters bg-light position-relative">
