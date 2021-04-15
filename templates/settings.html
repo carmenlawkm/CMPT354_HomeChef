@@ -8,6 +8,17 @@
         font-size: x-large;
     }
 
+    .bg{
+            background-image: url("https://images.pexels.com/photos/6157062/pexels-photo-6157062.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+    }
+
+
 </style>
 
 {% extends "base.html" %}
@@ -16,7 +27,7 @@
 {% endblock %}
 
 {% block body_block %}
-
+<body class = "bg">
         <div class = "heading">
             <h1 class = "display-4">Update Your Account Information</h1>
         </div>
@@ -100,5 +111,5 @@
 
             </div>
         </div>
-
+</body>
 {% endblock %}
