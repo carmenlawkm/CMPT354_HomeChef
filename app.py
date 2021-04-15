@@ -30,12 +30,15 @@ def home_load():
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
         datanum = request.form['datanum']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
-        datalist = cur.fetchall()
-        datalist = cleanTuple(datalist, datanum)
-        foodList.append(datalist)
-        return render_template("cart.html", headings=headings, data=foodList)
+        if not datanum:
+            print("invalid quantity")
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+            datalist = cur.fetchall()
+            datalist = cleanTuple(datalist, datanum)
+            foodList.append(datalist)
+            return render_template("cart.html", headings=headings, data=foodList)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 
 def cleanTuple(datalist, datanum):
