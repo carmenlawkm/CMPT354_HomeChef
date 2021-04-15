@@ -1,10 +1,11 @@
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
+from datetime import datetime
 import sqlite3
 
 app = Flask(__name__)
-#the key for the session
+# the key for the session
 app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
@@ -19,25 +20,38 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur1.execute("SELECT * FROM food, publicprofileinfo, foodreviewaverage WHERE food.PUserID = publicprofileinfo.UserID "
-                 "AND foodreviewaverage.foodID = food.foodID")
+
+    cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
     mysql.connection.commit()
     cur1.close()
     cur2.close()
+    print("home load")
     if request.method == 'POST':
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
         datanum = request.form['datanum']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
-        datalist = cur.fetchall()
-        datalist = cleanTuple(datalist, datanum)
-        foodList.append(datalist)
-        return render_template("cart.html", headings=headings, data=foodList)
+
+        if not datanum:
+            flash("invalid quantity")
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+            datalist = cur.fetchall()
+            sellerId = getSellerId(datalist)
+            foodTuple = cleanTuple(datalist, datanum)
+            foodList.append(foodTuple)
+            total = calculatetotal(foodList)
+            return redirect("/cart")
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+
+def calculatetotal(foodl):
+    total = 0;
+    for f in foodl:
+        total = total + int(f[1]) * int(f[2])
+    return total
 
 def cleanTuple(datalist, datanum):
     cleaned = datalist[0]
@@ -47,6 +61,13 @@ def cleanTuple(datalist, datanum):
     foodTuple = (food, quantity, price)
     return foodTuple
 
+# def checkDupId(sellerid):
+
+
+
+def getSellerId(data):
+    food = data[0]
+    return food[1]
 
 @app.route('/')
 @app.route('/about')
@@ -83,7 +104,7 @@ def logout_load():
     return about_load()
 
 
-@app.route('/register', methods = ['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register_load():
     if "user" in session:
         return redirect("/profile")
@@ -99,7 +120,9 @@ def register_load():
             region = request.form['region']
 
             cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (firstName, lastName, email, userName, password, phone, address, region))
+            cur.execute(
+                "INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
             return profile_load() #should bring them to their profile page.
@@ -114,11 +137,11 @@ def profile_load():
         cur3 = mysql.connection.cursor()
         cur4 = mysql.connection.cursor()
         cur.execute("SELECT * FROM publicprofileinfo WHERE UserID = %s", session["user"])
-        cur2.execute("SELECT COUNT(*) FROM follows WHERE FollowerID = %s", session["user"]) #following ID
+        cur2.execute("SELECT COUNT(*) FROM follows WHERE FollowerID = %s", session["user"])  # following ID
         cur3.execute("SELECT COUNT(*) FROM follows WHERE FolloweeID = %s", session["user"])  # followee ID
-        cur4.execute("SELECT * FROM food WHERE PUserID = %s", session["user"]) #food items this user posted
+        cur4.execute("SELECT * FROM food WHERE PUserID = %s", session["user"])  # food items this user posted
         userData = cur.fetchall()
-        userData = userData[0] #take the first tuple in the 2d array.
+        userData = userData[0]  # take the first tuple in the 2d array.
         following = cur2.fetchall()
         followee = cur3.fetchall()
         foodList = cur4.fetchall()
@@ -127,10 +150,10 @@ def profile_load():
         cur2.close()
         cur3.close()
         cur4.close()
-        return render_template("profile.html", user_ID = session["user"], userData = userData, following = following, followee = followee, foodList = foodList )
+        return render_template("profile.html", user_ID=session["user"], userData=userData, following=following,
+                               followee=followee, foodList=foodList)
     else:
         return redirect("/login")
-
 
 @app.route('/settings', methods = ['GET','POST'])
 def settings_load():
@@ -180,7 +203,7 @@ def post_load():
         ingredients = request.form["ingredients"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO food (PUserID, name, Img_url, availability, pricePerUnit, description) "
+            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description) "
             "VALUES (%s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description)
         )
@@ -202,21 +225,75 @@ def post_load():
 
 
 
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout_load():
+    headings = ("Food", "Quantity", "Price")
+    if "user" in session:
+        total = calculatetotal(foodList)
+        if request.method == "POST":
+            cur = mysql.connection.cursor()
+            payMethod = request.form['pmethod']
+            contactInfo = request.form['contactinfo']
+            region = request.form['region']
+            address = request.form['address']
+            pick_up_time = request.form['date']
+            userId = session["user"]
+            print(userId)
+            now = datetime.now()
+            print(now)
+            # cur.execute(
+            #     "INSERT INTO orderinfo (OrderID, totalPrice, paymentMethod, pickUpTime, contactInfo, pickUpAddress, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            #     (null, total, payMethod, pick_up_time, contactInfo, address, region, now, userId, sellerID))
+
+            mysql.connection.commit()
+            cur.close()
+
+        return render_template("checkout.html", headings=headings, data=foodList, total=total)
+    else:
+        return redirect("/login")
+
+
+
+
+@app.route('/purchasehistory', methods=['GET', 'POST'])
+def history_load():
+    if "user" in session:
+        headings = ("#", "Seller", "Price", "Order Date", "Pickup Time")
+        cur = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
+        cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])
+        cur2.execute("SELECT * FROM history WHERE UserID = %s", session["user"])
+
+        orderID = cur.fetchall()
+        orderData = cur2.fetchall()
+
+
+        mysql.connection.commit()
+
+        cur.close()
+        return render_template("history.html", headings=headings, orderID=orderID, orderData=orderData)
+    else:
+        return redirect("/login")
+
+
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
+    total = calculatetotal(foodList)
+    print("cart load")
     if "user" in session:
-        headings = ("#", "Food", "Quantity", "Price")
+        headings = ("Food", "Quantity", "Price")
         datalist = ("empty")
         if request.method == 'POST':
-            # # data = request.data
-            # # print(data)
-            # data = request.form['data']
-            # # data = 10000
-            # cur = mysql.connection.cursor()
-            # cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
-            # datalist = cur.fetchall()
-            return render_template("cart.html", headings=headings, data=datalist)
-        return render_template("cart.html", headings=headings, data=foodList)
+            btnoutput = request.form["btn"]
+
+            if btnoutput == "Clear":
+                foodList.clear()
+                return redirect("/cart")
+
+            return redirect("/checkout")
+
+        return render_template("cart.html", headings=headings, data=foodList, total=total)
     else:
         return redirect("/login")
 

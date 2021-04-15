@@ -30,7 +30,6 @@
           </tr>
         </thead>
         <tbody>
-
           {% for row in data %}
           <tr>
             {% for cell in row %}
@@ -38,8 +37,20 @@
             {% endfor %}
           </tr>
           {% endfor %}
+          <tr>
+            <td></td>
+            <td>TOTAL:</td>
+            <td>{{ total }}</td>
+          </tr>
         </tbody>
       </table>
+
+    <form method="POST" action="">
+      <input type="submit" class="btn btn-primary ml-3"  name="btn" value="Clear">
+      <input class="btn btnCreateAccount btn-primary float-right" name="btn" value="Checkout" type="submit">
+<!--      <button class="btn btnCreateAccount btn-primary float-right" name="checkout" value="Checkout" type="submit">Checkout</button>-->
+    </form>
+
   </div>
 </body>
 
