@@ -73,7 +73,7 @@ def login_load():
                 return profile_load()
             else:
                 valid = 0
-            return render_template("login.html", info = valid)
+            return render_template("login.html", info=valid)
         return render_template("login.html")
 
 @app.route('/logout')
@@ -166,23 +166,26 @@ def post_load():
     if "user" not in session:
         return redirect("/login")
 
-    if request.method == 'POST':
+    if request.method == "POST":
+        print("in post!")
         food_name = request.form["food-name"]
         food_img_url = request.form["food-img-url"]
-        availability = request.form["availability"]
+        if request.form["availability"] == "on":
+            availability = 1
+        else:
+            availability = 0
         food_price = request.form["food-price"]
         description = request.form["description"]
         ingredients = request.form["ingredients"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO food (name, Img_url, availability, pricePerUnit, description) "
-            "VALUES (%s, %s, %s, %s, %s)",
-            (food_name, food_img_url, availability, food_price, description)
+            "INSERT INTO food (PUserID, name, Img_url, availability, pricePerUnit, description) "
+            "VALUES (%s, %s, %s, %s, %s, %s)",
+            (session["user"], food_name, food_img_url, availability, int(food_price), description)
         )
         mysql.connection.commit()
         cur.close()
         return home_load()
-
     cur = mysql.connection.cursor()
     cur.execute("SELECT FirstName, LastName, Img_url "
                 "FROM publicprofileinfo "
