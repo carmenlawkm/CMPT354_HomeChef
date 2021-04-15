@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 14, 2021 at 03:24 AM
+-- Generation Time: Apr 15, 2021 at 06:02 PM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.21
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `OverallCustomerRating` int DEFAULT NULL,
   `numberOfRatings` int DEFAULT NULL,
   PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customer`
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `follows` (
   `FolloweeID` int NOT NULL,
   PRIMARY KEY (`FollowerID`,`FolloweeID`) USING BTREE,
   KEY `FolloweeID` (`FolloweeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `follows`
@@ -82,21 +82,21 @@ DROP TABLE IF EXISTS `food`;
 CREATE TABLE IF NOT EXISTS `food` (
   `FoodID` int NOT NULL AUTO_INCREMENT,
   `PUserID` int NOT NULL,
-  `Name` varchar(50) NOT NULL,
+  `FoodName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `pricePerUnit` int DEFAULT NULL,
   `Availability` tinyint(1) DEFAULT NULL,
-  `Description` text,
-  `Instructions` text,
-  `Img_url` text NOT NULL,
+  `Description` text COLLATE utf8mb4_general_ci,
+  `Instructions` text COLLATE utf8mb4_general_ci,
+  `Img_url` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FoodID`) USING BTREE,
   KEY `PUserID` (`PUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `food`
 --
 
-INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`, `Description`, `Instructions`, `Img_url`) VALUES
+INSERT INTO `food` (`FoodID`, `PUserID`, `FoodName`, `pricePerUnit`, `Availability`, `Description`, `Instructions`, `Img_url`) VALUES
 (10000, 1, 'Fluffy Caramel Pancake', 10, 1, 'Try out this simple yet delicious pancake recipe! It\'s quick and perfect for a breakfast.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
 (10001, 1, 'Homemade Pumpkin Soup', NULL, 0, 'Creamy and hearty homemade pumpkin soup that brings back all the good memories. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
 (10002, 2, 'Roasted Garlic Porkchop', NULL, 0, 'Garlic and porkchop is the combination that many people overlook. It\'s so addicting that I can guarantee you will make this at least once a week!', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/361184/asparagus-steak-veal-steak-veal-361184.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
@@ -110,15 +110,35 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `Name`, `pricePerUnit`, `Availability`,
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `foodandrating`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `foodandrating`;
+CREATE TABLE IF NOT EXISTS `foodandrating` (
+`FoodID` int
+,`PUserID` int
+,`FoodName` varchar(50)
+,`pricePerUnit` int
+,`Availability` tinyint(1)
+,`Description` text
+,`Instructions` text
+,`Img_url` text
+,`RfoodID` int
+,`avergeReview` decimal(12,1)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `foodingredients`
 --
 
 DROP TABLE IF EXISTS `foodingredients`;
 CREATE TABLE IF NOT EXISTS `foodingredients` (
   `FoodID` int NOT NULL,
-  `Ingredients` text NOT NULL,
+  `Ingredients` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `foodingredients`
@@ -170,9 +190,29 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 --
 DROP VIEW IF EXISTS `foodreviewaverage`;
 CREATE TABLE IF NOT EXISTS `foodreviewaverage` (
-`avergeReview` decimal(12,1)
-,`foodID` int
+`RfoodID` int
+,`avergeReview` decimal(12,1)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `foodtags`
+--
+
+DROP TABLE IF EXISTS `foodtags`;
+CREATE TABLE IF NOT EXISTS `foodtags` (
+  `FoodID` int NOT NULL,
+  `Tags` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`FoodID`,`Tags`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `foodtags`
+--
+
+INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
+(10008, 'Vegetarian');
 
 -- --------------------------------------------------------
 
@@ -182,12 +222,12 @@ CREATE TABLE IF NOT EXISTS `foodreviewaverage` (
 --
 DROP VIEW IF EXISTS `history`;
 CREATE TABLE IF NOT EXISTS `history` (
-`OrderID` int
+`UserID` int
+,`OrderID` int
+,`UserName` varchar(50)
+,`totalPrice` float
 ,`orderTime` datetime
 ,`pickUpTime` datetime
-,`totalPrice` float
-,`UserID` int
-,`UserName` varchar(50)
 );
 
 -- --------------------------------------------------------
@@ -203,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `orderfoods` (
   `quantity` int NOT NULL,
   PRIMARY KEY (`FoodID`,`OrderID`) USING BTREE,
   KEY `OrderID` (`OrderID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orderfoods`
@@ -233,11 +273,10 @@ DROP TABLE IF EXISTS `orderinfo`;
 CREATE TABLE IF NOT EXISTS `orderinfo` (
   `OrderID` int NOT NULL AUTO_INCREMENT,
   `totalPrice` float NOT NULL,
-  `paymentMethod` text NOT NULL,
+  `paymentMethod` text COLLATE utf8mb4_general_ci NOT NULL,
   `pickUpTime` datetime NOT NULL,
-  `contactInfo` text NOT NULL,
-  `pickUpAddress` text NOT NULL,
-  `Region` varchar(25) NOT NULL,
+  `contactInfo` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Region` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
   `orderTime` datetime NOT NULL,
   `customerID` int NOT NULL,
   `sellerID` int NOT NULL,
@@ -245,25 +284,25 @@ CREATE TABLE IF NOT EXISTS `orderinfo` (
   KEY `customerID` (`customerID`),
   KEY `sellerID` (`sellerID`),
   KEY `Region` (`Region`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100014 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=100014 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orderinfo`
 --
 
-INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `pickUpAddress`, `Region`, `orderTime`, `customerID`, `sellerID`) VALUES
-(100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', '170 street abc', 'Vancouver', '2021-03-14 21:59:54', 1, 2),
-(100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'abc streed 12345', 'Tri-city', '2021-03-16 22:13:25', 1, 2),
-(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', '9090 spruce avenue', 'Richmond', '2021-03-14 19:08:14', 14, 5),
-(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', '6001 cornwall street', 'Surrey', '2021-03-18 19:11:06', 3, 5),
-(100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', '7878 wood street', 'Burnaby', '2021-03-19 19:12:08', 7, 8),
-(100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', '2323 Como Lake Ave', 'Tri-city', '2021-04-10 19:19:45', 3, 28),
-(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'King George Station', 'Surrey', '2021-04-10 20:13:49', 3, 5),
-(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'King George Station', 'Surrey', '2021-04-10 20:19:49', 3, 1),
-(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'King George Station', 'Surrey', '2021-04-10 20:26:20', 3, 5),
-(100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', '6001 cornwall street', 'Surrey', '2021-04-10 20:40:23', 3, 13),
-(100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'King George Station', 'Surrey', '2021-04-10 20:56:27', 3, 1),
-(100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', '2-4621 Alder Drive', 'Richmond', '2021-04-10 21:00:24', 6, 13);
+INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `Region`, `orderTime`, `customerID`, `sellerID`) VALUES
+(100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', 'Vancouver', '2021-03-14 21:59:54', 1, 2),
+(100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'Tri-city', '2021-03-16 22:13:25', 1, 2),
+(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5),
+(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5),
+(100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', 'Burnaby', '2021-03-19 19:12:08', 7, 8),
+(100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', 'Tri-city', '2021-04-10 19:19:45', 3, 28),
+(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5),
+(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1),
+(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5),
+(100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', 'Surrey', '2021-04-10 20:40:23', 3, 13),
+(100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'Surrey', '2021-04-10 20:56:27', 3, 1),
+(100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13);
 
 -- --------------------------------------------------------
 
@@ -279,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `orderplacement` (
   PRIMARY KEY (`OrderID`,`CustomerID`,`SellerID`),
   KEY `CustomerID` (`CustomerID`),
   KEY `SellerID` (`SellerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orderplacement`
@@ -308,17 +347,17 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 DROP TABLE IF EXISTS `profile`;
 CREATE TABLE IF NOT EXISTS `profile` (
   `UserID` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `Password` text NOT NULL,
-  `UserName` varchar(50) NOT NULL,
-  `Phone` varchar(30) NOT NULL,
-  `Location` varchar(200) NOT NULL,
-  `Region` varchar(30) NOT NULL,
-  `FirstName` varchar(20) NOT NULL,
-  `LastName` varchar(20) NOT NULL,
-  `Img_url` varchar(1000) NOT NULL DEFAULT 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD',
+  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` text COLLATE utf8mb4_general_ci NOT NULL,
+  `UserName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `Phone` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `Region` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `FirstName` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `LastName` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `Img_url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png',
   PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `profile`
@@ -327,20 +366,20 @@ CREATE TABLE IF NOT EXISTS `profile` (
 INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Location`, `Region`, `FirstName`, `LastName`, `Img_url`) VALUES
 (1, 'mikerr@gmail.com', 'platinumstar', 'mikey123', '778908273', '515 W Hastings', 'Vancouver', 'Mike', 'Hawk', 'http://www.kevmill.com/wp-content/uploads/2019/09/cropped-Kevin-profile-pic-2019-square-small-300x300.jpg'),
 (2, 'jacSmith20@gmail.com', '94ijdna9', 'jacquieSmith20', '6045869382', '13450 103 Ave', 'Richmond', 'Jacqueline', 'Smith', 'https://www.stepstherapy.com.au/wp-content/uploads/2018/10/Yazmin-profile-picture-square.jpg'),
-(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'Burnaby', 'User', 'Test', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'Burnaby', 'Paul', 'Krug', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
+(3, 'user1@gmail.com', 'password123', 'misteruser1', '6041231234', '8888 University Drive', 'Burnaby', 'User', 'Test', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(4, 'krug@gmail.com', 'bohemianrhapsody', 'krug56', '6048273492', '8888 University Drive', 'Burnaby', 'Paul', 'Krug', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
 (5, 'carmenl@gmail.com', 'caramelc', 'lcarmen', '7781824827', '9008 Spruce Ave', 'Tri-city', 'Carmen', 'Law', 'https://i.imgur.com/AWKHeRe.jpg'),
-(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 Maple Dr', 'Surrey', 'Ali', 'Tohidi', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 Blue mountain', 'Tri-city', 'Sean', 'Tam', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Richmond', 'Jessica', 'Li', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 Chernobog St', 'North/ west Vancouver', 'John', 'Smith', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 Papaya Ave', 'Tri-city', 'Alligator', 'T', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 GreenDolphin St', 'Surrey', 'Crocodile', 'Tohidi', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(18, 'alaw0306@gmail.com', '3385729836', 'alaw0306', '6048376652', '2847 Diamond Ave', 'Tri-city', 'Ashley', 'Law', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(27, 'ericaluo09@gmail.com', '7yuhhdjshdbb', 'erical0913', '7789993856', '8876 Eagle Str', 'North/west vancouver', 'Erica', 'Luo', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(28, 'alicecyq@gmail.com', '8djjHHHagsd', 'aliceCh0107', '6048837269', '7620 Cotton St', 'Burnaby', 'Alice', 'Chen', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(29, 'chrissyj10@outlook.com', '87HKsldW', 'chrissyJepsen10', '6048773008', '2099 Fox Dr', 'Richmond', 'Christine', 'Jepsen', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD'),
-(30, 'brandonf28@yahoo.com', 'ilovepizza102', 'brandonF_28', '7780092736', '283 Lavender Ave', 'Burnaby', 'Brandon', 'Falcon', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fstartupheretoronto.com%2Fpartners%2Fextreme-venture-partners%2Fthinkdata-partners-with-the-vector-institute-to-provide-ai-research-platform%2Fattachment%2Fdefault-user-image-png-5%2F&psig=AOvVaw0yxYHyUQFtpq5vfgvw5eBa&ust=1618002227702000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjboJTG7-8CFQAAAAAdAAAAABAD');
+(6, 'alit@gmail.com', 'sugondese', 'tali', '7782947263', '167 Maple Dr', 'Surrey', 'Ali', 'Tohidi', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(7, 'seant@gmail.com', 'joemama123', 'tsean', '9385719832873', '898 Blue mountain', 'Tri-city', 'Sean', 'Tam', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(8, 'jessical@gmail.com', 'qwertyuiop', 'ljessica', '6083827482', '13450 103 Ave', 'Richmond', 'Jessica', 'Li', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(13, 'jsmith123@gmail.com', '1234567890', 'jjs897', '6047578394', '1234 Chernobog St', 'North/ west Vancouver', 'John', 'Smith', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(14, 'talligator@sfu.ca', 'alligatorsarecool', 'ali1998', '7783652735', '8997 Papaya Ave', 'Tri-city', 'Alligator', 'T', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(15, 'crocodileTohidi10@gmail.com', 'alilovesalligator', 'crocodileTohidi10', '7786394826', '98 GreenDolphin St', 'Surrey', 'Crocodile', 'Tohidi', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(18, 'alaw0306@gmail.com', '3385729836', 'alaw0306', '6048376652', '2847 Diamond Ave', 'Tri-city', 'Ashley', 'Law', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(27, 'ericaluo09@gmail.com', '7yuhhdjshdbb', 'erical0913', '7789993856', '8876 Eagle Str', 'North/west vancouver', 'Erica', 'Luo', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(28, 'alicecyq@gmail.com', '8djjHHHagsd', 'aliceCh0107', '6048837269', '7620 Cotton St', 'Burnaby', 'Alice', 'Chen', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(29, 'chrissyj10@outlook.com', '87HKsldW', 'chrissyJepsen10', '6048773008', '2099 Fox Dr', 'Richmond', 'Christine', 'Jepsen', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'),
+(30, 'brandonf28@yahoo.com', 'ilovepizza102', 'brandonF_28', '7780092736', '283 Lavender Ave', 'Burnaby', 'Brandon', 'Falcon', 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png');
 
 -- --------------------------------------------------------
 
@@ -350,38 +389,38 @@ INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Loca
 --
 DROP VIEW IF EXISTS `publicprofileinfo`;
 CREATE TABLE IF NOT EXISTS `publicprofileinfo` (
-`FirstName` varchar(20)
-,`Img_url` varchar(1000)
-,`LastName` varchar(20)
-,`Region` varchar(30)
-,`UserID` int
+`UserID` int
 ,`UserName` varchar(50)
+,`Region` varchar(30)
+,`FirstName` varchar(20)
+,`LastName` varchar(20)
+,`Img_url` varchar(1000)
 );
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regionfee`
+-- Table structure for table `regionpickup`
 --
 
-DROP TABLE IF EXISTS `regionfee`;
-CREATE TABLE IF NOT EXISTS `regionfee` (
-  `Region` varchar(25) NOT NULL,
-  `ServiceFee` float NOT NULL,
+DROP TABLE IF EXISTS `regionpickup`;
+CREATE TABLE IF NOT EXISTS `regionpickup` (
+  `Region` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
+  `PickupAddress` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
   UNIQUE KEY `Region` (`Region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `regionfee`
+-- Dumping data for table `regionpickup`
 --
 
-INSERT INTO `regionfee` (`Region`, `ServiceFee`) VALUES
-('Burnaby', 1),
-('North/ west Vancouver', 3),
-('Richmond', 3),
-('Surrey', 2),
-('Tri-city', 1.5),
-('Vancouver', 2.5);
+INSERT INTO `regionpickup` (`Region`, `PickupAddress`) VALUES
+('Burnaby', 'Metrotown Station'),
+('North/ west Vancouver', 'Lonsdale Quay'),
+('Richmond', 'Aberdeen Center'),
+('Surrey', 'King George Station'),
+('Tri-city', 'Coquitlam Centre Station'),
+('Vancouver', 'Waterfront Station');
 
 -- --------------------------------------------------------
 
@@ -395,11 +434,11 @@ CREATE TABLE IF NOT EXISTS `review` (
   `CustomerUserID` int NOT NULL,
   `FoodID` int NOT NULL,
   `Rating` int NOT NULL,
-  `Comment` text,
+  `Comment` text COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`ReviewID`) USING BTREE,
   KEY `FoodID` (`FoodID`),
   KEY `CustomerUserID` (`CustomerUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20007 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `review`
@@ -422,7 +461,7 @@ DROP TABLE IF EXISTS `seller`;
 CREATE TABLE IF NOT EXISTS `seller` (
   `UserID` int NOT NULL,
   PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `seller`
@@ -446,9 +485,9 @@ INSERT INTO `seller` (`UserID`) VALUES
 DROP TABLE IF EXISTS `userallergies`;
 CREATE TABLE IF NOT EXISTS `userallergies` (
   `UserID` int NOT NULL,
-  `Allergies` varchar(100) NOT NULL,
+  `Allergies` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`UserID`,`Allergies`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `userallergies`
@@ -464,12 +503,22 @@ INSERT INTO `userallergies` (`UserID`, `Allergies`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure for view `foodandrating`
+--
+DROP TABLE IF EXISTS `foodandrating`;
+
+DROP VIEW IF EXISTS `foodandrating`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodandrating`  AS  select `food`.`FoodID` AS `FoodID`,`food`.`PUserID` AS `PUserID`,`food`.`FoodName` AS `FoodName`,`food`.`pricePerUnit` AS `pricePerUnit`,`food`.`Availability` AS `Availability`,`food`.`Description` AS `Description`,`food`.`Instructions` AS `Instructions`,`food`.`Img_url` AS `Img_url`,`foodreviewaverage`.`RfoodID` AS `RfoodID`,`foodreviewaverage`.`avergeReview` AS `avergeReview` from (`food` left join `foodreviewaverage` on((`foodreviewaverage`.`RfoodID` = `food`.`FoodID`))) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `foodreviewaverage`
 --
 DROP TABLE IF EXISTS `foodreviewaverage`;
 
 DROP VIEW IF EXISTS `foodreviewaverage`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS  select `review`.`FoodID` AS `foodID`,round(avg(`review`.`Rating`),1) AS `avergeReview` from `review` group by `review`.`FoodID` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS  select `review`.`FoodID` AS `RfoodID`,round(avg(`review`.`Rating`),1) AS `avergeReview` from `review` group by `review`.`FoodID` ;
 
 -- --------------------------------------------------------
 
@@ -479,7 +528,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `history`;
 
 DROP VIEW IF EXISTS `history`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`pls`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS  select `c`.`UserID` AS `UserID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS  select `c`.`UserID` AS `UserID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
 
 -- --------------------------------------------------------
 
@@ -521,6 +570,12 @@ ALTER TABLE `foodingredients`
   ADD CONSTRAINT `foodingredients_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`);
 
 --
+-- Constraints for table `foodtags`
+--
+ALTER TABLE `foodtags`
+  ADD CONSTRAINT `foodtags_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
 -- Constraints for table `orderfoods`
 --
 ALTER TABLE `orderfoods`
@@ -533,7 +588,7 @@ ALTER TABLE `orderfoods`
 ALTER TABLE `orderinfo`
   ADD CONSTRAINT `orderinfo_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`UserID`),
   ADD CONSTRAINT `orderinfo_ibfk_2` FOREIGN KEY (`sellerID`) REFERENCES `seller` (`UserID`),
-  ADD CONSTRAINT `orderinfo_ibfk_3` FOREIGN KEY (`Region`) REFERENCES `regionfee` (`Region`);
+  ADD CONSTRAINT `orderinfo_ibfk_3` FOREIGN KEY (`Region`) REFERENCES `regionpickup` (`Region`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `orderplacement`
