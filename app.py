@@ -150,7 +150,8 @@ def settings_load():
                 region = request.form['region']
                 img_url = request.form['img_url']
                 cur2.execute(
-                    "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, Phone = %s, Location = %s, Region = %s, Img_url = %s WHERE UserID = %s",
+                    "UPDATE profile SET FirstName = %s, LastName = %s, email = %s, UserName = %s, password = %s, "
+                    "Phone = %s, Location = %s, Region = %s, Img_url = %s WHERE UserID = %s",
                     (firstName, lastName, email, userName, password, phone, address, region, img_url, session["user"]))
                 mysql.connection.commit()
                 cur2.close()
@@ -170,7 +171,7 @@ def post_load():
         print("in post!")
         food_name = request.form["food-name"]
         food_img_url = request.form["food-img-url"]
-        if request.form["availability"] == "on":
+        if request.form["availability"]:
             availability = 1
         else:
             availability = 0
@@ -185,7 +186,7 @@ def post_load():
         )
         mysql.connection.commit()
         cur.close()
-        return home_load()
+        return redirect("/home")
     cur = mysql.connection.cursor()
     cur.execute("SELECT FirstName, LastName, Img_url "
                 "FROM publicprofileinfo "

@@ -97,28 +97,28 @@
 {#                  </form>#}
 {#                      <!--<button class="btn btn-warning"> <a href="/my-link/">add to cart {{ food[2] }}</a></button>-->#}
 {#                {% endif %}#}
-                  <div class="form-check row">
-                    <div class="col ">
-                       <input type="checkbox" class="form-check-input" id="availability" name="availability">
-                        <label class="form-check-label" for="availability">Available</label>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
-                        aria-describedby="inputGroup-sizing-default" name = "food-price" placeholder="Price per item"
-                        required>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
-                        aria-describedby="inputGroup-sizing-default" name = "food-img-url"
-                        placeholder="Enter the image url here!" required>
-                    </div>
 
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                  <input type="radio" class="btn-check" name="availability" id="btnradio1" autocomplete="off" checked>
+                  <label class="btn btn-success" for="btnradio1">Available</label>
+                  <input type="radio" class="btn-check" name="availability" id="btnradio2" autocomplete="off">
+                  <label class="btn btn-danger" for="btnradio2">Not Available</label>
+                </div>
 
-                  </div>
+                  <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" name = "food-price"
+                placeholder="Enter the food price here!" required>
+
+                <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" name = "food-img-url"
+                placeholder="Enter the image url here!" required>
+
+                <button type="submit" class="btn btn-primary">Post</button>
+
               </div>
           </div>
         </div> <br>
-        <button type="submit" class="btn btn-primary">Post</button>
+
     </form>
 </body>
 {% endblock %}
