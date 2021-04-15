@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_USER'] = "pls"
 app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "homechef"
 
@@ -258,7 +258,7 @@ def checkout_load():
 @app.route('/purchasehistory', methods=['GET', 'POST'])
 def history_load():
     if "user" in session:
-        headings = ("#", "Seller", "Price", "Order Date", "Pickup Time")
+        headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
         cur = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])

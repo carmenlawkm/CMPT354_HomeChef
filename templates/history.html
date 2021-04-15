@@ -40,18 +40,12 @@
         </thead>
 
         <tbody>
-    <tr>
-      <th scope="row">{{orderData[0][1]}}</th>
-      <td>{{orderData[0][2]}}</td>
-      <td>{{orderData[0][3]}}</td>
-      <td>{{orderData[0][4]}}</td>
-      <td>{{orderData[0][5]}}</td>
-    </tr>
     {% for row in orderData %}
           <tr>
             {% for x in range(5) %}
               <td>{{ row[x+1]}}</td>
             {% endfor %}
+              <td><button type="button" class="btn btn-info">Review</button></td>
           </tr>
           {% endfor %}
   </tbody>
