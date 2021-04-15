@@ -38,8 +38,16 @@ def home_load():
             datalist = cur.fetchall()
             datalist = cleanTuple(datalist, datanum)
             foodList.append(datalist)
-            return render_template("cart.html", headings=headings, data=foodList)
+            total = ("", "", calculatetotal(foodList));
+            return render_template("cart.html", headings=headings, data=foodList, total=total)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+
+def calculatetotal(foodl):
+    total = 0;
+    for f in foodl:
+        print(f[1])
+        print(f[2])
+    return total
 
 def cleanTuple(datalist, datanum):
     cleaned = datalist[0]
