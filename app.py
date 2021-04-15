@@ -130,6 +130,7 @@ def profile_load():
     else:
         return redirect("/login")
 
+
 @app.route('/settings', methods = ['GET','POST'])
 def settings_load():
     if "user" in session:
@@ -138,7 +139,7 @@ def settings_load():
             cur.execute("SELECT * FROM profile WHERE UserID = %s", session["user"])
             userData = cur.fetchall()
             userData = userData[0]  # take the first tuple in the 2d array.
-            if request.method == 'POST':
+            if request.method == "POST":
                 userName = request.form['username']
                 firstName = request.form['firstname']
                 lastName = request.form['lastname']
@@ -160,24 +161,41 @@ def settings_load():
         return redirect("/login")
 
 
-@app.route('/post')
+@app.route('/post', methods=["POST", "GET"])
 def post_load():
-    if "user" in session:
+    if "user" not in session:
+        return redirect("/login")
+
+    if request.method == 'POST':
+        food_name = request.form["food-name"]
+        food_img_url = request.form["food-img-url"]
+        availability = request.form["availability"]
+        food_price = request.form["food-price"]
+        description = request.form["description"]
+        ingredients = request.form["ingredients"]
         cur = mysql.connection.cursor()
-        cur.execute("SELECT FirstName, LastName, Img_url "
-                    "FROM publicprofileinfo "
-                    "WHERE UserID = %s", session["user"])
-        user_data = cur.fetchall()
+        cur.execute(
+            "INSERT INTO food (name, Img_url, availability, pricePerUnit, description) "
+            "VALUES (%s, %s, %s, %s, %s)",
+            (food_name, food_img_url, availability, food_price, description)
+        )
         mysql.connection.commit()
         cur.close()
-        print(user_data)
-        first_name = user_data[0][0]
-        last_name = user_data[0][1]
-        img_url = user_data[0][2]
-        return render_template("post.html", first_name=first_name, last_name=last_name, img_url=img_url)
-        # return render_template("post.html", first_name="first_name", last_name="last_name", img_url="img_url")
-    else:
-        return redirect("/login")
+        return home_load()
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT FirstName, LastName, Img_url "
+                "FROM publicprofileinfo "
+                "WHERE UserID = %s", session["user"])
+    user_data = cur.fetchone()
+    mysql.connection.commit()
+    cur.close()
+    print(user_data)
+    first_name = user_data[0]
+    last_name = user_data[1]
+    img_url = user_data[2]
+    return render_template("post.html", first_name=first_name, last_name=last_name, img_url=img_url)
+
 
 
 @app.route('/cart', methods=['GET', 'POST'])

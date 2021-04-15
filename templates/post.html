@@ -14,8 +14,8 @@
 {% block body_block %}
 
 <body style="background-color: #e3e3e3">
-    <h1 class="fw-bold" style="text-align: center">Create new Recipe</h1>
-    <div class = "posts">
+    <h1 class="fw-bold" style="text-align: center">Create a New Recipe</h1>
+    <form class = "posts">
         <div class="row no-gutters bg-light position-relative">
           <div class="col-md-6 mb-md-0 p-md-4">
 
@@ -27,7 +27,7 @@
             <div class="col-sm-6 pl-4">
               <h2>
                   <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
-                     aria-describedby="inputGroup-sizing-default" name = "food name" placeholder="Food Name"
+                     aria-describedby="inputGroup-sizing-default" name = "food-name" placeholder="Food Name"
                      required>
               </h2>
             </div>
@@ -44,10 +44,10 @@
           <div class="col-md-6 position-static p-4 pl-md-0">
             <h5 class="mt-0">Description</h5>
             <textarea type="text" class="form-control-plaintext form-control" name = "description"
-                 rows="5" placeholder="write food description here!" required></textarea>
+                 rows="5" placeholder="Write food description here!" required></textarea>
             <h5 class="mt-0">Ingredients</h5>
                 <input type="text" class="form-control-plaintext" aria-label="Sizing example input"
-                   aria-describedby="inputGroup-sizing-default" name = "img_url" id=invalidCheck2"
+                   aria-describedby="inputGroup-sizing-default" name = "ingredients" id=invalidCheck2"
                    placeholder="Ingredient1, Ingredient2, ... All ingredients should be comma separated!" required>
 
                 <p></p>
@@ -89,18 +89,36 @@
                 </table>
 
               <div align="center">
-                {% if true%}
-                  <form method="POST" action="">
-                      <input type="text" name="data" value="" style="visibility: hidden"><br>
-                      <button type="submit" class="btn btn-warning" >Add to cart</button>
-                      <input type="number" placeholder="quantity" name="datanum">
-                  </form>
+{#                {% if true%}#}
+{#                  <form method="POST" action="">#}
+{#                      <input type="text" name="data" value="" style="visibility: hidden"><br>#}
+{#                      <button type="submit" class="btn btn-warning" >Add to cart</button>#}
+{#                      <input type="number" placeholder="quantity" name="datanum">#}
+{#                  </form>#}
 {#                      <!--<button class="btn btn-warning"> <a href="/my-link/">add to cart {{ food[2] }}</a></button>-->#}
-                {% endif %}
-                <button type="button" class="btn btn-info">View Recipe</button>
+{#                {% endif %}#}
+                  <div class="form-check row">
+                    <div class="col ">
+                       <input type="checkbox" class="form-check-input" id="availability" name="availability">
+                        <label class="form-check-label" for="availability">Available</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default" name = "food-price" placeholder="Price per item"
+                        required>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default" name = "food-img-url"
+                        placeholder="Enter the image url here!" required>
+                    </div>
+
+
+                  </div>
+                <button type="submit" class="btn btn-info">Post</button>
               </div>
           </div>
      </div> <br>
-</div>
+    </form>
 </body>
 {% endblock %}
