@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
+from datetime import datetime
 import sqlite3
 
 app = Flask(__name__)
@@ -30,14 +31,16 @@ def home_load():
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
         datanum = request.form['datanum']
+
         if not datanum:
-            print("invalid quantity")
+            flash("invalid quantity")
         else:
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
             datalist = cur.fetchall()
-            datalist = cleanTuple(datalist, datanum)
-            foodList.append(datalist)
+            sellerId = getSellerId(datalist)
+            foodTuple = cleanTuple(datalist, datanum)
+            foodList.append(foodTuple)
             total = calculatetotal(foodList)
             return render_template("cart.html", headings=headings, data=foodList, total=total)
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
@@ -56,6 +59,13 @@ def cleanTuple(datalist, datanum):
     foodTuple = (food, quantity, price)
     return foodTuple
 
+# def checkDupId(sellerid):
+
+
+
+def getSellerId(data):
+    food = data[0]
+    return food[1]
 
 @app.route('/')
 @app.route('/about')
@@ -183,12 +193,32 @@ def post_load():
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout_load():
+    headings = ("Food", "Quantity", "Price")
     if "user" in session:
-        headings = ("Order ID", "Food", "Seller", "Price", "Order Date")
-        datalist = ("empty")
-        return render_template("checkout.html", headings=headings, data=foodList)
+        total = calculatetotal(foodList)
+        if request.method == "POST":
+            cur = mysql.connection.cursor()
+            payMethod = request.form['pmethod']
+            contactInfo = request.form['contactinfo']
+            region = request.form['region']
+            address = request.form['address']
+            pick_up_time = request.form['date']
+            userId = session["user"]
+            print(userId)
+            now = datetime.now()
+            print(now)
+            # cur.execute(
+            #     "INSERT INTO orderinfo (OrderID, totalPrice, paymentMethod, pickUpTime, contactInfo, pickUpAddress, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            #     (null, total, payMethod, pick_up_time, contactInfo, address, region, now, userId, sellerID))
+
+            mysql.connection.commit()
+            cur.close()
+
+        return render_template("checkout.html", headings=headings, data=foodList, total=total)
     else:
         return redirect("/login")
+
+
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
@@ -219,14 +249,13 @@ def cart_load():
         headings = ("Food", "Quantity", "Price")
         datalist = ("empty")
         if request.method == 'POST':
-            # # data = request.data
-            # # print(data)
-            # data = request.form['data']
-            # # data = 10000
-            # cur = mysql.connection.cursor()
-            # cur.execute("SELECT * FROM food WHERE food.FoodID = %d", data)
-            # datalist = cur.fetchall()
-            return render_template("cart.html", headings=headings, data=foodList)
+            btnoutput = request.form["btn"]
+            # checkout = request.form["checkout"]
+            if btnoutput == "Clear":
+                foodList.clear()
+                return redirect("/cart")
+
+            return redirect("/checkout")
 
         return render_template("cart.html", headings=headings, data=foodList, total=total)
     else:
