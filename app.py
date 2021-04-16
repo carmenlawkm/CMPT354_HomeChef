@@ -203,6 +203,7 @@ def post_load():
         cur = mysql.connection.cursor()
         cur1 = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
+        cur3 = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -212,11 +213,15 @@ def post_load():
         food_id = cur1.fetchall()
 
         ingredients = [(food_id, x.strip()) for x in request.form["ingredients"].split(',')]
-
+        tags = [(food_id, y.strip()) for y in request.form["tags"].split(',')]
         print(ingredients)
         cur2.executemany(
             "INSERT INTO foodingredients (FoodID, Ingredients) "
             "VALUES (%s, %s)", ingredients
+        )
+        cur3.executemany(
+            "INSERT INTO foodtags (FoodID, Tags)"
+            "VALUES (%s, %s)", tags
         )
         mysql.connection.commit()
         cur.close()
