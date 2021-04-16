@@ -29,37 +29,39 @@
         <h1 class = "display-3">Write a Review</h1>
     </div>
 
+    {% for food in foods %}
+        {% if food[0] in reviewed %}
+            <div class = "Title">
+                <h3 class = "display-6 ml-5">{{food[1]}}</h3>
+                <form method="POST" action="">
+                    <div class="form-group col-md-4 ml-5 mt-4">
+                      <select id="sellerRate" name="sellerRate" class="form-control">
+                        <option selected>10</option>
+                        <option>9</option>
+                        <option>8</option>
+                        <option>7</option>
+                        <option>6</option>
+                        <option>5</option>
+                        <option>4</option>
+                        <option>3</option>
+                        <option>2</option>
+                        <option>1</option>
+                      </select>
+                        <small id="rateHelp" >
+                          Rate out of 10.
+                        </small>
+                    </div>
 
-    <div class = "Title">
-        <h3 class = "display-6 ml-5">{{foods[0][1]}}</h3>
-        <form method="POST" action="">
-            <div class="form-group col-md-4 ml-5 mt-4">
-              <select id="sellerRate" name="sellerRate" class="form-control">
-                <option selected>10</option>
-                <option>9</option>
-                <option>8</option>
-                <option>7</option>
-                <option>6</option>
-                <option>5</option>
-                <option>4</option>
-                <option>3</option>
-                <option>2</option>
-                <option>1</option>
-              </select>
-                <small id="rateHelp" >
-                  Rate out of 10.
-                </small>
+                    <h3 class = "display-6 ml-5 mt-4">Leave a review for:</h3>
+                    <div class="form-group ml-5 mt-3">
+                        <textarea class="form-control" id="review" rows="3" name="review" placeholder="Write your review here!" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary ml-5">Submit Review</button>
+
+                </form>
             </div>
-
-            <h3 class = "display-6 ml-5 mt-4">Leave a review for:</h3>
-            <div class="form-group ml-5 mt-3">
-                <textarea class="form-control" id="review" rows="3" name="review" placeholder="Write your review here!" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary ml-5">Submit Review</button>
-
-        </form>
-    </div>
-
+        {% endif %}
+    {% endfor %}
 
 
 </body>

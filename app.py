@@ -303,12 +303,16 @@ def review_load():
         cur3 = mysql.connection.cursor()
     cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur.execute("SELECT UserName FROM profile WHERE profile.UserID = %s", (reviewseller,))
+    cur.execute("SELECT FoodID FROM review WHERE review.CustomerUserID = %s", session["user"])
     cur2.execute("SELECT orderfoods.foodID, FoodName FROM orderfoods, food "
                  "WHERE orderfoods.OrderID = %s AND orderfoods.FoodID = food.FoodID", (reviewOrder,))
-    username = cur.fetchall()
-    foods = cur2.fetchall()
-    return render_template("review.html", sellerID=reviewseller, sellerName=username, foods=foods)
+    reviewed = cur.fetchall()
+    allreviewed = []
+    for r in reviewed:
+        allreviewed.append(r[0])
+    else:
+        foods = cur2.fetchall()
+        return render_template("review.html", reviewed=allreviewed, foods=foods)
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
@@ -323,6 +327,7 @@ def history_load():
         global reviewOrder
         reviewOrder = orderID
         return redirect("/review")
+
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
     cur2 = mysql.connection.cursor()
     cur2.execute("SELECT * FROM pHistory WHERE UserID = %s", session["user"])
