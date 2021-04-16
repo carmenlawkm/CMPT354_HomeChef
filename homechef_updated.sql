@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 15, 2021 at 06:02 PM
+-- Generation Time: Apr 16, 2021 at 02:00 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.21
 
@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `food` (
   `FoodName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `pricePerUnit` int DEFAULT NULL,
   `Availability` tinyint(1) DEFAULT NULL,
-  `Description` text COLLATE utf8mb4_general_ci,
-  `Instructions` text COLLATE utf8mb4_general_ci,
-  `Img_url` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Instructions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Img_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FoodID`) USING BTREE,
   KEY `PUserID` (`PUserID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `foodandrating` (
 DROP TABLE IF EXISTS `foodingredients`;
 CREATE TABLE IF NOT EXISTS `foodingredients` (
   `FoodID` int NOT NULL,
-  `Ingredients` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Ingredients` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -203,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `foodreviewaverage` (
 DROP TABLE IF EXISTS `foodtags`;
 CREATE TABLE IF NOT EXISTS `foodtags` (
   `FoodID` int NOT NULL,
-  `Tags` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `Tags` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FoodID`,`Tags`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -273,10 +273,10 @@ DROP TABLE IF EXISTS `orderinfo`;
 CREATE TABLE IF NOT EXISTS `orderinfo` (
   `OrderID` int NOT NULL AUTO_INCREMENT,
   `totalPrice` float NOT NULL,
-  `paymentMethod` text COLLATE utf8mb4_general_ci NOT NULL,
+  `paymentMethod` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `pickUpTime` datetime NOT NULL,
-  `contactInfo` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Region` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
+  `contactInfo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Region` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `orderTime` datetime NOT NULL,
   `customerID` int NOT NULL,
   `sellerID` int NOT NULL,
@@ -341,20 +341,37 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `phistory`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `phistory`;
+CREATE TABLE IF NOT EXISTS `phistory` (
+`UserID` int
+,`SellerID` int
+,`OrderID` int
+,`UserName` varchar(50)
+,`totalPrice` float
+,`orderTime` datetime
+,`pickUpTime` datetime
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `profile`
 --
 
 DROP TABLE IF EXISTS `profile`;
 CREATE TABLE IF NOT EXISTS `profile` (
   `UserID` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `Password` text COLLATE utf8mb4_general_ci NOT NULL,
-  `UserName` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `Phone` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `Location` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `Region` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `FirstName` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `LastName` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `UserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Phone` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Region` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `FirstName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `LastName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Img_url` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png',
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -405,8 +422,8 @@ CREATE TABLE IF NOT EXISTS `publicprofileinfo` (
 
 DROP TABLE IF EXISTS `regionpickup`;
 CREATE TABLE IF NOT EXISTS `regionpickup` (
-  `Region` varchar(25) COLLATE utf8mb4_general_ci NOT NULL,
-  `PickupAddress` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `Region` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `PickupAddress` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   UNIQUE KEY `Region` (`Region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -434,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   `CustomerUserID` int NOT NULL,
   `FoodID` int NOT NULL,
   `Rating` int NOT NULL,
-  `Comment` text COLLATE utf8mb4_general_ci,
+  `Comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`ReviewID`) USING BTREE,
   KEY `FoodID` (`FoodID`),
   KEY `CustomerUserID` (`CustomerUserID`)
@@ -485,7 +502,7 @@ INSERT INTO `seller` (`UserID`) VALUES
 DROP TABLE IF EXISTS `userallergies`;
 CREATE TABLE IF NOT EXISTS `userallergies` (
   `UserID` int NOT NULL,
-  `Allergies` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `Allergies` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`UserID`,`Allergies`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -529,6 +546,16 @@ DROP TABLE IF EXISTS `history`;
 
 DROP VIEW IF EXISTS `history`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS  select `c`.`UserID` AS `UserID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `phistory`
+--
+DROP TABLE IF EXISTS `phistory`;
+
+DROP VIEW IF EXISTS `phistory`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`pls`@`localhost` SQL SECURITY DEFINER VIEW `phistory`  AS  select `c`.`UserID` AS `UserID`,`s`.`UserID` AS `SellerID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
 
 -- --------------------------------------------------------
 

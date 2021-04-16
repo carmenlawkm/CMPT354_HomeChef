@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
 from datetime import datetime
@@ -16,6 +15,8 @@ app.config['MYSQL_DB'] = "homechef"
 mysql = MySQL(app)
 
 foodList = []
+
+
 @app.route('/home', methods=['GET', 'POST'])
 def home_load():
     cur1 = mysql.connection.cursor()
@@ -104,6 +105,7 @@ def login_load():
             return render_template("login.html", info=valid)
         return render_template("login.html")
 
+
 @app.route('/logout')
 def logout_load():
     session.pop("user", None)
@@ -161,7 +163,8 @@ def profile_load():
     else:
         return redirect("/login")
 
-@app.route('/settings', methods = ['GET','POST'])
+
+@app.route('/settings', methods=['GET', 'POST'])
 def settings_load():
     if "user" in session:
             cur = mysql.connection.cursor()
@@ -230,8 +233,6 @@ def post_load():
     return render_template("post.html", first_name=first_name, last_name=last_name, img_url=img_url)
 
 
-
-
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout_load():
     headings = ("Food", "Quantity", "Price")
@@ -266,6 +267,9 @@ def checkout_load():
             querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
             orderfoodcur.executemany(querystmt, foodarr)
 
+            orderplacementcur = mysql.connection.cursor()
+            orderplacementcur.execute("INSERT INTO orderplacement (OrderID, CustomerID, SellerID) VALUES (%s, %s, %s)",
+                                                        (orderid, customerId, sellerid))
             mysql.connection.commit()
             orderinfocur.close()
             orderfoodcur.close()
@@ -284,28 +288,42 @@ def foodsArr(orderid, foodlist):
         foodarr.append((orderid, f[2], f[0][1]))
     return foodarr
 
+
 def getSeller(foodl):
     return foodl[0][1]
 
+
+@app.route('/review', methods=['GET', 'POST'])
+def review_load():
+    if "user" not in session:
+        return redirect("/login")
+    return render_template("review.html")
+
+
 @app.route('/purchasehistory', methods=['GET', 'POST'])
 def history_load():
-    if "user" in session:
-        headings = ("#", "Seller", "Price", "Order Date", "Pickup Time")
-        cur = mysql.connection.cursor()
-        cur2 = mysql.connection.cursor()
-        cur.execute("SELECT OrderID FROM orderplacement WHERE customerID = %s", session["user"])
-        cur2.execute("SELECT * FROM history WHERE UserID = %s", session["user"])
-
-        orderID = cur.fetchall()
-        orderData = cur2.fetchall()
-
-
-        mysql.connection.commit()
-
-        cur.close()
-        return render_template("history.html", headings=headings, orderID=orderID, orderData=orderData)
-    else:
+    if "user" not in session:
         return redirect("/login")
+    if request.method == "POST":
+        cur = mysql.connection.cursor()
+        # cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+        # datalist = cur.fetchall()
+        # sellerId = getSellerId(datalist)
+        # foodTuple = cleanTuple(datalist, datanum)
+        # foodList.append(foodTuple)
+        # total = calculatetotal(foodList)
+        # return redirect("/cart")
+        return redirect("/review")
+    headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
+    cur2 = mysql.connection.cursor()
+    cur2.execute("SELECT * FROM pHistory WHERE UserID = %s", session["user"])
+
+    orderData = cur2.fetchall()
+
+    mysql.connection.commit()
+
+    cur2.close()
+    return render_template("history.html", headings=headings, orderData=orderData)
 
 
 @app.route('/cart', methods=['GET', 'POST'])

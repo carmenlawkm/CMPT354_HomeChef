@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+    Reviews
+{% endblock %}
+
+{% block body_block %}
+
+<style type="text/css">
+    .pic1{
+            background-image: url("https://images.pexels.com/photos/4664463/pexels-photo-4664463.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+        }
+    .Title{
+        padding-top: 2%;
+        padding-left: 10%;
+        padding-right: 10%;
+        text-align: left;
+        font-size: x-large;
+    }
+</style>
+
+<body class="pic1">
+    <div class = "Title">
+        <h1 class = "display-3">Write a Review</h1>
+    </div>
+
+<!--    review seller -->
+    <div class = "Title">
+        <h3 class = "display-6 ml-5">Review the seller: </h3>
+    </div>
+
+</body>
+
+{% endblock %}
