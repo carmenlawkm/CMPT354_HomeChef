@@ -350,10 +350,19 @@ def cart_load():
 @app.route('/notification', methods=['GET', 'POST'])
 def notification_load():
     if "user" in session:
+        if request.method == "POST":
+            print("in get")
+            cur1 = mysql.connection.cursor()
+            accept = request.form['accept']
+            cur1.execute("UPDATE orderinfo set processed=1 WHERE orderID = %s", [accept])
+            mysql.connection.commit()
+            cur1.close()
+            return redirect("/notification")
+
         headings = ("#", "Buyer", "Contact","Food", "Payment", "Order Date", "Pickup Time","Pickup Address", "Process")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM orderinfo, orderfoods WHERE sellerID = %s AND orderfoods.OrderID = orderinfo.OrderID", session["user"])
-        orderInfo = cur.fetchall();
+        cur.execute("SELECT * FROM fullorderinfoforseller WHERE sellerID = %s", session["user"])
+        orderInfo = cur.fetchall()
         mysql.connection.commit()
         cur.close()
         return render_template("notification.html", orderInfo = orderInfo, headings=headings)
