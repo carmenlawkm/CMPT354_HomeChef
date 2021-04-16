@@ -35,6 +35,7 @@
           <tr>
             {% for header in headings %}
               <th>{{ header }}</th>
+
             {% endfor %}
           </tr>
         </thead>
@@ -45,8 +46,13 @@
             {% for x in range(5) %}
               <td>{{ row[x+1]}}</td>
             {% endfor %}
-              <td><button type="button" class="btn btn-info">Review</button></td>
+              <td>
+                  <form method = "POST" action = "">
+                      <button type="submit" class="btn btn-info">Review</button>
+                  </form>
+              </td>
           </tr>
+
           {% endfor %}
   </tbody>
       </table>
