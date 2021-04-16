@@ -329,6 +329,13 @@ def cart_load():
     else:
         return redirect("/login")
 
+@app.route('/notification', methods=['GET', 'POST'])
+def notification_load():
+    if "user" in session:
+        return render_template("notification.html")
+    else:
+        return redirect("/login")
+
 def cleanfoodlist(foodList):
     datalist = []
     for f in foodList:
