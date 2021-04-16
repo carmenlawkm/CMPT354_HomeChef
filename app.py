@@ -198,14 +198,15 @@ def post_load():
 
         food_price = request.form["food-price"]
         description = request.form["description"]
+        instructions = request.form["instructions"]
 
         cur = mysql.connection.cursor()
         cur1 = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description) "
-            "VALUES (%s, %s, %s, %s, %s, %s)",
-            (session["user"], food_name, food_img_url, availability, int(food_price), description)
+            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session["user"], food_name, food_img_url, availability, int(food_price), description, instructions)
         )
         cur1.execute("SELECT LAST_INSERT_ID()")
         food_id = cur1.fetchall()
@@ -234,8 +235,6 @@ def post_load():
     last_name = user_data[1]
     img_url = user_data[2]
     return render_template("post.html", first_name=first_name, last_name=last_name, img_url=img_url)
-
-
 
 
 @app.route('/checkout', methods=['GET', 'POST'])
