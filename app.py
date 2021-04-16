@@ -266,6 +266,9 @@ def checkout_load():
             querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
             orderfoodcur.executemany(querystmt, foodarr)
 
+            orderplacementcur = mysql.connection.cursor()
+            orderplacementcur.execute("INSERT INTO orderplacement (OrderID, CustomerID, SellerID) VALUES (%s, %s, %s)",
+                                                        (orderid, customerId, sellerid))
             mysql.connection.commit()
             orderinfocur.close()
             orderfoodcur.close()
