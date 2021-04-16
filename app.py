@@ -332,7 +332,13 @@ def cart_load():
 @app.route('/notification', methods=['GET', 'POST'])
 def notification_load():
     if "user" in session:
-        return render_template("notification.html")
+        headings = ("#", "Buyer", "Price", "Order Date", "Pickup Time","Pickup Address", "Process")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM orderinfo WHERE sellerID = %s", session["user"])
+        orderInfo = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        return render_template("notification.html", orderInfo = orderInfo, headings=headings)
     else:
         return redirect("/login")
 
