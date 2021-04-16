@@ -40,7 +40,7 @@ def home_load():
             cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
             datalist = cur.fetchall()
 
-            foodTuple = cleanTuple(datalist, datanum)
+            foodTuple = cleanTuple(datalist, datanum, data)
             if checkSameId(foodTuple[1]) != 1:
                 flash("must choose foods from same seller as other items in cart!")
                 return redirect("/home")
@@ -59,13 +59,13 @@ def calculatetotal(foodl):
     return total
 
 
-def cleanTuple(datalist, datanum):
+def cleanTuple(datalist, datanum, foodid):
     cleaned = datalist[0]
     sellerId = cleaned[1]
     food = cleaned[2]
     quantity = datanum
     price = cleaned[3]
-    foodTuple = ((food, quantity, price), sellerId)
+    foodTuple = ((food, quantity, price), sellerId, foodid)
     return foodTuple
 
 
@@ -75,10 +75,6 @@ def checkSameId(sellerid):
             return 0
     return 1
 
-
-def getSellerId(data):
-    food = data[0]
-    return food[1]
 
 @app.route('/')
 @app.route('/about')
@@ -250,7 +246,8 @@ def checkout_load():
         sellername = cur.fetchone()
         print(sellername)
         if request.method == "POST":
-            cur2 = mysql.connection.cursor()
+            orderinfocur = mysql.connection.cursor()
+            orderidcur = mysql.connection.cursor()
             payMethod = request.form['pmethod']
             pick_up_time = request.form['date']
             contactInfo = request.form['contactinfo']
@@ -258,12 +255,19 @@ def checkout_load():
             orderTime = datetime.now()
             customerId = session["user"]
 
-            cur2.execute(
+            orderinfocur.execute(
                 "INSERT INTO orderinfo (totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                 (total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerid))
+            orderidcur.execute("SELECT MAX(OrderID) FROM orderinfo")
+            orderid = orderidcur.fetchone()
+            foodarr = foodsArr(orderid, foodList)
+            orderfoodcur = mysql.connection.cursor()
+            querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
+            orderfoodcur.executemany(querystmt, foodarr)
 
             mysql.connection.commit()
-            cur2.close()
+            orderinfocur.close()
+            orderfoodcur.close()
             flash("Order placed successfully!")
             return redirect("/home")
         mysql.connection.commit()
@@ -272,6 +276,12 @@ def checkout_load():
         return render_template("checkout.html", headings=headings, data=datalist, total=total, seller=sellername)
     else:
         return redirect("/login")
+
+def foodsArr(orderid, foodlist):
+    foodarr = []
+    for f in foodlist:
+        foodarr.append((orderid, f[2], f[0][1]))
+    return foodarr
 
 def getSeller(foodl):
     print(foodl[0][1])
