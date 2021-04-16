@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, url_for, flash, redirect, session, jsonify
 from flask_mysqldb import MySQL
 from datetime import datetime
