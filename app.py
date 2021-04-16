@@ -299,6 +299,8 @@ def getSeller(foodl):
 def review_load():
     if "user" not in session:
         return redirect("/login")
+    if request.method == "POST":
+        cur3 = mysql.connection.cursor()
     cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
     cur.execute("SELECT UserName FROM profile WHERE profile.UserID = %s", (reviewseller,))
@@ -316,18 +318,10 @@ def history_load():
     if request.method == "POST":
         sellerID = request.form['sellerID']
         orderID = request.form['orderID']
-        # cur = mysql.connection.cursor()
-        # cur.execute("SELECT UserID FROM profile WHERE profile.UserID = %s", (sellerID,))
-        # username = cur.fetchall()
         global reviewseller
         reviewseller = sellerID
         global reviewOrder
         reviewOrder = orderID
-        # sellerId = getSellerId(datalist)
-        # foodTuple = cleanTuple(datalist, datanum)
-        # foodList.append(foodTuple)
-        # total = calculatetotal(foodList)
-        # return redirect("/cart")
         return redirect("/review")
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
     cur2 = mysql.connection.cursor()

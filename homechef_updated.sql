@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 16, 2021 at 02:00 AM
+-- Generation Time: Apr 16, 2021 at 04:58 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.21
 
@@ -217,6 +217,31 @@ INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `fullorderinfoforseller`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `fullorderinfoforseller`;
+CREATE TABLE IF NOT EXISTS `fullorderinfoforseller` (
+`OrderID` int
+,`totalPrice` float
+,`paymentMethod` text
+,`pickUpTime` datetime
+,`contactInfo` text
+,`Region` varchar(25)
+,`orderTime` datetime
+,`customerID` int
+,`sellerID` int
+,`FoodID` int
+,`quantity` int
+,`FoodName` varchar(50)
+,`FirstName` varchar(20)
+,`LastName` varchar(20)
+,`PickupAddress` varchar(500)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `history`
 -- (See below for the actual view)
 --
@@ -280,6 +305,7 @@ CREATE TABLE IF NOT EXISTS `orderinfo` (
   `orderTime` datetime NOT NULL,
   `customerID` int NOT NULL,
   `sellerID` int NOT NULL,
+  `Processed` tinyint(1) NOT NULL,
   PRIMARY KEY (`OrderID`) USING BTREE,
   KEY `customerID` (`customerID`),
   KEY `sellerID` (`sellerID`),
@@ -290,19 +316,19 @@ CREATE TABLE IF NOT EXISTS `orderinfo` (
 -- Dumping data for table `orderinfo`
 --
 
-INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `Region`, `orderTime`, `customerID`, `sellerID`) VALUES
-(100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', 'Vancouver', '2021-03-14 21:59:54', 1, 2),
-(100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'Tri-city', '2021-03-16 22:13:25', 1, 2),
-(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5),
-(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5),
-(100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', 'Burnaby', '2021-03-19 19:12:08', 7, 8),
-(100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', 'Tri-city', '2021-04-10 19:19:45', 3, 28),
-(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5),
-(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1),
-(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5),
-(100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', 'Surrey', '2021-04-10 20:40:23', 3, 13),
-(100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'Surrey', '2021-04-10 20:56:27', 3, 1),
-(100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13);
+INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `Region`, `orderTime`, `customerID`, `sellerID`, `Processed`) VALUES
+(100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', 'Vancouver', '2021-03-14 21:59:54', 1, 2, 0),
+(100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'Tri-city', '2021-03-16 22:13:25', 1, 2, 0),
+(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5, 0),
+(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5, 0),
+(100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', 'Burnaby', '2021-03-19 19:12:08', 7, 8, 0),
+(100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', 'Tri-city', '2021-04-10 19:19:45', 3, 28, 0),
+(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5, 0),
+(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1, 0),
+(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5, 0),
+(100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', 'Surrey', '2021-04-10 20:40:23', 3, 13, 0),
+(100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'Surrey', '2021-04-10 20:56:27', 3, 1, 0),
+(100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13, 0);
 
 -- --------------------------------------------------------
 
@@ -536,6 +562,16 @@ DROP TABLE IF EXISTS `foodreviewaverage`;
 
 DROP VIEW IF EXISTS `foodreviewaverage`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS  select `review`.`FoodID` AS `RfoodID`,round(avg(`review`.`Rating`),1) AS `avergeReview` from `review` group by `review`.`FoodID` ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `fullorderinfoforseller`
+--
+DROP TABLE IF EXISTS `fullorderinfoforseller`;
+
+DROP VIEW IF EXISTS `fullorderinfoforseller`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`pls`@`localhost` SQL SECURITY DEFINER VIEW `fullorderinfoforseller`  AS  select `orderinfo`.`OrderID` AS `OrderID`,`orderinfo`.`totalPrice` AS `totalPrice`,`orderinfo`.`paymentMethod` AS `paymentMethod`,`orderinfo`.`pickUpTime` AS `pickUpTime`,`orderinfo`.`contactInfo` AS `contactInfo`,`orderinfo`.`Region` AS `Region`,`orderinfo`.`orderTime` AS `orderTime`,`orderinfo`.`customerID` AS `customerID`,`orderinfo`.`sellerID` AS `sellerID`,`orderfoods`.`FoodID` AS `FoodID`,`orderfoods`.`quantity` AS `quantity`,`food`.`FoodName` AS `FoodName`,`publicprofileinfo`.`FirstName` AS `FirstName`,`publicprofileinfo`.`LastName` AS `LastName`,`regionpickup`.`PickupAddress` AS `PickupAddress` from ((((`orderinfo` join `orderfoods` on((`orderinfo`.`OrderID` = `orderfoods`.`OrderID`))) join `food` on((`orderfoods`.`FoodID` = `food`.`FoodID`))) join `publicprofileinfo` on((`orderinfo`.`customerID` = `publicprofileinfo`.`UserID`))) join `regionpickup` on((`orderinfo`.`Region` = `regionpickup`.`Region`))) ;
 
 -- --------------------------------------------------------
 
