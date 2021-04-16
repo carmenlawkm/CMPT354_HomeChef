@@ -300,7 +300,15 @@ def review_load():
     if "user" not in session:
         return redirect("/login")
     if request.method == "POST":
+        food = request.form["food"]
+        rate = request.form["sellerRate"]
+        comment = request.form["review"]
         cur3 = mysql.connection.cursor()
+        cur3.execute("INSERT INTO review (CustomerUserID, FoodID, Rating, Comment) VALUES (%s, %s,%s,%s)",
+                     (session["user"], food, rate, comment))
+        mysql.connection.commit()
+        cur3.close()
+        return redirect("/purchasehistory")
     cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
     cur.execute("SELECT FoodID FROM review WHERE review.CustomerUserID = %s", session["user"])
