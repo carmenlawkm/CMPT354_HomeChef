@@ -300,9 +300,13 @@ def review_load():
     if "user" not in session:
         return redirect("/login")
     cur = mysql.connection.cursor()
+    cur2 = mysql.connection.cursor()
     cur.execute("SELECT UserName FROM profile WHERE profile.UserID = %s", (reviewseller,))
+    cur2.execute("SELECT orderfoods.foodID, FoodName FROM orderfoods, food "
+                 "WHERE orderfoods.OrderID = %s AND orderfoods.FoodID = food.FoodID", (reviewOrder,))
     username = cur.fetchall()
-    return render_template("review.html", sellerID=reviewseller, sellerName=username)
+    foods = cur2.fetchall()
+    return render_template("review.html", sellerID=reviewseller, sellerName=username, foods=foods)
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
@@ -311,11 +315,14 @@ def history_load():
         return redirect("/login")
     if request.method == "POST":
         sellerID = request.form['sellerID']
+        orderID = request.form['orderID']
         # cur = mysql.connection.cursor()
         # cur.execute("SELECT UserID FROM profile WHERE profile.UserID = %s", (sellerID,))
         # username = cur.fetchall()
         global reviewseller
         reviewseller = sellerID
+        global reviewOrder
+        reviewOrder = orderID
         # sellerId = getSellerId(datalist)
         # foodTuple = cleanTuple(datalist, datanum)
         # foodList.append(foodTuple)
