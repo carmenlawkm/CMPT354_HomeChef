@@ -44,10 +44,12 @@
     {% for row in orderData %}
           <tr>
             {% for x in range(5) %}
-              <td>{{ row[x+1]}}</td>
+              <td>{{ row[x+2]}}</td>
             {% endfor %}
               <td>
                   <form method = "POST" action = "">
+                      <input type="text" name="sellerID" value="{{ row[1] }}" style="visibility: hidden"><br>
+                      <input type="text" name="sellerName" value="{{ row[3] }}" style="visibility: hidden"><br>
                       <button type="submit" class="btn btn-info">Review</button>
                   </form>
               </td>

@@ -270,14 +270,19 @@ def history_load():
     if "user" not in session:
         return redirect("/login")
     if request.method == "POST":
-        return redirect("/home")
+        cur = mysql.connection.cursor()
+        # cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+        # datalist = cur.fetchall()
+        # sellerId = getSellerId(datalist)
+        # foodTuple = cleanTuple(datalist, datanum)
+        # foodList.append(foodTuple)
+        # total = calculatetotal(foodList)
+        # return redirect("/cart")
+        return redirect("/review")
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
-    # cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    # cur.execute("SELECT OrderID, FoodID FROM orderinfo")
-    cur2.execute("SELECT * FROM history WHERE UserID = %s", session["user"])
+    cur2.execute("SELECT * FROM pHistory WHERE UserID = %s", session["user"])
 
-    # foodOrderData = cur.fetchall()
     orderData = cur2.fetchall()
 
     mysql.connection.commit()
