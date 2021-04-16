@@ -65,60 +65,21 @@
           <div class="col-md-6 position-static p-4 pl-md-0">
             <h5 class="mt-0">Description</h5>
             <textarea type="text" class="form-control-plaintext form-control" name = "description"
-                 rows="5" placeholder="Write food description here!" required></textarea>
+                 rows="3" placeholder="Write food description here!" required></textarea>
             <h5 class="mt-0">Ingredients</h5>
                 <input type="text" class="form-control-plaintext" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default" name = "ingredients" id=invalidCheck2"
                    placeholder="Ingredient1, Ingredient2, ... All ingredients should be comma separated!" required>
+            <h5 class="mt-0">Instructions</h5>
+            <textarea type="text" class="form-control-plaintext form-control" name = "instructions"
+                 rows="5" placeholder="Write food Instructions here!" required></textarea>
+            <h5 class="mt-0">Tags</h5>
+                <input type="text" class="form-control-plaintext" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default" name = "tags" id=invalidCheck2"
+                   placeholder="Vegan, Vegtarian, Halal, ... All ingredients should be comma separated!" required>
 
-                <p></p>
-              <br><h5 class="mt-0">Tags</h5>
-              <div style="margin-top: 25px; margin-bottom: 25px">
-{#                {% if food[4] == 0%}#}
-{#                    <div class="alert alert-danger" role="alert" style="width: 20%; text-align: center; display: inline">Not Available</div>#}
-{#                {% endif %}#}
-{#                {% if food[4] == 1%}#}
-{#                    <div class="alert alert-warning" role="alert" style="width: 20%; text-align: center; display: inline">Available</div>#}
-{#                {% endif %}#}
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Available</a>
-                    <a class="dropdown-item" href="#">Not Available</a>
-                </div>
-              </div>
-              <h5 class="mt-0">Available Dates</h5>
-              <table class="table calendar" id="food-table">
-                  <thead>
-                    <tr>
-                        <th scope="col" >Sun</th>
-                        <th scope="col">Mon</th>
-                        <th scope="col">Tues</th>
-                        <th scope="col">Wed</th>
-                        <th scope="col">Thurs</th>
-                        <th scope="col">Fri</th>
-                        <th scope="col">Sat</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                  </tbody>
-                </table>
 
               <div align="center">
-{#                {% if true%}#}
-{#                  <form method="POST" action="">#}
-{#                      <input type="text" name="data" value="" style="visibility: hidden"><br>#}
-{#                      <button type="submit" class="btn btn-warning" >Add to cart</button>#}
-{#                      <input type="number" placeholder="quantity" name="datanum">#}
-{#                  </form>#}
-{#                      <!--<button class="btn btn-warning"> <a href="/my-link/">add to cart {{ food[2] }}</a></button>-->#}
-{#                {% endif %}#}
-
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                   <input type="radio" class="btn-check" name="availability" id="btnradio1" value="1" autocomplete="off" checked>
                   <label class="btn btn-success" for="btnradio1">Available</label>
@@ -126,13 +87,13 @@
                   <label class="btn btn-danger" for="btnradio2">Not Available</label>
                 </div>
 
-                  <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" name = "food-price"
-                placeholder="Enter the food price here!" required>
+                <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default" name = "food-price"
+                    placeholder="Enter the food price here!" required>
 
                 <input type="text" class="form-control-plaintext mt-0" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" name = "food-img-url"
-                placeholder="Enter the image url here!" required>
+                    aria-describedby="inputGroup-sizing-default" name = "food-img-url"
+                    placeholder="Enter the image url here!" required>
 
                 <button type="submit" class="btn btn-primary">Post</button>
 
