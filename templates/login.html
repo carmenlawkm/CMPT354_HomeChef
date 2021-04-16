@@ -1,15 +1,36 @@
+<style type="text/css">
+    .heading{
+        padding-top: 8%;
+        padding-left: 10%;
+        padding-right: 10%;
+        text-align: center;
+        font-size: x-large;
+    }
+
+    .bg{
+            background-image: url("https://images.pexels.com/photos/106343/pexels-photo-106343.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+            min-height: 90%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+    }
+</style>
+
 {% extends "base.html" %}
 {% block title %}
     Login
 {% endblock %}
 {% block body_block %}
-    {% if info == 0 %}
-        <div class="alert alert-warning"  role="alert" id="wrong-pass">
-          Wrong Email or Password!
+<body class="bg">
+     <div class = "heading">
+            <h1 class = "display-4">Login</h1>
         </div>
-    {% endif %}
-    <form class = "col-5 p-3 m-3 bg-light" method = "POST" action = "">
-      <div class="form-group" >
+
+    <div style="display: flex;justify-content: center;">
+    <form class = "col-5 p-3 m-3 bg-light rounded"  method = "POST" action = "" >
+      <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -18,6 +39,15 @@
         <label for="exampleInputPassword1">Password</label>
         <input type="password" class="form-control" name="password" placeholder="Password">
       </div>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <div align="center"><button type="submit" class="btn btn-primary">Login</button></div>
     </form>
+        </div>
+
+    {% if info == 0 %}
+        <div class="alert alert-danger"  role="warning" id="wrong-pass"  style="margin: 0 auto; width: 20%" align="center">
+          Wrong Email or Password!
+        </div>
+    {% endif %}
+
+</body>
 {% endblock %}
