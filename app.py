@@ -316,7 +316,7 @@ def history_load():
         return redirect("/review")
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
     cur2 = mysql.connection.cursor()
-    cur2.execute("SELECT * FROM pHistory WHERE UserID = %s", session["user"])
+    cur2.execute("SELECT * FROM History WHERE UserID = %s", session["user"])
 
     orderData = cur2.fetchall()
 
@@ -350,10 +350,10 @@ def cart_load():
 @app.route('/notification', methods=['GET', 'POST'])
 def notification_load():
     if "user" in session:
-        headings = ("#", "Buyer", "Price", "Order Date", "Pickup Time","Pickup Address", "Process")
+        headings = ("#", "Buyer", "Contact","Food", "Payment", "Order Date", "Pickup Time","Pickup Address", "Process")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM orderinfo WHERE sellerID = %s", session["user"])
-        orderInfo = cur.fetchall()
+        cur.execute("SELECT * FROM orderinfo, orderfoods WHERE sellerID = %s AND orderfoods.OrderID = orderinfo.OrderID", session["user"])
+        orderInfo = cur.fetchall();
         mysql.connection.commit()
         cur.close()
         return render_template("notification.html", orderInfo = orderInfo, headings=headings)
