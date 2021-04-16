@@ -283,7 +283,6 @@ def checkout_load():
         return redirect("/login")
 
 
-
 def foodsArr(orderid, foodlist):
     foodarr = []
     for f in foodlist:
@@ -311,16 +310,16 @@ def review_load():
         return redirect("/purchasehistory")
     cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur.execute("SELECT FoodID FROM review WHERE review.CustomerUserID = %s", session["user"])
+    cur.execute("SELECT * FROM review WHERE review.CustomerUserID = %s", session["user"])
     cur2.execute("SELECT orderfoods.foodID, FoodName FROM orderfoods, food "
                  "WHERE orderfoods.OrderID = %s AND orderfoods.FoodID = food.FoodID", (reviewOrder,))
     reviewed = cur.fetchall()
     allreviewed = []
     for r in reviewed:
-        allreviewed.append(r[0])
+        allreviewed.append(r[2])
     else:
         foods = cur2.fetchall()
-        return render_template("review.html", reviewed=allreviewed, foods=foods)
+        return render_template("review.html", reviewed=allreviewed, foods=foods, reviews=reviewed)
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])

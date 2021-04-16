@@ -59,10 +59,20 @@
                     <input type="text" name="food" value="{{ food[0] }}" style="visibility: hidden"><br>
 
                     <button type="submit" class="btn btn-primary ml-5">Submit Review</button>
-
                 </form>
             </div>
         {% endif %}
+    {% endfor %}
+
+
+
+    {% for r in reviews %}
+        <div class = "Title">
+            <h1 class = "display-3">Your Reviews: </h1>
+            <h2 class = "display-6 ml-5">{{r[2]}}: {{r[3]}}/10</h2>
+            <small class = "display-6 ml-5 ">{{r[4]}}</small>
+        </div>
+
     {% endfor %}
 
 
