@@ -27,7 +27,6 @@ def home_load():
     mysql.connection.commit()
     cur1.close()
     cur2.close()
-    print("home load")
     if request.method == 'POST':
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
@@ -244,7 +243,7 @@ def checkout_load():
         cur = mysql.connection.cursor()
         cur.execute("SELECT FirstName, LastName FROM profile WHERE UserID = %s", (sellerid,))
         sellername = cur.fetchone()
-        print(sellername)
+
         if request.method == "POST":
             orderinfocur = mysql.connection.cursor()
             orderidcur = mysql.connection.cursor()
@@ -258,8 +257,10 @@ def checkout_load():
             orderinfocur.execute(
                 "INSERT INTO orderinfo (totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                 (total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerid))
-            orderidcur.execute("SELECT MAX(OrderID) FROM orderinfo")
+
+            orderidcur.execute("SELECT LAST_INSERT_ID()")
             orderid = orderidcur.fetchone()
+
             foodarr = foodsArr(orderid, foodList)
             orderfoodcur = mysql.connection.cursor()
             querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
@@ -284,9 +285,7 @@ def foodsArr(orderid, foodlist):
     return foodarr
 
 def getSeller(foodl):
-    print(foodl[0][1])
     return foodl[0][1]
-
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
 def history_load():
@@ -312,7 +311,7 @@ def history_load():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart_load():
     total = calculatetotal(foodList)
-    print("cart load")
+
     if "user" in session:
         headings = ("Food", "Quantity", "Price")
         datalist = cleanfoodlist(foodList)
