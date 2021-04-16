@@ -29,7 +29,43 @@
         text-align: center;
         font-size: medium;
     }
+    .pickupDiv{
+        background-color: #e3e3e3;
+        color: black;
+        border-radius: 5px;
+    }
 </style>
+
+<script>
+    // <option id="burnaby" value="Burnaby">Burnaby</option>
+    //                                 <option id="nw" value="North/west vancouver">North/ West Vancouver</option>
+    //                                 <option id="richmond" value="Richmond">Richmond</option>
+    //                                 <option id="surrey" value="Surrey">Surrey</option>
+    //                                 <option id="tri" value="Tri-city">Tri-city</option>
+    //                                 <option id="vancouver" value="Vancouver">Vancouver</option>
+    function showPickup(p){
+        value = p.value;
+        p = document.getElementById("pickupPoint")
+        if(value === "Burnaby"){
+            p.innerHTML = "Metrotown Station"
+        }
+        else if(value === "North/ west Vancouver"){
+            p.innerHTML = "Lonsdale Quay"
+        }
+        else if(value === "Richmond"){
+            p.innerHTML = "Aberdeen Center"
+        }
+        else if(value === "Surrey"){
+            p.innerHTML = "King George Station"
+        }
+        else if(value === "Tri-city"){
+            p.innerHTML = "Coquitlam Center Station"
+        }
+        else if(value === "Vancouver"){
+            p.innerHTML = "Waterfront Station"
+        }
+    }
+</script>
 
 <body class="pic1">
     <div class = "Title">
@@ -76,8 +112,15 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroup-sizing-default1" >Payment Method: </span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "pmethod" id=invalidCheck2" required>
+<!--                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name = "pmethod" id=invalidCheck2" required>-->
+                            <select id="payMethods" name="pmethod">
+                                    <option value="Credit card">Credit card</option>
+                                    <option value="Debit card">Debit card</option>
+                                    <option value="Cash">Cash</option>
+
+                            </select>
                     </div>
+
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -90,20 +133,23 @@
                         <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-default" name = "region">Region</span>
                         </div>
-                            <select id="regions" name="region">
-                                    <option value="Burnaby">Burnaby</option>
-                                    <option value="North/west vancouver">North/ West Vancouver</option>
-                                    <option value="Richmond">Richmond</option>
-                                    <option value="Surrey">Surrey</option>
-                                    <option value="Tri-city">Tri-city</option>
-                                    <option value="Vancouver">Vancouver</option>
+                            <select id="regionSelect" name="region" onchange="showPickup(this)">
+                                    <option id="burnaby" value="Burnaby">Burnaby</option>
+                                    <option id="nw" value="North/ west Vancouver">North/ West Vancouver</option>
+                                    <option id="richmond" value="Richmond">Richmond</option>
+                                    <option id="surrey" value="Surrey">Surrey</option>
+                                    <option id="tri" value="Tri-city">Tri-city</option>
+                                    <option id="vancouver" value="Vancouver">Vancouver</option>
                             </select>
+                        </div>
+
+
+
+                    <div id="pickupPointdiv" class="pickupDiv p-2">
+                        <p class="m-0">Pick up point: <span id="pickupPoint">Metrotown Station</span></p>
+                        <p class="m-0">Seller: <span id="seller">{{ seller[0] }} {{ seller[1] }}</span></p>
                     </div>
 
-                    <div class="input-group">
-                          <span class="input-group-text">Pick Up Address: </span>
-                          <textarea class="form-control" aria-label="With textarea" name="address"></textarea>
-                    </div>
                     <div class="input-group my-2">
                         <span class="input-group-text">Pick up date </span>
                         <input type="datetime-local" name="date">
