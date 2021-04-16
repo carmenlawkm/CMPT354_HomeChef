@@ -31,8 +31,37 @@
 
 <!--    review seller -->
     <div class = "Title">
-        <h3 class = "display-6 ml-5">Review the seller: </h3>
+        <h3 class = "display-6 ml-5">Rate the seller: {{sellerName[0][0]}}</h3>
+        <form>
+            <div class="form-group col-md-4 ml-5">
+    <!--          <label for="sellerRate">Out of 5</label>-->
+              <select id="sellerRate" class="form-control">
+                <option selected>10</option>
+                <option>9</option>
+                <option>8</option>
+                <option>7</option>
+                <option>6</option>
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+              </select>
+                <small id="rateHelp" >
+                  Rate out of 10.
+                </small>
+            </div>
+        </form>
     </div>
+
+
+<!--review foods -->
+    <div class = "Title">
+        <h3 class = "display-6 ml-5">Leave a review for: {{sellerName[0][0]}}</h3>
+
+    </div>
+
+
 
 </body>
 

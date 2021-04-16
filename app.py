@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = "NoKey"
 
 app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_USER'] = "pls"
 app.config['MYSQL_PASSWORD'] = ""
 app.config['MYSQL_DB'] = "homechef"
 
@@ -282,6 +282,8 @@ def checkout_load():
     else:
         return redirect("/login")
 
+
+
 def foodsArr(orderid, foodlist):
     foodarr = []
     for f in foodlist:
@@ -297,7 +299,10 @@ def getSeller(foodl):
 def review_load():
     if "user" not in session:
         return redirect("/login")
-    return render_template("review.html")
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT UserName FROM profile WHERE profile.UserID = %s", (reviewseller,))
+    username = cur.fetchall()
+    return render_template("review.html", sellerID=reviewseller, sellerName=username)
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
@@ -305,9 +310,12 @@ def history_load():
     if "user" not in session:
         return redirect("/login")
     if request.method == "POST":
-        cur = mysql.connection.cursor()
-        # cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
-        # datalist = cur.fetchall()
+        sellerID = request.form['sellerID']
+        # cur = mysql.connection.cursor()
+        # cur.execute("SELECT UserID FROM profile WHERE profile.UserID = %s", (sellerID,))
+        # username = cur.fetchall()
+        global reviewseller
+        reviewseller = sellerID
         # sellerId = getSellerId(datalist)
         # foodTuple = cleanTuple(datalist, datanum)
         # foodList.append(foodTuple)
