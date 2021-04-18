@@ -24,11 +24,12 @@ def home_load():
     cur3 = mysql.connection.cursor()
     division = mysql.connection.cursor()
 
-    cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
+    cur1.execute("SELECT * FROM foodandrating, publicprofileinfo, foodsellerrating WHERE foodandrating.PUserID = publicprofileinfo.UserID && foodandrating.FoodID = foodsellerrating.FoodID")
     cur2.execute("SELECT * FROM foodingredients")
     cur3.execute("SELECT * FROM foodtags")
     division.execute("SELECT foodID FROM foodtags GROUP BY foodID HAVING COUNT(*) = (SELECT COUNT(*) FROM uniquetags)")
     fetch = cur1.fetchall()
+    print(fetch)
     fetch2 = cur2.fetchall()
     fetch3 = cur3.fetchall()
     foodWithAllTags = division.fetchall()
