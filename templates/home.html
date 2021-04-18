@@ -42,47 +42,30 @@
 
           </div>
           <div class="col-md-6 position-static p-4 pl-md-0">
-              <h5 class="mt-0">Description</h5>
-              <p>{{ food[5]}}</p>
-              <h5 class="mt-0">Ingredients</h5>
+            <div style="margin-top: 25px; margin-bottom: 25px">
+                {% if food[4] == 0%}
+                    <div class="alert alert-danger d-inline" role="alert" style="width: 20%; text-align: center">Not Available</div>
+                {% endif %}
+                {% if food[4] == 1%}
+                    <div class="alert alert-warning d-inline" role="alert" style="width: 20%; text-align: center">Available</div>
+                {% endif %}
+            </div>
+            <h5 class="mt-0" >Description</h5>
+            <p>{{ food[5]}}</p>
+            <h5 class="mt-0">Ingredients</h5>
                 {% for ingredient in foodIngredients %}
                     {% if food[0] == ingredient[0] %}
-                    <span>{{ ingredient[1]+", "}}</span>
+                        <span>{{ ingredient[1]+", "}}</span>
                     {% endif %}
                 {% endfor %}
-                    <p></p>
-              <br><h5 class="mt-0">Tags</h5>
-              <div style="margin-top: 25px; margin-bottom: 25px">
-                    {% if food[4] == 0%}
-                        <div class="alert alert-danger" role="alert" style="width: 20%; text-align: center; display: inline">Not Available</div>
-                    {% endif %}
-                    {% if food[4] == 1%}
-                        <div class="alert alert-warning" role="alert" style="width: 20%; text-align: center; display: inline">Available</div>
-                    {% endif %}
-              </div>
-              <h5 class="mt-0">Available Dates</h5>
-              <table class="table calendar" id="food-table">
-                  <thead>
-                    <tr>
-                        <th scope="col" >Sun</th>
-                        <th scope="col">Mon</th>
-                        <th scope="col">Tues</th>
-                        <th scope="col">Wed</th>
-                        <th scope="col">Thurs</th>
-                        <th scope="col">Fri</th>
-                        <th scope="col">Sat</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                  </tbody>
-                </table>
+            <h5 class="mt-0">Instructions</h5>
+            <p>{{ food[6]}}</p>
+            <h5 class="mt-0">Tags</h5>
+            {% for tag in foodtags %}
+                {% if food[0] == tag[0] %}
+                    <span>{{ tag[1]+", "}}</span>
+                {% endif %}
+            {% endfor %}
 
               <div align="center">
                   {% if food[4] == 1%}

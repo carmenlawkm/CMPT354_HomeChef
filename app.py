@@ -21,14 +21,18 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
+    cur3 = mysql.connection.cursor()
 
     cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
+    cur3.execute("SELECT * FROM foodtags")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
+    fetch3 = cur3.fetchall()
     mysql.connection.commit()
     cur1.close()
     cur2.close()
+    cur3.close()
     if request.method == 'POST':
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
@@ -40,7 +44,8 @@ def home_load():
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
             datalist = cur.fetchall()
-
+            mysql.connection.commit()
+            cur.close()
             foodTuple = cleanTuple(datalist, datanum, data)
             if checkSameId(foodTuple[1]) != 1:
                 flash("must choose foods from same seller as other items in cart!")
@@ -50,9 +55,12 @@ def home_load():
                 return redirect("/home")
             else:
                 foodList.append(foodTuple)
-                # total = calculatetotal(foodList)
+                customercur = mysql.connection.cursor()
+                customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
+                                    (session["user"], 0, 0))
+                mysql.connection.commit()
                 return redirect("/cart")
-    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3)
 
 
 def calculatetotal(foodl):
@@ -222,11 +230,13 @@ def post_load():
         cur1 = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur3 = mysql.connection.cursor()
+        insertSellerCur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description, instructions)
         )
+        insertSellerCur.execute("INSERT IGNORE INTO seller (UserID) VALUES (%s)", (session["user"]))
         cur1.execute("SELECT LAST_INSERT_ID()")
         food_id = cur1.fetchall()
 
@@ -253,7 +263,6 @@ def post_load():
     user_data = cur.fetchone()
     mysql.connection.commit()
     cur.close()
-    print(user_data)
     first_name = user_data[0]
     last_name = user_data[1]
     img_url = user_data[2]
@@ -412,6 +421,7 @@ def notification_load():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM fullorderinfoforseller WHERE sellerID = %s", session["user"])
         orderInfo = cur.fetchall()
+        print(orderInfo)
         mysql.connection.commit()
         cur.close()
         return render_template("notification.html", orderInfo = orderInfo, headings=headings)
