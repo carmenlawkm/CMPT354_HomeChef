@@ -397,7 +397,7 @@ def history_load():
         reviewOrder = orderID
         return redirect("/review")
 
-    headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
+    headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "Review Food")
     cur2 = mysql.connection.cursor()
     cur2.execute("SELECT * FROM History WHERE UserID = %s", session["user"])
 
@@ -434,7 +434,6 @@ def cart_load():
 def notification_load():
     if "user" in session:
         if request.method == "POST":
-            print("in get")
             cur1 = mysql.connection.cursor()
             accept = request.form['accept']
             cur1.execute("UPDATE orderinfo set processed=1 WHERE orderID = %s", [accept])
