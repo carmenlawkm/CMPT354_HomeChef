@@ -253,7 +253,6 @@ def post_load():
     user_data = cur.fetchone()
     mysql.connection.commit()
     cur.close()
-    print(user_data)
     first_name = user_data[0]
     last_name = user_data[1]
     img_url = user_data[2]
@@ -411,6 +410,7 @@ def notification_load():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM fullorderinfoforseller WHERE sellerID = %s", session["user"])
         orderInfo = cur.fetchall()
+        print(orderInfo)
         mysql.connection.commit()
         cur.close()
         return render_template("notification.html", orderInfo = orderInfo, headings=headings)

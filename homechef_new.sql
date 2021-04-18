@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2021 at 06:38 AM
+-- Generation Time: Apr 18, 2021 at 07:07 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -97,7 +97,8 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `FoodName`, `pricePerUnit`, `Availabili
 (10005, 28, 'Homemade Pretzels', 5, 1, 'Homemade, baked, soft pretzels perfect for a snack.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4050068/pexels-photo-4050068.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
 (10006, 13, 'Pork Dumplings', 1, 1, 'Pork dumplings from your local Chinese family. Sells per dumpling. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4084935/pexels-photo-4084935.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'),
 (10007, 4, 'Spaghetti in Meat Sauce', 13, 1, 'Easy to make spaghetti sauce.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
+(10010, 1, 'Creamy Mushroom Pasta', 15, 1, 'Delicious!', '1) Cook pasta\r\n2) Make the sauce\r\n3) Eat!', 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,13 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 (10004, 'Chocolate'),
 (10004, 'Gelatin'),
 (10004, 'Sugar'),
-(10004, 'Whipped Cream');
+(10004, 'Whipped Cream'),
+(10010, 'heavy cream'),
+(10010, 'mushroom'),
+(10010, 'parsley'),
+(10010, 'pasta'),
+(10010, 'salt'),
+(10010, 'tomato');
 
 -- --------------------------------------------------------
 
@@ -198,7 +205,9 @@ CREATE TABLE `foodtags` (
 --
 
 INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
-(10008, 'Vegetarian');
+(10008, 'Vegetarian'),
+(10010, 'Spicy'),
+(10010, 'Vegetarian');
 
 -- --------------------------------------------------------
 
@@ -216,6 +225,7 @@ CREATE TABLE `fullorderinfoforseller` (
 ,`orderTime` datetime
 ,`customerID` int(11)
 ,`sellerID` int(11)
+,`Processed` tinyint(1)
 ,`FoodID` int(11)
 ,`quantity` int(11)
 ,`FoodName` varchar(50)
@@ -264,9 +274,11 @@ INSERT INTO `orderfoods` (`OrderID`, `FoodID`, `quantity`) VALUES
 (100004, 10002, 2),
 (100008, 10003, 5),
 (100014, 10003, 2),
+(100017, 10003, 2),
 (100003, 10004, 8),
 (100010, 10004, 1),
 (100015, 10004, 5),
+(100017, 10004, 1),
 (100007, 10005, 2),
 (100011, 10006, 20),
 (100013, 10006, 40);
@@ -297,18 +309,19 @@ CREATE TABLE `orderinfo` (
 INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `Region`, `orderTime`, `customerID`, `sellerID`, `Processed`) VALUES
 (100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', 'Vancouver', '2021-03-14 21:59:54', 1, 2, 0),
 (100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'Tri-city', '2021-03-16 22:13:25', 1, 2, 0),
-(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5, 0),
-(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5, 0),
+(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5, 1),
+(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5, 1),
 (100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', 'Burnaby', '2021-03-19 19:12:08', 7, 8, 0),
 (100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', 'Tri-city', '2021-04-10 19:19:45', 3, 28, 0),
-(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5, 0),
+(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5, 1),
 (100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1, 0),
-(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5, 0),
+(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5, 1),
 (100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', 'Surrey', '2021-04-10 20:40:23', 3, 13, 0),
 (100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'Surrey', '2021-04-10 20:56:27', 3, 1, 0),
 (100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13, 0),
 (100014, 14, 'Credit card', '2021-04-24 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:03:02', 1, 5, 0),
-(100015, 60, 'Credit card', '2021-04-22 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:05:14', 1, 5, 0);
+(100015, 60, 'Credit card', '2021-04-22 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:05:14', 1, 5, 0),
+(100017, 26, 'Credit card', '2021-04-17 12:58:00', '7787463302', 'Burnaby', '2021-04-17 21:55:22', 1, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -340,7 +353,8 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100012, 3, 1),
 (100013, 3, 13),
 (100014, 1, 5),
-(100015, 1, 5);
+(100015, 1, 5),
+(100017, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -532,7 +546,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `fullorderinfoforseller`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fullorderinfoforseller`  AS SELECT `orderinfo`.`OrderID` AS `OrderID`, `orderinfo`.`totalPrice` AS `totalPrice`, `orderinfo`.`paymentMethod` AS `paymentMethod`, `orderinfo`.`pickUpTime` AS `pickUpTime`, `orderinfo`.`contactInfo` AS `contactInfo`, `orderinfo`.`Region` AS `Region`, `orderinfo`.`orderTime` AS `orderTime`, `orderinfo`.`customerID` AS `customerID`, `orderinfo`.`sellerID` AS `sellerID`, `orderfoods`.`FoodID` AS `FoodID`, `orderfoods`.`quantity` AS `quantity`, `food`.`FoodName` AS `FoodName`, `publicprofileinfo`.`FirstName` AS `FirstName`, `publicprofileinfo`.`LastName` AS `LastName`, `regionpickup`.`PickupAddress` AS `PickupAddress` FROM ((((`orderinfo` join `orderfoods` on(`orderinfo`.`OrderID` = `orderfoods`.`OrderID`)) join `food` on(`orderfoods`.`FoodID` = `food`.`FoodID`)) join `publicprofileinfo` on(`orderinfo`.`customerID` = `publicprofileinfo`.`UserID`)) join `regionpickup` on(`orderinfo`.`Region` = `regionpickup`.`Region`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fullorderinfoforseller`  AS  (select `orderinfo`.`OrderID` AS `OrderID`,`orderinfo`.`totalPrice` AS `totalPrice`,`orderinfo`.`paymentMethod` AS `paymentMethod`,`orderinfo`.`pickUpTime` AS `pickUpTime`,`orderinfo`.`contactInfo` AS `contactInfo`,`orderinfo`.`Region` AS `Region`,`orderinfo`.`orderTime` AS `orderTime`,`orderinfo`.`customerID` AS `customerID`,`orderinfo`.`sellerID` AS `sellerID`,`orderinfo`.`Processed` AS `Processed`,`orderfoods`.`FoodID` AS `FoodID`,`orderfoods`.`quantity` AS `quantity`,`food`.`FoodName` AS `FoodName`,`publicprofileinfo`.`FirstName` AS `FirstName`,`publicprofileinfo`.`LastName` AS `LastName`,`regionpickup`.`PickupAddress` AS `PickupAddress` from ((((`orderinfo` join `orderfoods` on(`orderinfo`.`OrderID` = `orderfoods`.`OrderID`)) join `food` on(`orderfoods`.`FoodID` = `food`.`FoodID`)) join `publicprofileinfo` on(`orderinfo`.`customerID` = `publicprofileinfo`.`UserID`)) join `regionpickup` on(`orderinfo`.`Region` = `regionpickup`.`Region`))) ;
 
 -- --------------------------------------------------------
 
@@ -661,13 +675,13 @@ ALTER TABLE `userallergies`
 -- AUTO_INCREMENT for table `food`
 --
 ALTER TABLE `food`
-  MODIFY `FoodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10009;
+  MODIFY `FoodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10011;
 
 --
 -- AUTO_INCREMENT for table `orderinfo`
 --
 ALTER TABLE `orderinfo`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100017;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100018;
 
 --
 -- AUTO_INCREMENT for table `profile`
