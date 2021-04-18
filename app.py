@@ -34,32 +34,44 @@ def home_load():
     cur2.close()
     cur3.close()
     if request.method == 'POST':
-        headings = ("Food", "Quantity", "Price")
-        data = request.form['data']
-        datanum = request.form['datanum']
-
-        if not datanum:
-            flash("invalid quantity")
-        else:
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
-            datalist = cur.fetchall()
-            mysql.connection.commit()
-            cur.close()
-            foodTuple = cleanTuple(datalist, datanum, data)
-            if checkSameId(foodTuple[1]) != 1:
-                flash("must choose foods from same seller as other items in cart!")
-                return redirect("/home")
-            elif checkDupFood(data) != 0:
-                flash("This food is already in the cart!")
-                return redirect("/home")
+        if request.form.get("follow"):
+            followcur = mysql.connection.cursor()
+            followee = request.form['follow']
+            if int(followee) == int(session["user"][0][0]):
+                flash("You cannot follow yourself.")
             else:
-                foodList.append(foodTuple)
-                customercur = mysql.connection.cursor()
-                customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
-                                    (session["user"], 0, 0))
+                followcur.execute("INSERT IGNORE INTO follows (FollowerID, FolloweeID) VALUE (%s, %s)", (session["user"], followee))
                 mysql.connection.commit()
-                return redirect("/cart")
+                followcur.close()
+                flash("You have successfully followed this user.")
+                return redirect('/home')
+        else:
+            headings = ("Food", "Quantity", "Price")
+            data = request.form['data']
+            datanum = request.form['datanum']
+
+            if not datanum:
+                flash("invalid quantity")
+            else:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+                datalist = cur.fetchall()
+                mysql.connection.commit()
+                cur.close()
+                foodTuple = cleanTuple(datalist, datanum, data)
+                if checkSameId(foodTuple[1]) != 1:
+                    flash("must choose foods from same seller as other items in cart!")
+                    return redirect("/home")
+                elif checkDupFood(data) != 0:
+                    flash("This food is already in the cart!")
+                    return redirect("/home")
+                else:
+                    foodList.append(foodTuple)
+                    customercur = mysql.connection.cursor()
+                    customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
+                                        (session["user"], 0, 0))
+                    mysql.connection.commit()
+                    return redirect("/cart")
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3)
 
 
@@ -434,7 +446,6 @@ def notification_load():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM fullorderinfoforseller WHERE sellerID = %s", session["user"])
         orderInfo = cur.fetchall()
-        print(orderInfo)
         mysql.connection.commit()
         cur.close()
         return render_template("notification.html", orderInfo = orderInfo, headings=headings)

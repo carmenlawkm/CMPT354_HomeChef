@@ -34,20 +34,27 @@
     <div class="row no-gutters bg-light position-relative">
           <div class="col-md-6 mb-md-0 p-md-4">
               <img src="{{ food[15]}}" class="rounded-circle" alt="..." width="70" height="70" style = "margin-right: 15px">
-              <h2 class="mt-0" style = "display: inline">{{food[2]}}</h2>
-              <figcaption class="blockquote-footer" style = "display: inline; font-size: large" >Recipe by <cite title="Source Title">
-                  {{food[13]+" "+food[14]}}</cite></figcaption>
-              <h5 style="text-align: right">Overall Rating:{{food[9]}}/10</h5>
+              <h2 class="mt-0" style = "display: inline; margin-bottom: 0px">{{food[2]}}</h2>
+
+                  <form method = "POST" action = "" style = "display: inline;"><button type="submit" name="follow" class="btn btn-info" style="margin-left: 2%; " value = "{{ food[1] }}">+ Follow {{food[13]+" "+food[14]}}</button></form>
+
+
               <img src="{{ food[7] }}" style = "margin-top: 15px" class="w-100 rounded" alt="..." >
 
           </div>
           <div class="col-md-6 position-static p-4 pl-md-0">
-            <div style="margin-top: 25px; margin-bottom: 25px">
+
+          <div style = "display: inline-block">
+          <h5 class="mt-0"> Overall Rating:{{food[9]}}/10</h5>
+           <h5 class="mt-0" style="display: inline-block"> Author: </h5>
+          <span>{{food[13]+" "+food[14]}}</span>
+          </div>
+          <div style = "display: inline; float: right">
                 {% if food[4] == 0%}
-                    <div class="alert alert-danger d-inline" role="alert" style="width: 20%; text-align: center">Not Available</div>
+                    <div align="right"> <div class="alert alert-danger d-inline btn-lg" role="alert" style="text-align: center">Not Available</div></div>
                 {% endif %}
                 {% if food[4] == 1%}
-                    <div class="alert alert-warning d-inline" role="alert" style="width: 20%; text-align: center">Available</div>
+                    <div align="right"><div class="alert alert-warning d-inline btn-lg" role="alert" style="width: 20%; text-align: center">Available</div></div>
                 {% endif %}
             </div>
             <h5 class="mt-0" >Description</h5>
@@ -57,8 +64,10 @@
                     {% if food[0] == ingredient[0] %}
                         <span>{{ ingredient[1]+", "}}</span>
                     {% endif %}
+
                 {% endfor %}
-            <h5 class="mt-0">Instructions</h5>
+
+            <h5 class="mt-0" style="padding-top: 15px">Instructions</h5>
             <p>{{ food[6]}}</p>
             <h5 class="mt-0">Tags</h5>
             {% for tag in foodtags %}
@@ -76,7 +85,6 @@
                   </form>
                       <!--<button class="btn btn-warning"> <a href="/my-link/">add to cart {{ food[2] }}</a></button>-->
                   {% endif %}
-                  <button type="button" class="btn btn-info">View Recipe</button>
               </div>
           </div>
      </div> <br>
