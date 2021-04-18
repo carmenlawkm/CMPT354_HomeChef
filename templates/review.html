@@ -68,9 +68,12 @@
     <div class = "Title mb-5 pb-4">
         <h1 class = "display-3">Your Reviews: </h1>
         {% for r in reviews %}
-            <div class = "Title">
-                <h2 class = "display-6">{{r[5]}}: {{r[3]}}/10</h2>
-                <small class = "display-6 ">{{r[4]}}</small></div>
+            {% if r[2] in foods %}
+                <div class = "Title">
+                    <h2 class = "display-6">{{r[5]}}: {{r[3]}}/10</h2>
+                    <small class = "display-6 ">{{r[4]}}</small>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 
