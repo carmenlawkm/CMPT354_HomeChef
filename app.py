@@ -150,9 +150,17 @@ def register_load():
         return render_template("register.html")
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile_load():
     if "user" in session:
+        if request.method == "POST":
+            cur1 = mysql.connection.cursor()
+            delete = request.form['delete']
+            cur1.execute("DELETE FROM food WHERE FoodID = %s", [delete])
+            mysql.connection.commit()
+            cur1.close()
+            return redirect("/profile")
+
         cur = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur3 = mysql.connection.cursor()
@@ -234,11 +242,10 @@ def post_load():
         )
         insertSellerCur.execute("INSERT IGNORE INTO seller (UserID) VALUES (%s)", (session["user"]))
         cur1.execute("SELECT LAST_INSERT_ID()")
-        food_id = cur1.fetchall()
+        food_id = cur1.fetchone()
 
         ingredients = [(food_id, x.strip()) for x in request.form["ingredients"].split(',')]
         tags = [(food_id, y.strip()) for y in request.form["tags"].split(',')]
-        print(ingredients)
         cur2.executemany(
             "INSERT INTO foodingredients (FoodID, Ingredients) "
             "VALUES (%s, %s)", ingredients
@@ -252,13 +259,13 @@ def post_load():
         cur1.close()
         cur2.close()
         return redirect("/home")
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT FirstName, LastName, Img_url "
+    cur4 = mysql.connection.cursor()
+    cur4.execute("SELECT FirstName, LastName, Img_url "
                 "FROM publicprofileinfo "
                 "WHERE UserID = %s", session["user"])
-    user_data = cur.fetchone()
+    user_data = cur4.fetchone()
     mysql.connection.commit()
-    cur.close()
+    cur4.close()
     first_name = user_data[0]
     last_name = user_data[1]
     img_url = user_data[2]
