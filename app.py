@@ -222,11 +222,13 @@ def post_load():
         cur1 = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur3 = mysql.connection.cursor()
+        insertSellerCur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description, instructions)
         )
+        insertSellerCur.execute("INSERT IGNORE INTO seller (UserID) VALUES (%s)", (session["user"]))
         cur1.execute("SELECT LAST_INSERT_ID()")
         food_id = cur1.fetchall()
 
