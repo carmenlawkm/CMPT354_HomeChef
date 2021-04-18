@@ -333,6 +333,12 @@ def getSeller(foodl):
     return foodl[0][1]
 
 
+def getfoodIDs(foods):
+    foodIDs = []
+    for f in foods:
+        foodIDs.append(f[0])
+    return foodIDs
+
 @app.route('/review', methods=['GET', 'POST'])
 def review_load():
     if "user" not in session:
@@ -358,7 +364,8 @@ def review_load():
         allreviewed.append(r[2])
     else:
         foods = cur2.fetchall()
-        return render_template("review.html", reviewed=allreviewed, foods=foods, reviews=reviewed)
+        foodIDs = getfoodIDs(foods)
+        return render_template("review.html", reviewed=allreviewed, foods=foods, reviews=reviewed, foodIDs=foodIDs)
 
 
 @app.route('/purchasehistory', methods=['GET', 'POST'])
