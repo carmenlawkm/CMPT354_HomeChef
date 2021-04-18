@@ -112,7 +112,7 @@ def login_load():
             if user_ID:
                 valid = 1
                 session["user"] = user_ID
-                return profile_load()
+                return redirect('/profile')
             else:
                 valid = 0
             return render_template("login.html", info=valid)
@@ -146,21 +146,13 @@ def register_load():
                 (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
-            return profile_load() #should bring them to their profile page.
+            return redirect('/profile')
         return render_template("register.html")
 
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_load():
     if "user" in session:
-        if request.method == "POST":
-            cur1 = mysql.connection.cursor()
-            delete = request.form['delete']
-            cur1.execute("DELETE FROM food WHERE FoodID = %s", [delete])
-            mysql.connection.commit()
-            cur1.close()
-            return redirect("/profile")
-
         cur = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur3 = mysql.connection.cursor()
@@ -179,6 +171,14 @@ def profile_load():
         cur2.close()
         cur3.close()
         cur4.close()
+        if request.method == "POST":
+            cur1 = mysql.connection.cursor()
+            delete = request.form['delete']
+            cur1.execute("DELETE FROM food WHERE FoodID = %s", [delete])
+            mysql.connection.commit()
+            cur1.close()
+            return redirect("/profile")
+
         return render_template("profile.html", user_ID=session["user"], userData=userData, following=following,
                                followee=followee, foodList=foodList)
     else:
