@@ -44,7 +44,8 @@ def home_load():
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
             datalist = cur.fetchall()
-
+            mysql.connection.commit()
+            cur.close()
             foodTuple = cleanTuple(datalist, datanum, data)
             if checkSameId(foodTuple[1]) != 1:
                 flash("must choose foods from same seller as other items in cart!")
@@ -54,7 +55,10 @@ def home_load():
                 return redirect("/home")
             else:
                 foodList.append(foodTuple)
-                # total = calculatetotal(foodList)
+                customercur = mysql.connection.cursor()
+                customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
+                                    (session["user"], 0, 0))
+                mysql.connection.commit()
                 return redirect("/cart")
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3)
 
@@ -226,11 +230,13 @@ def post_load():
         cur1 = mysql.connection.cursor()
         cur2 = mysql.connection.cursor()
         cur3 = mysql.connection.cursor()
+        insertSellerCur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (session["user"], food_name, food_img_url, availability, int(food_price), description, instructions)
         )
+        insertSellerCur.execute("INSERT IGNORE INTO seller (UserID) VALUES (%s)", (session["user"]))
         cur1.execute("SELECT LAST_INSERT_ID()")
         food_id = cur1.fetchall()
 
