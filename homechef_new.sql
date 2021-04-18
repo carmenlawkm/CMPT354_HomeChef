@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 18, 2021 at 05:20 AM
+-- Generation Time: Apr 18, 2021 at 06:39 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -43,6 +43,7 @@ INSERT INTO `customer` (`UserID`, `OverallCustomerRating`, `numberOfRatings`) VA
 (1, 10, 2),
 (2, 5, 5),
 (3, 5, 10),
+(4, 0, 0),
 (6, 5, 1),
 (7, 5, 5),
 (14, 5, 5);
@@ -90,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `food` (
   `Img_url` text NOT NULL,
   PRIMARY KEY (`FoodID`) USING BTREE,
   KEY `PUserID` (`PUserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10010 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `food`
@@ -105,7 +106,8 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `FoodName`, `pricePerUnit`, `Availabili
 (10005, 28, 'Homemade Pretzels', 5, 1, 'Homemade, baked, soft pretzels perfect for a snack.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4050068/pexels-photo-4050068.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
 (10006, 13, 'Pork Dumplings', 1, 1, 'Pork dumplings from your local Chinese family. Sells per dumpling. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4084935/pexels-photo-4084935.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'),
 (10007, 4, 'Spaghetti in Meat Sauce', 13, 1, 'Easy to make spaghetti sauce.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
+(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
+(10009, 4, 'Chocolate Digestives', 1, 1, 'Digestives dipped in smooth milk chocolate', 'Eat it directly or have it with some tea or coffee', 'https://images.pexels.com/photos/1009841/pexels-photo-1009841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
 
 -- --------------------------------------------------------
 
@@ -180,7 +182,9 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 (10004, 'Chocolate'),
 (10004, 'Gelatin'),
 (10004, 'Sugar'),
-(10004, 'Whipped Cream');
+(10004, 'Whipped Cream'),
+(10009, 'Chocolate'),
+(10009, 'Digestive biscuits');
 
 -- --------------------------------------------------------
 
@@ -212,7 +216,9 @@ CREATE TABLE IF NOT EXISTS `foodtags` (
 --
 
 INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
-(10008, 'Vegetarian');
+(10004, 'Vegetarian'),
+(10008, 'Vegetarian'),
+(10009, 'Vegetarian');
 
 -- --------------------------------------------------------
 
@@ -279,19 +285,18 @@ INSERT INTO `orderfoods` (`OrderID`, `FoodID`, `quantity`) VALUES
 (100001, 10000, 2),
 (100009, 10000, 1),
 (100012, 10000, 2),
-(100017, 10000, 7),
+(100021, 10000, 2),
 (100001, 10001, 1),
 (100002, 10002, 1),
 (100004, 10002, 2),
 (100008, 10003, 5),
 (100014, 10003, 2),
-(100018, 10003, 34),
-(100003, 10004, 8),
 (100010, 10004, 1),
 (100015, 10004, 5),
 (100007, 10005, 2),
 (100011, 10006, 20),
-(100013, 10006, 40);
+(100013, 10006, 40),
+(100020, 10009, 42);
 
 -- --------------------------------------------------------
 
@@ -315,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `orderinfo` (
   KEY `customerID` (`customerID`),
   KEY `sellerID` (`sellerID`),
   KEY `Region` (`Region`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=100019 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100022 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orderinfo`
@@ -336,8 +341,8 @@ INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`,
 (100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13, 0),
 (100014, 14, 'Credit card', '2021-04-24 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:03:02', 1, 5, 0),
 (100015, 60, 'Credit card', '2021-04-22 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:05:14', 1, 5, 0),
-(100017, 70, 'Credit card', '2021-04-16 22:16:00', 'tw34t4', 'Burnaby', '2021-04-17 22:16:07', 1, 1, 0),
-(100018, 238, 'Credit card', '2021-04-16 22:19:00', 'trhrt', 'Burnaby', '2021-04-17 22:19:42', 1, 5, 0);
+(100020, 42, 'Credit card', '2021-04-17 23:00:00', '123456789', 'Burnaby', '2021-04-17 23:00:53', 1, 4, 0),
+(100021, 20, 'Credit card', '2021-04-16 23:19:00', '23', 'Burnaby', '2021-04-17 23:19:50', 4, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -364,8 +369,7 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100002, 1, 2),
 (100014, 1, 5),
 (100015, 1, 5),
-(100017, 1, 1),
-(100018, 1, 5),
+(100020, 1, 4),
 (100004, 3, 5),
 (100007, 3, 28),
 (100008, 3, 5),
@@ -374,6 +378,7 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100011, 3, 13),
 (100012, 3, 1),
 (100013, 3, 13),
+(100021, 4, 1),
 (100005, 7, 8),
 (100003, 14, 5);
 
@@ -526,6 +531,7 @@ CREATE TABLE IF NOT EXISTS `seller` (
 INSERT INTO `seller` (`UserID`) VALUES
 (1),
 (2),
+(4),
 (5),
 (7),
 (8),
@@ -643,20 +649,20 @@ ALTER TABLE `food`
 -- Constraints for table `foodingredients`
 --
 ALTER TABLE `foodingredients`
-  ADD CONSTRAINT `foodingredients_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`);
+  ADD CONSTRAINT `foodingredients_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `foodtags`
 --
 ALTER TABLE `foodtags`
-  ADD CONSTRAINT `foodtags_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`);
+  ADD CONSTRAINT `foodtags_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orderfoods`
 --
 ALTER TABLE `orderfoods`
-  ADD CONSTRAINT `orderfoods_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orderinfo` (`OrderID`),
-  ADD CONSTRAINT `orderfoods_ibfk_2` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`);
+  ADD CONSTRAINT `orderfoods_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orderinfo` (`OrderID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orderfoods_ibfk_2` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orderinfo`
@@ -670,15 +676,15 @@ ALTER TABLE `orderinfo`
 -- Constraints for table `orderplacement`
 --
 ALTER TABLE `orderplacement`
-  ADD CONSTRAINT `orderplacement_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orderinfo` (`OrderID`),
-  ADD CONSTRAINT `orderplacement_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`UserID`),
-  ADD CONSTRAINT `orderplacement_ibfk_3` FOREIGN KEY (`SellerID`) REFERENCES `seller` (`UserID`);
+  ADD CONSTRAINT `orderplacement_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `orderinfo` (`OrderID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orderplacement_ibfk_2` FOREIGN KEY (`CustomerID`) REFERENCES `customer` (`UserID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orderplacement_ibfk_3` FOREIGN KEY (`SellerID`) REFERENCES `seller` (`UserID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `review`
 --
 ALTER TABLE `review`
-  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`),
+  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`FoodID`) REFERENCES `food` (`FoodID`) ON DELETE CASCADE,
   ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`CustomerUserID`) REFERENCES `customer` (`UserID`);
 
 --
