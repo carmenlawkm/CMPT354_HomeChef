@@ -45,6 +45,9 @@ def home_load():
             if checkSameId(foodTuple[1]) != 1:
                 flash("must choose foods from same seller as other items in cart!")
                 return redirect("/home")
+            elif checkDupFood(data) != 0:
+                flash("This food is already in the cart!")
+                return redirect("/home")
             else:
                 foodList.append(foodTuple)
                 # total = calculatetotal(foodList)
@@ -69,6 +72,11 @@ def cleanTuple(datalist, datanum, foodid):
     foodTuple = ((food, quantity, price), sellerId, foodid)
     return foodTuple
 
+def checkDupFood(foodId):
+    for f in foodList:
+        if foodId == f[2]:
+            return 1
+    return 0
 
 def checkSameId(sellerid):
     for f in foodList:
@@ -273,27 +281,30 @@ def checkout_load():
             region = request.form['region']
             orderTime = datetime.now()
             customerId = session["user"]
+            if pick_up_time:
+                orderinfocur.execute(
+                    "INSERT INTO orderinfo (totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerid))
 
-            orderinfocur.execute(
-                "INSERT INTO orderinfo (totalPrice, paymentMethod, pickUpTime, contactInfo, region, orderTime, customerID, sellerID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                (total, payMethod, pick_up_time, contactInfo, region, orderTime, customerId, sellerid))
+                orderidcur.execute("SELECT LAST_INSERT_ID()")
+                orderid = orderidcur.fetchone()
 
-            orderidcur.execute("SELECT LAST_INSERT_ID()")
-            orderid = orderidcur.fetchone()
+                foodarr = foodsArr(orderid, foodList)
+                orderfoodcur = mysql.connection.cursor()
+                querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
+                orderfoodcur.executemany(querystmt, foodarr)
 
-            foodarr = foodsArr(orderid, foodList)
-            orderfoodcur = mysql.connection.cursor()
-            querystmt = "INSERT INTO orderfoods (OrderID, FoodID, quantity) VALUES (%s, %s, %s)"
-            orderfoodcur.executemany(querystmt, foodarr)
-
-            orderplacementcur = mysql.connection.cursor()
-            orderplacementcur.execute("INSERT INTO orderplacement (OrderID, CustomerID, SellerID) VALUES (%s, %s, %s)",
-                                                        (orderid, customerId, sellerid))
-            mysql.connection.commit()
-            orderinfocur.close()
-            orderfoodcur.close()
-            flash("Order placed successfully!")
-            return redirect("/home")
+                orderplacementcur = mysql.connection.cursor()
+                orderplacementcur.execute("INSERT INTO orderplacement (OrderID, CustomerID, SellerID) VALUES (%s, %s, %s)",
+                                                            (orderid, customerId, sellerid))
+                mysql.connection.commit()
+                orderinfocur.close()
+                orderfoodcur.close()
+                flash("Order placed successfully!")
+                return redirect("/home")
+            else:
+                flash("Invalid Date!")
+                return redirect("/checkout")
         mysql.connection.commit()
         cur.close()
 
