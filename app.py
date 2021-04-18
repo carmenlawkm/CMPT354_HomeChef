@@ -45,7 +45,11 @@ def home_load():
                 followcur.close()
                 flash("You have successfully followed this user.")
                 return redirect('/home')
-        else:
+        elif request.form.get("filterAvailable"):
+            return "APPLY DIVISION TO FIND ALL AVAILABLE HERE"
+        elif request.form.get("filterNotAvailable"):
+            return "APPLY DIVISION HERE TO FIND NOT AVAILABLE HERE"
+        elif  request.form.get("data"):
             headings = ("Food", "Quantity", "Price")
             data = request.form['data']
             datanum = request.form['datanum']

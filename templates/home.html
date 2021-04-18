@@ -27,7 +27,11 @@
 {% block body_block %}
     <body id = "bootstrap-overrides2">
     <h1 class="fw-bold" style="text-align: center">Feed</h1>
-
+    <div style=" margin: auto; padding-left: 38%; padding-bottom: 1%">
+    <h3 class="fw-bold" style="text-align: center; display: inline">Filter Recipes By: </h3>
+        <form method = "POST" action = "" style="display: inline"><button type="submit" name ="filterAvailable" class="btn btn-success btn-lg" value="1" >Available</button></form>
+        <form method = "POST" action = "" style="display: inline"><button type="submit" name ="filterNotAvailable" class="btn btn-danger btn-lg" value="0">Not Available</button></form>
+    </div>
     <div class = "posts">
 
     {%  for food in foodInfo %}
