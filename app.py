@@ -21,14 +21,18 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
+    cur3 = mysql.connection.cursor()
 
     cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
+    cur3.execute("SELECT * FROM foodtags")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
+    fetch3 = cur3.fetchall()
     mysql.connection.commit()
     cur1.close()
     cur2.close()
+    cur3.close()
     if request.method == 'POST':
         headings = ("Food", "Quantity", "Price")
         data = request.form['data']
@@ -52,7 +56,7 @@ def home_load():
                 foodList.append(foodTuple)
                 # total = calculatetotal(foodList)
                 return redirect("/cart")
-    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
+    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3)
 
 
 def calculatetotal(foodl):
