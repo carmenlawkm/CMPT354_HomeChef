@@ -37,25 +37,23 @@
 
                   <form method = "POST" action = "" style = "display: inline;"><button type="submit" name="follow" class="btn btn-info" style="margin-left: 2%; " value = "{{ food[1] }}">+ Follow {{food[13]+" "+food[14]}}</button></form>
 
-
               <img src="{{ food[7] }}" style = "margin-top: 15px" class="w-100 rounded" alt="..." >
 
           </div>
           <div class="col-md-6 position-static p-4 pl-md-0">
 
-          <div style = "display: inline-block">
-          <h5 class="mt-0"> Overall Rating:{{food[9]}}/10</h5>
-           <h5 class="mt-0" style="display: inline-block"> Author: </h5>
-          <span>{{food[13]+" "+food[14]}}</span>
-          </div>
-          <div style = "display: inline; float: right">
+          <div style = "display: inline; float: right; margin-top: 2%">
+              <div class="alert alert-info btn-lg" role="alert" style="display: inline; width: 20%">Overall Rating: {{food[9]}}/10</div>
+              <div class="alert alert-info btn-lg" role="alert" style="display: inline; width: 20%" >Seller Rating: /10</div>
                 {% if food[4] == 0%}
-                    <div align="right"> <div class="alert alert-danger d-inline btn-lg" role="alert" style="text-align: center">Not Available</div></div>
+                    <div class="alert alert-danger d-inline btn-lg" role="alert" style="text-align: center">Not Available</div>
                 {% endif %}
                 {% if food[4] == 1%}
-                    <div align="right"><div class="alert alert-warning d-inline btn-lg" role="alert" style="width: 20%; text-align: center">Available</div></div>
+                    <div class="alert alert-warning d-inline btn-lg" role="alert" style="width: 20%; text-align: center">Available</div>
                 {% endif %}
-            </div>
+                </div>
+           <h5 class="mt-0"> Author: </h5>
+          <p>{{food[13]+" "+food[14]}}</p>
             <h5 class="mt-0" >Description</h5>
             <p>{{ food[5]}}</p>
             <h5 class="mt-0">Ingredients</h5>
