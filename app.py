@@ -21,6 +21,7 @@ foodList = []
 def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
+
     cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
     fetch = cur1.fetchall()
@@ -201,23 +202,41 @@ def post_load():
         return redirect("/login")
 
     if request.method == "POST":
-        print("in post!")
         food_name = request.form["food-name"]
         food_img_url = request.form["food-img-url"]
-        print(request.form["availability"])
         availability = request.form["availability"]
 
         food_price = request.form["food-price"]
         description = request.form["description"]
-        ingredients = request.form["ingredients"]
+        instructions = request.form["instructions"]
+
         cur = mysql.connection.cursor()
+        cur1 = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
+        cur3 = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description) "
-            "VALUES (%s, %s, %s, %s, %s, %s)",
-            (session["user"], food_name, food_img_url, availability, int(food_price), description)
+            "INSERT INTO food (PUserID, FoodName, Img_url, availability, pricePerUnit, description, Instructions) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session["user"], food_name, food_img_url, availability, int(food_price), description, instructions)
+        )
+        cur1.execute("SELECT LAST_INSERT_ID()")
+        food_id = cur1.fetchall()
+
+        ingredients = [(food_id, x.strip()) for x in request.form["ingredients"].split(',')]
+        tags = [(food_id, y.strip()) for y in request.form["tags"].split(',')]
+        print(ingredients)
+        cur2.executemany(
+            "INSERT INTO foodingredients (FoodID, Ingredients) "
+            "VALUES (%s, %s)", ingredients
+        )
+        cur3.executemany(
+            "INSERT INTO foodtags (FoodID, Tags)"
+            "VALUES (%s, %s)", tags
         )
         mysql.connection.commit()
         cur.close()
+        cur1.close()
+        cur2.close()
         return redirect("/home")
     cur = mysql.connection.cursor()
     cur.execute("SELECT FirstName, LastName, Img_url "
@@ -334,7 +353,7 @@ def history_load():
 
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
     cur2 = mysql.connection.cursor()
-    cur2.execute("SELECT * FROM pHistory WHERE UserID = %s", session["user"])
+    cur2.execute("SELECT * FROM History WHERE UserID = %s", session["user"])
 
     orderData = cur2.fetchall()
 
@@ -362,6 +381,28 @@ def cart_load():
             return redirect("/checkout")
 
         return render_template("cart.html", headings=headings, data=datalist, total=total)
+    else:
+        return redirect("/login")
+
+@app.route('/notification', methods=['GET', 'POST'])
+def notification_load():
+    if "user" in session:
+        if request.method == "POST":
+            print("in get")
+            cur1 = mysql.connection.cursor()
+            accept = request.form['accept']
+            cur1.execute("UPDATE orderinfo set processed=1 WHERE orderID = %s", [accept])
+            mysql.connection.commit()
+            cur1.close()
+            return redirect("/notification")
+
+        headings = ("#", "Buyer", "Contact","Food", "Payment", "Order Date", "Pickup Time","Pickup Address", "Process")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM fullorderinfoforseller WHERE sellerID = %s", session["user"])
+        orderInfo = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        return render_template("notification.html", orderInfo = orderInfo, headings=headings)
     else:
         return redirect("/login")
 
