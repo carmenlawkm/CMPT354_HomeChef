@@ -26,9 +26,8 @@
 
 <body class="pic1">
     <div class = "Title">
-        <h1 class = "display-3">Write a Review</h1>
+        <h1 class = "display-3">Write a Review: </h1>
     </div>
-
     {% for food in foods %}
         {% if food[0] not in reviewed %}
             <div class = "Title">
@@ -68,8 +67,8 @@
     <div class = "Title mb-5 pb-4">
         <h1 class = "display-3">Your Reviews: </h1>
         {% for r in reviews %}
-            {% if r[2] in foods %}
-                <div class = "Title">
+            {% if r[2] in reviewed %}
+                <div class = "Title mb-4">
                     <h2 class = "display-6">{{r[5]}}: {{r[3]}}/10</h2>
                     <small class = "display-6 ">{{r[4]}}</small>
                 </div>
