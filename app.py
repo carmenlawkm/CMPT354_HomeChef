@@ -310,7 +310,7 @@ def review_load():
         return redirect("/purchasehistory")
     cur = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
-    cur.execute("SELECT * FROM review WHERE review.CustomerUserID = %s", session["user"])
+    cur.execute("SELECT * FROM reviewFoods WHERE reviewFoods.CustomerUserID = %s", session["user"])
     cur2.execute("SELECT orderfoods.foodID, FoodName FROM orderfoods, food "
                  "WHERE orderfoods.OrderID = %s AND orderfoods.FoodID = food.FoodID", (reviewOrder,))
     reviewed = cur.fetchall()
@@ -327,10 +327,7 @@ def history_load():
     if "user" not in session:
         return redirect("/login")
     if request.method == "POST":
-        sellerID = request.form['sellerID']
         orderID = request.form['orderID']
-        global reviewseller
-        reviewseller = sellerID
         global reviewOrder
         reviewOrder = orderID
         return redirect("/review")
