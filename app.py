@@ -22,17 +22,21 @@ def home_load():
     cur1 = mysql.connection.cursor()
     cur2 = mysql.connection.cursor()
     cur3 = mysql.connection.cursor()
+    division = mysql.connection.cursor()
 
     cur1.execute("SELECT * FROM foodandrating, publicprofileinfo WHERE foodandrating.PUserID = publicprofileinfo.UserID")
     cur2.execute("SELECT * FROM foodingredients")
     cur3.execute("SELECT * FROM foodtags")
+    division.execute("SELECT foodID FROM foodtags GROUP BY foodID HAVING COUNT(*) = (SELECT COUNT(*) FROM uniquetags)")
     fetch = cur1.fetchall()
     fetch2 = cur2.fetchall()
     fetch3 = cur3.fetchall()
+    foodWithAllTags = division.fetchall()
     mysql.connection.commit()
     cur1.close()
     cur2.close()
     cur3.close()
+    division.close()
     if request.method == 'POST':
         if request.form.get("follow"):
             followcur = mysql.connection.cursor()
@@ -45,11 +49,7 @@ def home_load():
                 followcur.close()
                 flash("You have successfully followed this user.")
                 return redirect('/home')
-        elif request.form.get("filterAvailable"):
-            return "APPLY DIVISION TO FIND ALL AVAILABLE HERE"
-        elif request.form.get("filterNotAvailable"):
-            return "APPLY DIVISION HERE TO FIND NOT AVAILABLE HERE"
-        elif  request.form.get("data"):
+        elif request.form.get("data"):
             headings = ("Food", "Quantity", "Price")
             data = request.form['data']
             datanum = request.form['datanum']
@@ -76,7 +76,7 @@ def home_load():
                                         (session["user"], 0, 0))
                     mysql.connection.commit()
                     return redirect("/cart")
-    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3)
+    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3, foodWithAllTags = foodWithAllTags)
 
 
 def calculatetotal(foodl):

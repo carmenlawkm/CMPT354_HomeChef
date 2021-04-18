@@ -27,11 +27,6 @@
 {% block body_block %}
     <body id = "bootstrap-overrides2">
     <h1 class="fw-bold" style="text-align: center">Feed</h1>
-    <div style=" margin: auto; padding-left: 38%; padding-bottom: 1%">
-    <h3 class="fw-bold" style="text-align: center; display: inline">Filter Recipes By: </h3>
-        <form method = "POST" action = "" style="display: inline"><button type="submit" name ="filterAvailable" class="btn btn-success btn-lg" value="1" >Available</button></form>
-        <form method = "POST" action = "" style="display: inline"><button type="submit" name ="filterNotAvailable" class="btn btn-danger btn-lg" value="0">Not Available</button></form>
-    </div>
     <div class = "posts">
 
     {%  for food in foodInfo %}
@@ -74,11 +69,18 @@
             <h5 class="mt-0" style="padding-top: 15px">Instructions</h5>
             <p>{{ food[6]}}</p>
             <h5 class="mt-0">Tags</h5>
+
             {% for tag in foodtags %}
                 {% if food[0] == tag[0] %}
                     <span>{{ tag[1]+", "}}</span>
                 {% endif %}
             {% endfor %}
+                      {% for id in foodWithAllTags %}
+                          {% if food[0] in id%}
+                            <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 2%">This recipe is safe for most people to consume!</div>
+                          {% endif %}
+                      {% endfor %}
+
 
               <div align="center">
                   {% if food[4] == 1%}
