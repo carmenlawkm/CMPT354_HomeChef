@@ -383,7 +383,6 @@ def history_load():
         orderID = request.form['orderID']
         global reviewOrder
         reviewOrder = orderID
-        print(reviewOrder)
         return redirect("/review")
 
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
