@@ -40,7 +40,8 @@ def home_load():
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
             datalist = cur.fetchall()
-
+            mysql.connection.commit()
+            cur.close()
             foodTuple = cleanTuple(datalist, datanum, data)
             if checkSameId(foodTuple[1]) != 1:
                 flash("must choose foods from same seller as other items in cart!")
@@ -50,7 +51,10 @@ def home_load():
                 return redirect("/home")
             else:
                 foodList.append(foodTuple)
-                # total = calculatetotal(foodList)
+                customercur = mysql.connection.cursor()
+                customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
+                                    (session["user"], 0, 0))
+                mysql.connection.commit()
                 return redirect("/cart")
     return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2)
 

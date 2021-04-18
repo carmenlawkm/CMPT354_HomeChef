@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 18, 2021 at 07:07 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 8.0.2
+-- Host: 127.0.0.1:3306
+-- Generation Time: Apr 18, 2021 at 05:20 AM
+-- Server version: 5.7.31
+-- PHP Version: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,10 +27,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `customer`
 --
 
-CREATE TABLE `customer` (
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE IF NOT EXISTS `customer` (
   `UserID` int(11) NOT NULL,
   `OverallCustomerRating` int(11) DEFAULT NULL,
-  `numberOfRatings` int(11) DEFAULT NULL
+  `numberOfRatings` int(11) DEFAULT NULL,
+  PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -51,9 +53,12 @@ INSERT INTO `customer` (`UserID`, `OverallCustomerRating`, `numberOfRatings`) VA
 -- Table structure for table `follows`
 --
 
-CREATE TABLE `follows` (
+DROP TABLE IF EXISTS `follows`;
+CREATE TABLE IF NOT EXISTS `follows` (
   `FollowerID` int(11) NOT NULL,
-  `FolloweeID` int(11) NOT NULL
+  `FolloweeID` int(11) NOT NULL,
+  PRIMARY KEY (`FollowerID`,`FolloweeID`) USING BTREE,
+  KEY `FolloweeID` (`FolloweeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -63,9 +68,9 @@ CREATE TABLE `follows` (
 INSERT INTO `follows` (`FollowerID`, `FolloweeID`) VALUES
 (1, 2),
 (3, 2),
+(15, 2),
 (6, 14),
-(6, 15),
-(15, 2);
+(6, 15);
 
 -- --------------------------------------------------------
 
@@ -73,16 +78,19 @@ INSERT INTO `follows` (`FollowerID`, `FolloweeID`) VALUES
 -- Table structure for table `food`
 --
 
-CREATE TABLE `food` (
-  `FoodID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `food`;
+CREATE TABLE IF NOT EXISTS `food` (
+  `FoodID` int(11) NOT NULL AUTO_INCREMENT,
   `PUserID` int(11) NOT NULL,
   `FoodName` varchar(50) NOT NULL,
   `pricePerUnit` int(11) DEFAULT NULL,
   `Availability` tinyint(1) DEFAULT NULL,
-  `Description` text DEFAULT NULL,
-  `Instructions` text DEFAULT NULL,
-  `Img_url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Description` text,
+  `Instructions` text,
+  `Img_url` text NOT NULL,
+  PRIMARY KEY (`FoodID`) USING BTREE,
+  KEY `PUserID` (`PUserID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10009 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `food`
@@ -97,8 +105,7 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `FoodName`, `pricePerUnit`, `Availabili
 (10005, 28, 'Homemade Pretzels', 5, 1, 'Homemade, baked, soft pretzels perfect for a snack.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4050068/pexels-photo-4050068.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
 (10006, 13, 'Pork Dumplings', 1, 1, 'Pork dumplings from your local Chinese family. Sells per dumpling. ', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/4084935/pexels-photo-4084935.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'),
 (10007, 4, 'Spaghetti in Meat Sauce', 13, 1, 'Easy to make spaghetti sauce.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940'),
-(10010, 1, 'Creamy Mushroom Pasta', 15, 1, 'Delicious!', '1) Cook pasta\r\n2) Make the sauce\r\n3) Eat!', 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+(10008, 14, 'Banana Bread', NULL, 0, 'With only 3 ripe bananas, you too can bake this amazing banana bread.', 'Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.', 'https://images.pexels.com/photos/830894/pexels-photo-830894.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');
 
 -- --------------------------------------------------------
 
@@ -106,7 +113,8 @@ INSERT INTO `food` (`FoodID`, `PUserID`, `FoodName`, `pricePerUnit`, `Availabili
 -- Stand-in structure for view `foodandrating`
 -- (See below for the actual view)
 --
-CREATE TABLE `foodandrating` (
+DROP VIEW IF EXISTS `foodandrating`;
+CREATE TABLE IF NOT EXISTS `foodandrating` (
 `FoodID` int(11)
 ,`PUserID` int(11)
 ,`FoodName` varchar(50)
@@ -125,9 +133,11 @@ CREATE TABLE `foodandrating` (
 -- Table structure for table `foodingredients`
 --
 
-CREATE TABLE `foodingredients` (
+DROP TABLE IF EXISTS `foodingredients`;
+CREATE TABLE IF NOT EXISTS `foodingredients` (
   `FoodID` int(11) NOT NULL,
-  `Ingredients` text NOT NULL
+  `Ingredients` text NOT NULL,
+  PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -170,13 +180,7 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 (10004, 'Chocolate'),
 (10004, 'Gelatin'),
 (10004, 'Sugar'),
-(10004, 'Whipped Cream'),
-(10010, 'heavy cream'),
-(10010, 'mushroom'),
-(10010, 'parsley'),
-(10010, 'pasta'),
-(10010, 'salt'),
-(10010, 'tomato');
+(10004, 'Whipped Cream');
 
 -- --------------------------------------------------------
 
@@ -184,7 +188,8 @@ INSERT INTO `foodingredients` (`FoodID`, `Ingredients`) VALUES
 -- Stand-in structure for view `foodreviewaverage`
 -- (See below for the actual view)
 --
-CREATE TABLE `foodreviewaverage` (
+DROP VIEW IF EXISTS `foodreviewaverage`;
+CREATE TABLE IF NOT EXISTS `foodreviewaverage` (
 `RfoodID` int(11)
 ,`avergeReview` decimal(12,1)
 );
@@ -195,9 +200,11 @@ CREATE TABLE `foodreviewaverage` (
 -- Table structure for table `foodtags`
 --
 
-CREATE TABLE `foodtags` (
+DROP TABLE IF EXISTS `foodtags`;
+CREATE TABLE IF NOT EXISTS `foodtags` (
   `FoodID` int(11) NOT NULL,
-  `Tags` varchar(20) NOT NULL
+  `Tags` varchar(20) NOT NULL,
+  PRIMARY KEY (`FoodID`,`Tags`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -205,9 +212,7 @@ CREATE TABLE `foodtags` (
 --
 
 INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
-(10008, 'Vegetarian'),
-(10010, 'Spicy'),
-(10010, 'Vegetarian');
+(10008, 'Vegetarian');
 
 -- --------------------------------------------------------
 
@@ -215,7 +220,8 @@ INSERT INTO `foodtags` (`FoodID`, `Tags`) VALUES
 -- Stand-in structure for view `fullorderinfoforseller`
 -- (See below for the actual view)
 --
-CREATE TABLE `fullorderinfoforseller` (
+DROP VIEW IF EXISTS `fullorderinfoforseller`;
+CREATE TABLE IF NOT EXISTS `fullorderinfoforseller` (
 `OrderID` int(11)
 ,`totalPrice` float
 ,`paymentMethod` text
@@ -240,7 +246,8 @@ CREATE TABLE `fullorderinfoforseller` (
 -- Stand-in structure for view `history`
 -- (See below for the actual view)
 --
-CREATE TABLE `history` (
+DROP VIEW IF EXISTS `history`;
+CREATE TABLE IF NOT EXISTS `history` (
 `UserID` int(11)
 ,`OrderID` int(11)
 ,`UserName` varchar(50)
@@ -255,10 +262,13 @@ CREATE TABLE `history` (
 -- Table structure for table `orderfoods`
 --
 
-CREATE TABLE `orderfoods` (
+DROP TABLE IF EXISTS `orderfoods`;
+CREATE TABLE IF NOT EXISTS `orderfoods` (
   `OrderID` int(11) NOT NULL,
   `FoodID` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`FoodID`,`OrderID`) USING BTREE,
+  KEY `OrderID` (`OrderID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -269,16 +279,16 @@ INSERT INTO `orderfoods` (`OrderID`, `FoodID`, `quantity`) VALUES
 (100001, 10000, 2),
 (100009, 10000, 1),
 (100012, 10000, 2),
+(100017, 10000, 7),
 (100001, 10001, 1),
 (100002, 10002, 1),
 (100004, 10002, 2),
 (100008, 10003, 5),
 (100014, 10003, 2),
-(100017, 10003, 2),
+(100018, 10003, 34),
 (100003, 10004, 8),
 (100010, 10004, 1),
 (100015, 10004, 5),
-(100017, 10004, 1),
 (100007, 10005, 2),
 (100011, 10006, 20),
 (100013, 10006, 40);
@@ -289,8 +299,9 @@ INSERT INTO `orderfoods` (`OrderID`, `FoodID`, `quantity`) VALUES
 -- Table structure for table `orderinfo`
 --
 
-CREATE TABLE `orderinfo` (
-  `OrderID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `orderinfo`;
+CREATE TABLE IF NOT EXISTS `orderinfo` (
+  `OrderID` int(11) NOT NULL AUTO_INCREMENT,
   `totalPrice` float NOT NULL,
   `paymentMethod` text NOT NULL,
   `pickUpTime` datetime NOT NULL,
@@ -299,8 +310,12 @@ CREATE TABLE `orderinfo` (
   `orderTime` datetime NOT NULL,
   `customerID` int(11) NOT NULL,
   `sellerID` int(11) NOT NULL,
-  `Processed` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Processed` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`OrderID`) USING BTREE,
+  KEY `customerID` (`customerID`),
+  KEY `sellerID` (`sellerID`),
+  KEY `Region` (`Region`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=100019 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orderinfo`
@@ -309,19 +324,20 @@ CREATE TABLE `orderinfo` (
 INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`, `contactInfo`, `Region`, `orderTime`, `customerID`, `sellerID`, `Processed`) VALUES
 (100001, 29.99, 'Credit card', '2021-03-15 21:59:54', 'email or phone', 'Vancouver', '2021-03-14 21:59:54', 1, 2, 0),
 (100002, 89.78, 'mastercard', '2021-03-17 22:13:25', 'phone email', 'Tri-city', '2021-03-16 22:13:25', 1, 2, 0),
-(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5, 1),
-(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5, 1),
+(100003, 56, 'Debit Card', '2021-03-15 21:59:54', '6049002189\r\n', 'Richmond', '2021-03-14 19:08:14', 14, 5, 0),
+(100004, 15, 'debit', '2021-03-19 19:11:06', '7789283746', 'Surrey', '2021-03-18 19:11:06', 3, 5, 0),
 (100005, 18, 'debit', '2021-03-20 19:12:08', '60492847328', 'Burnaby', '2021-03-19 19:12:08', 7, 8, 0),
 (100007, 11.5, 'Cash', '2021-04-24 19:19:45', '7787787788', 'Tri-city', '2021-04-10 19:19:45', 3, 28, 0),
-(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5, 1),
-(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1, 0),
-(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5, 1),
+(100008, 37, 'Credit Card', '2021-04-23 20:13:49', '7789283746', 'Surrey', '2021-04-10 20:13:49', 3, 5, 0),
+(100009, 12, 'Cash', '2021-04-21 20:19:49', '7789283746', 'Surrey', '2021-04-10 20:19:49', 3, 1, 1),
+(100010, 14, 'Cash', '2021-04-28 20:26:20', '7789283746', 'Surrey', '2021-04-10 20:26:20', 3, 5, 0),
 (100011, 22, 'Credit Card', '2021-04-18 20:39:45', '7789283746', 'Surrey', '2021-04-10 20:40:23', 3, 13, 0),
 (100012, 22, 'Cash', '2021-04-22 20:56:27', '7789283746', 'Surrey', '2021-04-10 20:56:27', 3, 1, 0),
 (100013, 43, 'Credit Card', '2021-04-19 21:00:23', '6042599873', 'Richmond', '2021-04-10 21:00:24', 6, 13, 0),
 (100014, 14, 'Credit card', '2021-04-24 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:03:02', 1, 5, 0),
 (100015, 60, 'Credit card', '2021-04-22 10:00:00', '7787463302', 'Burnaby', '2021-04-17 21:05:14', 1, 5, 0),
-(100017, 26, 'Credit card', '2021-04-17 12:58:00', '7787463302', 'Burnaby', '2021-04-17 21:55:22', 1, 5, 1);
+(100017, 70, 'Credit card', '2021-04-16 22:16:00', 'tw34t4', 'Burnaby', '2021-04-17 22:16:07', 1, 1, 0),
+(100018, 238, 'Credit card', '2021-04-16 22:19:00', 'trhrt', 'Burnaby', '2021-04-17 22:19:42', 1, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -329,10 +345,14 @@ INSERT INTO `orderinfo` (`OrderID`, `totalPrice`, `paymentMethod`, `pickUpTime`,
 -- Table structure for table `orderplacement`
 --
 
-CREATE TABLE `orderplacement` (
+DROP TABLE IF EXISTS `orderplacement`;
+CREATE TABLE IF NOT EXISTS `orderplacement` (
   `OrderID` int(11) NOT NULL,
   `CustomerID` int(11) NOT NULL,
-  `SellerID` int(11) NOT NULL
+  `SellerID` int(11) NOT NULL,
+  PRIMARY KEY (`OrderID`,`CustomerID`,`SellerID`),
+  KEY `CustomerID` (`CustomerID`),
+  KEY `SellerID` (`SellerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -342,9 +362,11 @@ CREATE TABLE `orderplacement` (
 INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100001, 1, 2),
 (100002, 1, 2),
-(100003, 14, 5),
+(100014, 1, 5),
+(100015, 1, 5),
+(100017, 1, 1),
+(100018, 1, 5),
 (100004, 3, 5),
-(100005, 7, 8),
 (100007, 3, 28),
 (100008, 3, 5),
 (100009, 3, 1),
@@ -352,9 +374,8 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 (100011, 3, 13),
 (100012, 3, 1),
 (100013, 3, 13),
-(100014, 1, 5),
-(100015, 1, 5),
-(100017, 1, 5);
+(100005, 7, 8),
+(100003, 14, 5);
 
 -- --------------------------------------------------------
 
@@ -362,7 +383,8 @@ INSERT INTO `orderplacement` (`OrderID`, `CustomerID`, `SellerID`) VALUES
 -- Stand-in structure for view `phistory`
 -- (See below for the actual view)
 --
-CREATE TABLE `phistory` (
+DROP VIEW IF EXISTS `phistory`;
+CREATE TABLE IF NOT EXISTS `phistory` (
 `UserID` int(11)
 ,`SellerID` int(11)
 ,`OrderID` int(11)
@@ -378,8 +400,9 @@ CREATE TABLE `phistory` (
 -- Table structure for table `profile`
 --
 
-CREATE TABLE `profile` (
-  `UserID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `profile`;
+CREATE TABLE IF NOT EXISTS `profile` (
+  `UserID` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
   `Password` text NOT NULL,
   `UserName` varchar(50) NOT NULL,
@@ -388,8 +411,9 @@ CREATE TABLE `profile` (
   `Region` varchar(30) NOT NULL,
   `FirstName` varchar(20) NOT NULL,
   `LastName` varchar(20) NOT NULL,
-  `Img_url` varchar(1000) NOT NULL DEFAULT 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Img_url` varchar(1000) NOT NULL DEFAULT 'https://startupheretoronto.com/wp-content/uploads/2018/04/default-user-image-2.png',
+  PRIMARY KEY (`UserID`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `profile`
@@ -419,7 +443,8 @@ INSERT INTO `profile` (`UserID`, `email`, `Password`, `UserName`, `Phone`, `Loca
 -- Stand-in structure for view `publicprofileinfo`
 -- (See below for the actual view)
 --
-CREATE TABLE `publicprofileinfo` (
+DROP VIEW IF EXISTS `publicprofileinfo`;
+CREATE TABLE IF NOT EXISTS `publicprofileinfo` (
 `UserID` int(11)
 ,`UserName` varchar(50)
 ,`Region` varchar(30)
@@ -434,9 +459,11 @@ CREATE TABLE `publicprofileinfo` (
 -- Table structure for table `regionpickup`
 --
 
-CREATE TABLE `regionpickup` (
+DROP TABLE IF EXISTS `regionpickup`;
+CREATE TABLE IF NOT EXISTS `regionpickup` (
   `Region` varchar(25) NOT NULL,
-  `PickupAddress` varchar(500) NOT NULL
+  `PickupAddress` varchar(500) NOT NULL,
+  UNIQUE KEY `Region` (`Region`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -457,13 +484,17 @@ INSERT INTO `regionpickup` (`Region`, `PickupAddress`) VALUES
 -- Table structure for table `review`
 --
 
-CREATE TABLE `review` (
-  `ReviewID` int(11) NOT NULL,
+DROP TABLE IF EXISTS `review`;
+CREATE TABLE IF NOT EXISTS `review` (
+  `ReviewID` int(11) NOT NULL AUTO_INCREMENT,
   `CustomerUserID` int(11) NOT NULL,
   `FoodID` int(11) NOT NULL,
   `Rating` int(11) NOT NULL,
-  `Comment` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Comment` text,
+  PRIMARY KEY (`ReviewID`) USING BTREE,
+  KEY `FoodID` (`FoodID`),
+  KEY `CustomerUserID` (`CustomerUserID`)
+) ENGINE=InnoDB AUTO_INCREMENT=20007 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `review`
@@ -482,8 +513,10 @@ INSERT INTO `review` (`ReviewID`, `CustomerUserID`, `FoodID`, `Rating`, `Comment
 -- Table structure for table `seller`
 --
 
-CREATE TABLE `seller` (
-  `UserID` int(11) NOT NULL
+DROP TABLE IF EXISTS `seller`;
+CREATE TABLE IF NOT EXISTS `seller` (
+  `UserID` int(11) NOT NULL,
+  PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -505,9 +538,11 @@ INSERT INTO `seller` (`UserID`) VALUES
 -- Table structure for table `userallergies`
 --
 
-CREATE TABLE `userallergies` (
+DROP TABLE IF EXISTS `userallergies`;
+CREATE TABLE IF NOT EXISTS `userallergies` (
   `UserID` int(11) NOT NULL,
-  `Allergies` varchar(100) NOT NULL
+  `Allergies` varchar(100) NOT NULL,
+  PRIMARY KEY (`UserID`,`Allergies`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -528,7 +563,8 @@ INSERT INTO `userallergies` (`UserID`, `Allergies`) VALUES
 --
 DROP TABLE IF EXISTS `foodandrating`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodandrating`  AS SELECT `food`.`FoodID` AS `FoodID`, `food`.`PUserID` AS `PUserID`, `food`.`FoodName` AS `FoodName`, `food`.`pricePerUnit` AS `pricePerUnit`, `food`.`Availability` AS `Availability`, `food`.`Description` AS `Description`, `food`.`Instructions` AS `Instructions`, `food`.`Img_url` AS `Img_url`, `foodreviewaverage`.`RfoodID` AS `RfoodID`, `foodreviewaverage`.`avergeReview` AS `avergeReview` FROM (`food` left join `foodreviewaverage` on(`foodreviewaverage`.`RfoodID` = `food`.`FoodID`)) ;
+DROP VIEW IF EXISTS `foodandrating`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodandrating`  AS  select `food`.`FoodID` AS `FoodID`,`food`.`PUserID` AS `PUserID`,`food`.`FoodName` AS `FoodName`,`food`.`pricePerUnit` AS `pricePerUnit`,`food`.`Availability` AS `Availability`,`food`.`Description` AS `Description`,`food`.`Instructions` AS `Instructions`,`food`.`Img_url` AS `Img_url`,`foodreviewaverage`.`RfoodID` AS `RfoodID`,`foodreviewaverage`.`avergeReview` AS `avergeReview` from (`food` left join `foodreviewaverage` on((`foodreviewaverage`.`RfoodID` = `food`.`FoodID`))) ;
 
 -- --------------------------------------------------------
 
@@ -537,7 +573,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `foodreviewaverage`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS SELECT `review`.`FoodID` AS `RfoodID`, round(avg(`review`.`Rating`),1) AS `avergeReview` FROM `review` GROUP BY `review`.`FoodID` ;
+DROP VIEW IF EXISTS `foodreviewaverage`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `foodreviewaverage`  AS  select `review`.`FoodID` AS `RfoodID`,round(avg(`review`.`Rating`),1) AS `avergeReview` from `review` group by `review`.`FoodID` ;
 
 -- --------------------------------------------------------
 
@@ -546,7 +583,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `fullorderinfoforseller`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fullorderinfoforseller`  AS  (select `orderinfo`.`OrderID` AS `OrderID`,`orderinfo`.`totalPrice` AS `totalPrice`,`orderinfo`.`paymentMethod` AS `paymentMethod`,`orderinfo`.`pickUpTime` AS `pickUpTime`,`orderinfo`.`contactInfo` AS `contactInfo`,`orderinfo`.`Region` AS `Region`,`orderinfo`.`orderTime` AS `orderTime`,`orderinfo`.`customerID` AS `customerID`,`orderinfo`.`sellerID` AS `sellerID`,`orderinfo`.`Processed` AS `Processed`,`orderfoods`.`FoodID` AS `FoodID`,`orderfoods`.`quantity` AS `quantity`,`food`.`FoodName` AS `FoodName`,`publicprofileinfo`.`FirstName` AS `FirstName`,`publicprofileinfo`.`LastName` AS `LastName`,`regionpickup`.`PickupAddress` AS `PickupAddress` from ((((`orderinfo` join `orderfoods` on(`orderinfo`.`OrderID` = `orderfoods`.`OrderID`)) join `food` on(`orderfoods`.`FoodID` = `food`.`FoodID`)) join `publicprofileinfo` on(`orderinfo`.`customerID` = `publicprofileinfo`.`UserID`)) join `regionpickup` on(`orderinfo`.`Region` = `regionpickup`.`Region`))) ;
+DROP VIEW IF EXISTS `fullorderinfoforseller`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `fullorderinfoforseller`  AS  (select `orderinfo`.`OrderID` AS `OrderID`,`orderinfo`.`totalPrice` AS `totalPrice`,`orderinfo`.`paymentMethod` AS `paymentMethod`,`orderinfo`.`pickUpTime` AS `pickUpTime`,`orderinfo`.`contactInfo` AS `contactInfo`,`orderinfo`.`Region` AS `Region`,`orderinfo`.`orderTime` AS `orderTime`,`orderinfo`.`customerID` AS `customerID`,`orderinfo`.`sellerID` AS `sellerID`,`orderinfo`.`Processed` AS `Processed`,`orderfoods`.`FoodID` AS `FoodID`,`orderfoods`.`quantity` AS `quantity`,`food`.`FoodName` AS `FoodName`,`publicprofileinfo`.`FirstName` AS `FirstName`,`publicprofileinfo`.`LastName` AS `LastName`,`regionpickup`.`PickupAddress` AS `PickupAddress` from ((((`orderinfo` join `orderfoods` on((`orderinfo`.`OrderID` = `orderfoods`.`OrderID`))) join `food` on((`orderfoods`.`FoodID` = `food`.`FoodID`))) join `publicprofileinfo` on((`orderinfo`.`customerID` = `publicprofileinfo`.`UserID`))) join `regionpickup` on((`orderinfo`.`Region` = `regionpickup`.`Region`)))) ;
 
 -- --------------------------------------------------------
 
@@ -555,7 +593,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `history`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS SELECT `c`.`UserID` AS `UserID`, `op`.`OrderID` AS `OrderID`, `s`.`UserName` AS `UserName`, `i`.`totalPrice` AS `totalPrice`, `i`.`orderTime` AS `orderTime`, `i`.`pickUpTime` AS `pickUpTime` FROM (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) WHERE `c`.`UserID` = `op`.`CustomerID` AND `s`.`UserID` = `op`.`SellerID` AND `i`.`OrderID` = `op`.`OrderID` ;
+DROP VIEW IF EXISTS `history`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `history`  AS  select `c`.`UserID` AS `UserID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
 
 -- --------------------------------------------------------
 
@@ -564,7 +603,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `phistory`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `phistory`  AS SELECT `c`.`UserID` AS `UserID`, `s`.`UserID` AS `SellerID`, `op`.`OrderID` AS `OrderID`, `s`.`UserName` AS `UserName`, `i`.`totalPrice` AS `totalPrice`, `i`.`orderTime` AS `orderTime`, `i`.`pickUpTime` AS `pickUpTime` FROM (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) WHERE `c`.`UserID` = `op`.`CustomerID` AND `s`.`UserID` = `op`.`SellerID` AND `i`.`OrderID` = `op`.`OrderID` ;
+DROP VIEW IF EXISTS `phistory`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `phistory`  AS  select `c`.`UserID` AS `UserID`,`s`.`UserID` AS `SellerID`,`op`.`OrderID` AS `OrderID`,`s`.`UserName` AS `UserName`,`i`.`totalPrice` AS `totalPrice`,`i`.`orderTime` AS `orderTime`,`i`.`pickUpTime` AS `pickUpTime` from (((`orderplacement` `op` join `profile` `c`) join `profile` `s`) join `orderinfo` `i`) where ((`c`.`UserID` = `op`.`CustomerID`) and (`s`.`UserID` = `op`.`SellerID`) and (`i`.`OrderID` = `op`.`OrderID`)) ;
 
 -- --------------------------------------------------------
 
@@ -573,127 +613,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `publicprofileinfo`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `publicprofileinfo`  AS SELECT `profile`.`UserID` AS `UserID`, `profile`.`UserName` AS `UserName`, `profile`.`Region` AS `Region`, `profile`.`FirstName` AS `FirstName`, `profile`.`LastName` AS `LastName`, `profile`.`Img_url` AS `Img_url` FROM `profile` ;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`UserID`);
-
---
--- Indexes for table `follows`
---
-ALTER TABLE `follows`
-  ADD PRIMARY KEY (`FollowerID`,`FolloweeID`) USING BTREE,
-  ADD KEY `FolloweeID` (`FolloweeID`);
-
---
--- Indexes for table `food`
---
-ALTER TABLE `food`
-  ADD PRIMARY KEY (`FoodID`) USING BTREE,
-  ADD KEY `PUserID` (`PUserID`);
-
---
--- Indexes for table `foodingredients`
---
-ALTER TABLE `foodingredients`
-  ADD PRIMARY KEY (`FoodID`,`Ingredients`(50)) USING BTREE;
-
---
--- Indexes for table `foodtags`
---
-ALTER TABLE `foodtags`
-  ADD PRIMARY KEY (`FoodID`,`Tags`) USING BTREE;
-
---
--- Indexes for table `orderfoods`
---
-ALTER TABLE `orderfoods`
-  ADD PRIMARY KEY (`FoodID`,`OrderID`) USING BTREE,
-  ADD KEY `OrderID` (`OrderID`);
-
---
--- Indexes for table `orderinfo`
---
-ALTER TABLE `orderinfo`
-  ADD PRIMARY KEY (`OrderID`) USING BTREE,
-  ADD KEY `customerID` (`customerID`),
-  ADD KEY `sellerID` (`sellerID`),
-  ADD KEY `Region` (`Region`) USING BTREE;
-
---
--- Indexes for table `orderplacement`
---
-ALTER TABLE `orderplacement`
-  ADD PRIMARY KEY (`OrderID`,`CustomerID`,`SellerID`),
-  ADD KEY `CustomerID` (`CustomerID`),
-  ADD KEY `SellerID` (`SellerID`);
-
---
--- Indexes for table `profile`
---
-ALTER TABLE `profile`
-  ADD PRIMARY KEY (`UserID`);
-
---
--- Indexes for table `regionpickup`
---
-ALTER TABLE `regionpickup`
-  ADD UNIQUE KEY `Region` (`Region`);
-
---
--- Indexes for table `review`
---
-ALTER TABLE `review`
-  ADD PRIMARY KEY (`ReviewID`) USING BTREE,
-  ADD KEY `FoodID` (`FoodID`),
-  ADD KEY `CustomerUserID` (`CustomerUserID`);
-
---
--- Indexes for table `seller`
---
-ALTER TABLE `seller`
-  ADD PRIMARY KEY (`UserID`);
-
---
--- Indexes for table `userallergies`
---
-ALTER TABLE `userallergies`
-  ADD PRIMARY KEY (`UserID`,`Allergies`) USING BTREE;
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `food`
---
-ALTER TABLE `food`
-  MODIFY `FoodID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10011;
-
---
--- AUTO_INCREMENT for table `orderinfo`
---
-ALTER TABLE `orderinfo`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100018;
-
---
--- AUTO_INCREMENT for table `profile`
---
-ALTER TABLE `profile`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
--- AUTO_INCREMENT for table `review`
---
-ALTER TABLE `review`
-  MODIFY `ReviewID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20007;
+DROP VIEW IF EXISTS `publicprofileinfo`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `publicprofileinfo`  AS  select `profile`.`UserID` AS `UserID`,`profile`.`UserName` AS `UserName`,`profile`.`Region` AS `Region`,`profile`.`FirstName` AS `FirstName`,`profile`.`LastName` AS `LastName`,`profile`.`Img_url` AS `Img_url` from `profile` ;
 
 --
 -- Constraints for dumped tables
