@@ -36,12 +36,11 @@
                     <div align="center">
                         {% if food[4] == 1 %}
                             <h5 class="card-title"> Available - Price per unit: ${{ food[3] }}</h5>
-                            <button type="submit" class="btn btn-warning" id="{{ food[0] }}">Add to cart</button>
                         {% endif %}
                         {% if food[4] == 0 %}
                             <h5 class="card-title">Not Available</h5>
                         {% endif %}
-                        <button type="button" class="btn btn-info" style="display: inline">View Recipe</button>
+                        <form method = "POST" action = ""><button name="delete" type="submit" class="btn btn-danger" style="display: inline" value="{{ food[0] }}">Delete Recipe</button></form>
                      </div>
                     </div>
                 </div>

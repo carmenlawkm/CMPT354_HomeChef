@@ -116,7 +116,7 @@ def login_load():
             if user_ID:
                 valid = 1
                 session["user"] = user_ID
-                return profile_load()
+                return redirect('/profile')
             else:
                 valid = 0
             return render_template("login.html", info=valid)
@@ -150,11 +150,11 @@ def register_load():
                 (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
-            return profile_load() #should bring them to their profile page.
+            return redirect('/profile')
         return render_template("register.html")
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile_load():
     if "user" in session:
         cur = mysql.connection.cursor()
@@ -175,6 +175,14 @@ def profile_load():
         cur2.close()
         cur3.close()
         cur4.close()
+        if request.method == "POST":
+            cur1 = mysql.connection.cursor()
+            delete = request.form['delete']
+            cur1.execute("DELETE FROM food WHERE FoodID = %s", [delete])
+            mysql.connection.commit()
+            cur1.close()
+            return redirect("/profile")
+
         return render_template("profile.html", user_ID=session["user"], userData=userData, following=following,
                                followee=followee, foodList=foodList)
     else:
@@ -238,11 +246,10 @@ def post_load():
         )
         insertSellerCur.execute("INSERT IGNORE INTO seller (UserID) VALUES (%s)", (session["user"]))
         cur1.execute("SELECT LAST_INSERT_ID()")
-        food_id = cur1.fetchall()
+        food_id = cur1.fetchone()
 
         ingredients = [(food_id, x.strip()) for x in request.form["ingredients"].split(',')]
         tags = [(food_id, y.strip()) for y in request.form["tags"].split(',')]
-        print(ingredients)
         cur2.executemany(
             "INSERT INTO foodingredients (FoodID, Ingredients) "
             "VALUES (%s, %s)", ingredients
@@ -256,13 +263,13 @@ def post_load():
         cur1.close()
         cur2.close()
         return redirect("/home")
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT FirstName, LastName, Img_url "
+    cur4 = mysql.connection.cursor()
+    cur4.execute("SELECT FirstName, LastName, Img_url "
                 "FROM publicprofileinfo "
                 "WHERE UserID = %s", session["user"])
-    user_data = cur.fetchone()
+    user_data = cur4.fetchone()
     mysql.connection.commit()
-    cur.close()
+    cur4.close()
     first_name = user_data[0]
     last_name = user_data[1]
     img_url = user_data[2]
@@ -376,7 +383,6 @@ def history_load():
         orderID = request.form['orderID']
         global reviewOrder
         reviewOrder = orderID
-        print(reviewOrder)
         return redirect("/review")
 
     headings = ("#", "Seller", "Price", "Order Date", "Pickup Time", "")
