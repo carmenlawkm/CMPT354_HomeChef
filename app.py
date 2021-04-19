@@ -167,6 +167,17 @@ def register_load():
                 (firstName, lastName, email, userName, password, phone, address, region))
             mysql.connection.commit()
             cur.close()
+
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT UserID FROM profile WHERE email = %s AND Password = %s", (email, password))
+            user_ID = cur.fetchall()
+            mysql.connection.commit()
+            cur.close()
+            if user_ID:
+                valid = 1
+                session["user"] = user_ID
+                return redirect('/profile')
+
             return redirect('/profile')
         return render_template("register.html")
 
