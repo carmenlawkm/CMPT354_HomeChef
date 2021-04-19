@@ -77,7 +77,8 @@ def home_load():
                         customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
                                             (session["user"], 0, 0))
                         mysql.connection.commit()
-                        return redirect("/cart")
+                        flash("Food added to cart")
+                        return redirect("/home")
         return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3, foodWithAllTags = foodWithAllTags)
     else:
         return redirect('/login')
