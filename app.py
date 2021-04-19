@@ -19,66 +19,68 @@ foodList = []
 
 @app.route('/home', methods=['GET', 'POST'])
 def home_load():
-    cur1 = mysql.connection.cursor()
-    cur2 = mysql.connection.cursor()
-    cur3 = mysql.connection.cursor()
-    division = mysql.connection.cursor()
+    if "user" in session:
+        cur1 = mysql.connection.cursor()
+        cur2 = mysql.connection.cursor()
+        cur3 = mysql.connection.cursor()
+        division = mysql.connection.cursor()
 
-    cur1.execute("SELECT * FROM foodandrating, publicprofileinfo, foodsellerrating WHERE foodandrating.PUserID = publicprofileinfo.UserID && foodandrating.FoodID = foodsellerrating.FoodID")
-    cur2.execute("SELECT * FROM foodingredients")
-    cur3.execute("SELECT * FROM foodtags")
-    division.execute("SELECT foodID FROM foodtags GROUP BY foodID HAVING COUNT(*) = (SELECT COUNT(*) FROM uniquetags)")
-    fetch = cur1.fetchall()
-    print(fetch)
-    fetch2 = cur2.fetchall()
-    fetch3 = cur3.fetchall()
-    foodWithAllTags = division.fetchall()
-    mysql.connection.commit()
-    cur1.close()
-    cur2.close()
-    cur3.close()
-    division.close()
-    if request.method == 'POST':
-        if request.form.get("follow"):
-            followcur = mysql.connection.cursor()
-            followee = request.form['follow']
-            if int(followee) == int(session["user"][0][0]):
-                flash("You cannot follow yourself.")
-            else:
-                followcur.execute("INSERT IGNORE INTO follows (FollowerID, FolloweeID) VALUE (%s, %s)", (session["user"], followee))
-                mysql.connection.commit()
-                followcur.close()
-                flash("You have successfully followed this user.")
-                return redirect('/home')
-        elif request.form.get("data"):
-            headings = ("Food", "Quantity", "Price")
-            data = request.form['data']
-            datanum = request.form['datanum']
-
-            if not datanum:
-                flash("invalid quantity")
-            else:
-                cur = mysql.connection.cursor()
-                cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
-                datalist = cur.fetchall()
-                mysql.connection.commit()
-                cur.close()
-                foodTuple = cleanTuple(datalist, datanum, data)
-                if checkSameId(foodTuple[1]) != 1:
-                    flash("must choose foods from same seller as other items in cart!")
-                    return redirect("/home")
-                elif checkDupFood(data) != 0:
-                    flash("This food is already in the cart!")
-                    return redirect("/home")
+        cur1.execute("SELECT * FROM foodandrating, publicprofileinfo, foodsellerrating WHERE foodandrating.PUserID = publicprofileinfo.UserID && foodandrating.FoodID = foodsellerrating.FoodID")
+        cur2.execute("SELECT * FROM foodingredients")
+        cur3.execute("SELECT * FROM foodtags")
+        division.execute("SELECT foodID FROM foodtags GROUP BY foodID HAVING COUNT(*) = (SELECT COUNT(*) FROM uniquetags)")
+        fetch = cur1.fetchall()
+        print(fetch)
+        fetch2 = cur2.fetchall()
+        fetch3 = cur3.fetchall()
+        foodWithAllTags = division.fetchall()
+        mysql.connection.commit()
+        cur1.close()
+        cur2.close()
+        cur3.close()
+        division.close()
+        if request.method == 'POST':
+            if request.form.get("follow"):
+                followcur = mysql.connection.cursor()
+                followee = request.form['follow']
+                if int(followee) == int(session["user"][0][0]):
+                    flash("You cannot follow yourself.")
                 else:
-                    foodList.append(foodTuple)
-                    customercur = mysql.connection.cursor()
-                    customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
-                                        (session["user"], 0, 0))
+                    followcur.execute("INSERT IGNORE INTO follows (FollowerID, FolloweeID) VALUE (%s, %s)", (session["user"], followee))
                     mysql.connection.commit()
-                    return redirect("/cart")
-    return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3, foodWithAllTags = foodWithAllTags)
+                    followcur.close()
+                    flash("You have successfully followed this user.")
+                    return redirect('/home')
+            elif request.form.get("data"):
+                headings = ("Food", "Quantity", "Price")
+                data = request.form['data']
+                datanum = request.form['datanum']
 
+                if not datanum:
+                    flash("invalid quantity")
+                else:
+                    cur = mysql.connection.cursor()
+                    cur.execute("SELECT * FROM food WHERE food.FoodID = %s", (data,))
+                    datalist = cur.fetchall()
+                    mysql.connection.commit()
+                    cur.close()
+                    foodTuple = cleanTuple(datalist, datanum, data)
+                    if checkSameId(foodTuple[1]) != 1:
+                        flash("must choose foods from same seller as other items in cart!")
+                        return redirect("/home")
+                    elif checkDupFood(data) != 0:
+                        flash("This food is already in the cart!")
+                        return redirect("/home")
+                    else:
+                        foodList.append(foodTuple)
+                        customercur = mysql.connection.cursor()
+                        customercur.execute("INSERT IGNORE INTO customer (UserID, OverallCustomerRating, numberOfRatings) VALUES (%s, %s, %s)",
+                                            (session["user"], 0, 0))
+                        mysql.connection.commit()
+                        return redirect("/cart")
+        return render_template("home.html", foodInfo = fetch, foodIngredients = fetch2, foodtags = fetch3, foodWithAllTags = foodWithAllTags)
+    else:
+        return redirect('/login')
 
 def calculatetotal(foodl):
     total = 0;
