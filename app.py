@@ -163,6 +163,13 @@ def register_load():
             address = request.form['address']
             region = request.form['region']
 
+            cur1 = mysql.connection.cursor()
+            cur1.execute("SELECT UserID FROM profile WHERE email = %s", (email,))
+            dup = cur1.fetchall()
+            if dup:
+                flash("Email already taken!")
+                return redirect("/register")
+
             cur = mysql.connection.cursor()
             cur.execute(
                 "INSERT INTO profile (FirstName, LastName, email, UserName, password, Phone, Location, Region) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
